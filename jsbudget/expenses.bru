@@ -1,0 +1,32 @@
+meta {
+  name: expenses
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3001/api/expenses
+  body: json
+  auth: inherit
+}
+
+body:json {
+  [
+    {
+      "id": "id2",
+      "category_id": "Auto",
+      "amount": 27150,
+      "comment": "This is a comment",
+      "for_who": "EVE",
+      "date": "2026-02-02",
+      "updated_at": 0,
+      "created_at": 0,
+      "_deleted": 0
+    }
+  ]
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
