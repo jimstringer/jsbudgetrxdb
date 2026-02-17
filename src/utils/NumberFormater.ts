@@ -5,5 +5,5 @@
 
 export const NumberFormater = new Intl.NumberFormat('default', {
   style: 'currency',
-  currency: 'USD'
+  currency: 'CAD'
 });
