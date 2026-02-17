@@ -37,7 +37,7 @@ const Navbar = () => {
             }
         };
 
-        let intervalId: number;
+        let intervalId: NodeJS.Timeout;
         if (checkOnline) {
           checkApi(); // Initial check
           intervalId = setInterval(checkApi, 5000); // Check every 5 seconds
