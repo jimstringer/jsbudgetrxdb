@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./App.tsx";
+import { App } from "./App";
 import AlertProvider from "./providers/AlertProvider";
 import AlertDialog from "./components/AlertDialog";
-import { DatabaseProvider } from "./providers/DatabaseProvider.tsx";
+import { DatabaseProvider } from "./providers/DatabaseProvider";
 
 import "./index.css";
 
