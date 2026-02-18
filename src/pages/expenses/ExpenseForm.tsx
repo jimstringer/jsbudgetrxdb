@@ -17,7 +17,7 @@ export default function ExpenseForm() {
   } = useForm<Inputs>({
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
-      amount: 0,
+      amount: "",
       category_id: "",
       comment: "",
     },
@@ -27,10 +27,10 @@ export default function ExpenseForm() {
 
   type Inputs = {
     date: string;
-    amount: number;
+    amount: string;
     category_id: string;
     comment: string;
-    for_who: "BOTH" | "JIM" | "EVE" | "OTHER";
+    for_who: "" | "BOTH" | "JIM" | "EVE" | "OTHER";
   };
 
   const dbctx = useRxDB();
@@ -41,7 +41,7 @@ export default function ExpenseForm() {
     if (!db) return;
 
     if (isSubmitSuccessful) {
-      reset({ amount: 0, category_id: "", comment: "" });
+      reset({ amount: "", category_id: "", comment: "", for_who: "" });
     }
     const fetchCategories = async () => {
       const categoryCollection = db.categories;
@@ -64,7 +64,7 @@ export default function ExpenseForm() {
       .insert({
         id: uuidv7(),
         date: data.date,
-        amount: Number(data.amount),
+        amount: Number(data.amount)*100, // convert to cents
         category_id: data.category_id,
         comment: data.comment,
         for_who: data.for_who,
@@ -92,22 +92,36 @@ export default function ExpenseForm() {
             required: true,
           })}
           type="date"
+          className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
         {errors.date && <span className="text-red-500">Date is required</span>}
-
+        
+        <label htmlFor="amount" className="block mb-1">Amount:</label>
         <input
           {...register("amount", {
             required: true,
-            pattern: /^[0-9]+$/i,
+            validate: {
+              matchPattern: (v) => /^[0-9.]+$/.test(v),
+              notNegative: (v) => Number(v) > 0,
+            },
           })}
           type="tel"
-          placeholder="Amount cents"
+          placeholder="Amount"
+          className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
-        {errors.amount && (
+        {errors.amount?.type === "required" && (
           <span className="text-red-500">Amount is required</span>
         )}
+        {errors.amount?.type === "matchPattern" && (
+          <span className="text-red-500">Amount must be a number</span>
+        )}
+        {errors.amount?.type === "notNegative" && (
+          <span className="text-red-500">Amount must be a greater than 0</span>
+        )}
 
-        <select {...register("category_id", { required: true })}>
+        <select {...register("category_id", { required: true })}
+          className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        >
           <option value="">Select Category</option>
           {categories.map((category) => (
             <option key={category.name} value={category.name}>
@@ -123,6 +137,7 @@ export default function ExpenseForm() {
           {...register("for_who", {
             required: true,
           })}
+          className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         >
           <option value="">Select For Who</option>
           <option value="BOTH">BOTH</option>
@@ -134,7 +149,11 @@ export default function ExpenseForm() {
           <span className="text-red-500">For Who is required</span>
         )}
 
-        <input {...register("comment")} type="text" placeholder="Comment" />
+        <input {...register("comment")}
+          type="text"
+          placeholder="Comment"
+          className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
 
         <input
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
