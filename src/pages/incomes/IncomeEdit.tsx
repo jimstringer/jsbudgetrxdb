@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import useRxDB from "../../hooks/useRxDB";
-import type { IncomeDocType, IncomeSourceDocType } from "../../database/schemas/schemas";
-import { uuidv7 } from "uuidv7";
+import type {
+  IncomeDocType,
+  IncomeSourceDocType,
+} from "../../database/schemas/schemas";
+import { type RxDocument } from "rxdb";
+import { useParams, useNavigate } from "react-router";
 
-export function IncomeForm() {
+export default function IncomeEdit() {
   const {
     register,
     handleSubmit,
@@ -16,11 +20,16 @@ export function IncomeForm() {
       date: new Date().toISOString().split("T")[0],
       amount: 0,
       incomeSourceId: "",
-      comment: ""
+      comment: "",
     },
   });
 
   const [incomeSources, setIncomeSources] = useState<IncomeSourceDocType[]>([]);
+  const [income, setIncome] = useState<RxDocument<IncomeDocType> | null>(null);
+  const id = useParams().id as string;
+  const navigate = useNavigate();
+  const { db } = useRxDB();
+  const { isSubmitSuccessful } = formState;
 
   type Inputs = {
     date: string;
@@ -29,10 +38,6 @@ export function IncomeForm() {
     comment: string;
     from: "JIM" | "EVE" | "OTHER";
   };
-
-  const dbctx = useRxDB();
-  const db = dbctx.db;
-  const { isSubmitSuccessful } = formState;
 
   useEffect(() => {
     if (!db) return;
@@ -46,34 +51,50 @@ export function IncomeForm() {
       setIncomeSources(allIncomeSources.map((cat) => cat.toJSON()));
     };
 
-    fetchIncomeSources();
-  }, [db, isSubmitSuccessful, reset]);
+    const fetchIncome = async (id: string) => {
+      const incomeDoc = await db.incomes.findOne(id).exec();
+      if (incomeDoc) {
+        setIncome(incomeDoc);
+        reset({
+          date: incomeDoc.date,
+          amount: incomeDoc.amount,
+          incomeSourceId: incomeDoc.source_id,
+          comment: incomeDoc.comment,
+          from: incomeDoc.from_who,
+        });
+      }
+    };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    fetchIncome(id);
+    fetchIncomeSources();
+  }, [db, id, isSubmitSuccessful, reset]);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
-    const db = dbctx.db;
-    if (!db) {
+    if (!income) {
       console.error("Database not initialized");
       return;
     }
     const dateNow = new Date().getTime();
-    db.incomes
-      .insert({
-        id: uuidv7(),
-        date: data.date,
-        amount: Number(data.amount),
-        source_id: data.incomeSourceId,
-        comment: data.comment,
-        from_who: data.from,
-        created_at: dateNow,
-        updated_at: dateNow,
-        _deleted: false,
-      } as IncomeDocType)
+    await income
+      .update({
+        $set: {
+          date: data.date,
+          amount: Number(data.amount),
+          source_id: data.incomeSourceId,
+          comment: data.comment,
+          from_who: data.from,
+          updated_at: dateNow,
+        },
+      })
       .then((doc) => {
-        console.log("Income", doc.toJSON());
+        console.log("Income updated:", doc.toJSON());
+        // After successful update, navigate back to expense list
+        // would be nice to show the expense list for the month of the edited expense
+        navigate(`/income/${data.date}`);
       })
       .catch((err) => {
-        console.error("Error adding Income", err);
+        console.error("Error updating income:", err);
       });
   };
 
@@ -103,26 +124,29 @@ export function IncomeForm() {
           <span className="text-red-500">Amount is required</span>
         )}
 
-            <select {...register("incomeSourceId", { required: true })}>
-              <option value="">Select Income Source</option>
-              {incomeSources.map((category) => (
-                <option key={category.name} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+        <select {...register("incomeSourceId", { required: true })}>
+          <option value="">Select Income Source</option>
+          {incomeSources.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
         {errors.incomeSourceId && (
           <span className="text-red-500">Income Source is required</span>
         )}
 
-        <input
+        <select
           {...register("from", {
             required: true,
           })}
-          type="text"
-          placeholder="From Who (JIM, EVE, OTHER)"
-        />
-        {errors.from && <span className="text-red-500">From Who is required</span>} 
+        >
+          <option value="">Select From Who</option>
+          <option value="JIM">JIM</option>
+          <option value="EVE">EVE</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+        {errors.from && <span className="text-red-500">From is required</span>}
 
         <input {...register("comment")} type="text" placeholder="Comment" />
 

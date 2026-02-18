@@ -15,7 +15,8 @@ import { ImportPage } from "./pages/backup/Import";
 import { ImportFB } from "./pages/backup/ImportFB";
 import { InitCats } from "./pages/backup/InitCats";
 import ExpenseEdit from "./pages/expenses/ExpenseEdit";
-import SourceList  from "./pages/source/SourceList";
+import SourceList from "./pages/source/SourceList";
+import IncomeEdit from "./pages/incomes/IncomeEdit";
 
 export const router = createHashRouter([
   {
@@ -34,8 +35,8 @@ export const router = createHashRouter([
       {
         path: "income",
         children: [
-          { index: true, Component: IncomeList },
-          { path: "edit/:tid?", Component: IncomeForm },
+          { index: true, path: ":date?", Component: IncomeList },
+          { path: "edit/:id", Component: IncomeEdit },
           { path: "add", Component: IncomeForm },
         ],
       },

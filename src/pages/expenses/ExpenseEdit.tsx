@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import {  useForm, type SubmitHandler } from "react-hook-form";
 import useRxDB from "../../hooks/useRxDB";
 import type { CategoryDocType, ExpenseDocType } from "../../database/schemas/schemas";
 import { type RxDocument } from "rxdb";
@@ -11,7 +11,6 @@ export default function ExpenseEdit() {
     register,
     handleSubmit,
     reset,
-    control,
     formState,
     formState: { errors },
   } = useForm<Inputs>({
@@ -123,12 +122,7 @@ export default function ExpenseEdit() {
           <span className="text-red-500">Amount is required</span>
         )}
 
-        <Controller
-          name="category_id"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <select {...field}>
+            <select {...register("category_id", { required: true })}>
               <option value="">Select Category</option>
               {categories.map((category) => (
                 <option key={category.name} value={category.name}>
@@ -136,8 +130,6 @@ export default function ExpenseEdit() {
                 </option>
               ))}
             </select>
-          )}
-        />
         {errors.category_id && (
           <span className="text-red-500">Category is required</span>
         )}

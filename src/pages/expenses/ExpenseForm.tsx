@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import useRxDB from "../../hooks/useRxDB";
-import type { CategoryDocType, ExpenseDocType } from "../../database/schemas/schemas";
+import type {
+  CategoryDocType,
+  ExpenseDocType,
+} from "../../database/schemas/schemas";
 import { uuidv7 } from "uuidv7";
 
 export default function ExpenseForm() {
@@ -9,11 +12,15 @@ export default function ExpenseForm() {
     register,
     handleSubmit,
     reset,
-    control,
     formState,
     formState: { errors },
   } = useForm<Inputs>({
-    defaultValues: { date: "", amount: 0, category_id: "", comment: "" },
+    defaultValues: {
+      date: new Date().toISOString().split("T")[0],
+      amount: 0,
+      category_id: "",
+      comment: "",
+    },
   });
 
   const [categories, setCategories] = useState<CategoryDocType[]>([]);
@@ -100,36 +107,32 @@ export default function ExpenseForm() {
           <span className="text-red-500">Amount is required</span>
         )}
 
-        <Controller
-          name="category_id"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <select {...field}>
-              <option value="">Select Category</option>
-              {categories.map((category) => (
-                <option key={category.name} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          )}
-        />
+        <select {...register("category_id", { required: true })}>
+          <option value="">Select Category</option>
+          {categories.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
         {errors.category_id && (
           <span className="text-red-500">Category is required</span>
         )}
 
-       <select
-         {...register("for_who", {
-           required: true,
-         })}>
+        <select
+          {...register("for_who", {
+            required: true,
+          })}
+        >
           <option value="">Select For Who</option>
           <option value="BOTH">BOTH</option>
           <option value="JIM">JIM</option>
           <option value="EVE">EVE</option>
           <option value="OTHER">OTHER</option>
         </select>
-       {errors.for_who && <span className="text-red-500">For Who is required</span>}     
+        {errors.for_who && (
+          <span className="text-red-500">For Who is required</span>
+        )}
 
         <input {...register("comment")} type="text" placeholder="Comment" />
 

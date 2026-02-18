@@ -3,11 +3,14 @@ import { PencilIcon } from "@heroicons/react/24/solid";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import useRxDB from "../hooks/useRxDB";
 import { useNavigate } from "react-router";
+import { useConfirmAlert } from "../hooks/UseConfirmAlert";
 
 export default function Expense({ expense }: { expense: ExpenseDocType }) {
 
   const { db } = useRxDB();
   const navigate = useNavigate();
+
+  const showConfirmAlert  = useConfirmAlert();
   
   const deleteExpense = async (id: string) => {
     if (!db) return;
@@ -43,7 +46,13 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
         <button
           className="x-button"
           onClick={() => {
-            deleteExpense(expense.id);
+            showConfirmAlert.showAlert({
+            title: `Delete Expense "${expense.category_id}"?`,
+            confirmMessage: "This action cannot be undone.",
+            onConfirm: async () => {
+              await deleteExpense(expense.id);
+            },
+          });
           }}
         >
           <XMarkIcon className="h-5 w-5 text-red-500" />
