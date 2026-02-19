@@ -1,6 +1,6 @@
 import type { RxJsonSchema } from "rxdb";
 
-//TODO: change camelcase to snake_case for db storage sync to sqlite? 
+//changed camelCase to snake_case for db storage sync to sqlite? 
 export type ExpenseDocType = {
   id: string;
   amount: number;

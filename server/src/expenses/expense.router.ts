@@ -1,14 +1,15 @@
 import express from "express";
 import db from "../database.js";
-//import { ExpenseDocType } from "../../../src/database/schemas/schemas.js";
 
+
+//must match import { ExpenseDocType } from "../../../src/database/schemas/schemas.js";
 type ExpenseDocType = {
   id: string;
   amount: number;
   date: string;
   category_id: string;
   comment: string;
-  for_who: "JIM" | "EVE" | "OTHER";
+  for_who: "BOTH" | "JIM" | "EVE" | "OTHER";
   created_at: number;
   updated_at: number;
   _deleted: boolean;
