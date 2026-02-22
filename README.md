@@ -1,6 +1,5 @@
 # JSBudget Client and Server Project
 Expense tracking web app using RxDb for local data storage. 
-Includes a Express server with sqlite for backup. 
 You can also backup/restore from file.
 
 # React + TypeScript + Vite for development enviroment
@@ -16,6 +15,19 @@ Using this official plugins:
 - npm run dev in this directory to start client
 - open a terminal to server directory and
 - npm run dev to start server
+
+# Replication/Sync
+- Requirements
+1. run on mobile as webapp
+2. replicate to laptop browser. When I open app in browser it should load latest data.
+- WebRTC requires a signaling server. I got a demo to work using rxdbs example. The only issue was
+  Chrome browser had errors and didn't work. Firefox and safari and safari on my iphone all synced.
+  The downside is that it only will sync when I am at home. Not a big issue.
+- I could use firestore but that is what I am trying to get away from. 
+- Couchdb running in Docker on a old computer might also work.
+- Or a Express server with sqlite for backup. 
+ 
+
 
 ## Expanding the ESLint configuration
 
