@@ -154,6 +154,10 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
         },
       },
     });
+
+  
+
+
     return db as JsBudgetDatabase;
   });
 
@@ -166,7 +170,10 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
  * Get the database instance
  */
 export async function getDatabase() {
-  return initDatabase();
+  if (!dbPromise) {
+    return initDatabase();
+  }
+  return dbPromise;
 }
 
 /**

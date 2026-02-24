@@ -76,6 +76,7 @@ const navItems: NavItem[] = [
       { id: 15, name: "Import Backup", href: "/backup/import" },
       { id: 16, name: "Import Firebase Backup", href: "/backup/import-fb" },
       { id: 17, name: "Initialize Default Categories", href: "/backup/init-cats" },
+      { id: 19, name: "Sync", href: "/backup/sync" },
     ]},
   ];
 

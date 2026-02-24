@@ -24,7 +24,7 @@ Using this official plugins:
   Chrome browser had errors and didn't work. Firefox and safari and safari on my iphone all synced.
   The downside is that it only will sync when I am at home. Not a big issue.
 - I could use firestore but that is what I am trying to get away from. 
-- Couchdb running in Docker on a old computer might also work.
+- Couchdb running in Docker somewhat working. I see errors in console but sync seems to work.
 - Or a Express server with sqlite for backup. 
  
 
