@@ -64,7 +64,7 @@ export default function ExpenseList() {
         />
       </div>
       <div>
-        {expenses?.map((expense) => (
+        {[...expenses].reverse().map((expense) => (
           <Expense key={expense.id} expense={expense} />
         ))}
       </div>

@@ -101,6 +101,9 @@ export const Monthly = () => {
     handleLoading();
   }, [db, startDate, endDate]);
 
+  const sortedCategories = Object.entries(expenseCategoryTotals).sort(([, a], [, b]) => b - a);
+  const sortedSources = Object.entries(incomeSourceTotals).sort(([, a], [, b]) => b - a);
+  
   return (
     <div className="max-w-full md:max-w-2xl mx-auto mt-1 p-4 bg-white rounded shadow">
       <div className="sticky top-15 bg-white z-10 pb-4">
@@ -141,8 +144,8 @@ export const Monthly = () => {
       </div>
       <div className="mt-4">
         <h2 className="font-bold text-gray-600 text-center">Expense</h2>
-        {expenseCategoryTotals &&
-          Object.entries(expenseCategoryTotals).map(([key, value]) => (
+        {sortedCategories &&
+          sortedCategories.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
               <dt className="font-medium text-gray-900 text-left">{key}</dt>
               <dd className="text-gray-700 sm:col-span-1 text-right">
@@ -153,8 +156,8 @@ export const Monthly = () => {
       </div>
       <div className="mt-4">
         <h2 className="font-bold text-gray-600 text-center">Income</h2>
-        {incomeSourceTotals &&
-          Object.entries(incomeSourceTotals).map(([key, value]) => (
+        {sortedSources &&
+          sortedSources.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
               <dt className="font-medium text-gray-900 text-left">{key}</dt>
               <dd className="text-gray-700  text-right">

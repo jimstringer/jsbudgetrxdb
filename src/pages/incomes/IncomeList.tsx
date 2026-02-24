@@ -59,7 +59,7 @@ export function IncomeList() {
         />
       </div>
       <div>
-        {incomes?.map((income) => (
+        {[...incomes].reverse().map((income) => (
           <Income key={income.id} income={income} />
         ))}
       </div>
