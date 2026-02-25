@@ -4,7 +4,7 @@ This will replace my current app that uses firestore so I don't have to worry ab
 
 ## Working
 Backup/Restore from/to local file
-Replicate to/from CouchDB
+Replicate to/from CouchDB 
 
 
 ## React + TypeScript + Vite for development enviroment

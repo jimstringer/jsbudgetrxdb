@@ -120,12 +120,12 @@ const navItems: NavItem[] = [
   };
 
   return (
-    <nav className="bg-cyan-600 p-2 flex justify-between  sticky top-0 z-1000">
+    <nav className="bg-cyan-600 p-2 flex justify-between text-lg sticky top-0 z-1000">
       {/* Brand Name */}
       <a href="/" className=" text-lg font-semibold mr-8">
         JSBudget 2026
       </a>
-      <div className="flex items-center mr-4">
+      <div className="flex text-base items-center mr-4">
         <button
           className="mr-4 px-2 py-1 bg-blue-500 text-white rounded"
           onClick={() => setCheckOnline(!checkOnline)}
@@ -149,7 +149,7 @@ const navItems: NavItem[] = [
                       isOpen ? "translate-x-0" : "-translate-x-full"
                     } md:translate-x-0`}
       >
-        <ul className="flex flex-col md:flex-row md:space-x-2 xl:space-x-4">
+        <ul className="flex flex-col text-2xl md:text-lg md:flex-row md:space-x-2 xl:space-x-4">
           {navItems.map((item) => (
             <li key={item.id}>
               {item.href === "" ? (
