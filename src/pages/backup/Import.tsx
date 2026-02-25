@@ -3,6 +3,7 @@ import { useRef } from "react";
 import useRxDB from "../../hooks/useRxDB";
 import type { JsBudgetDatabase ,JSDatabaseCollections} from "../../database/db";
 import type { RxDumpDatabaseAny } from "rxdb";
+import { JsButton } from "../../components/JsButton";
 
 
 export const ImportPage = () => {   
@@ -28,19 +29,17 @@ export const ImportPage = () => {
 		};
     };
     
-    
+
 	return (
-		<div>
-			<input type="file" onChange={handleChange} />
-			<button
-				onClick={() => {
-				db.importJSON(jsonFromFile.current as unknown as RxDumpDatabaseAny<JSDatabaseCollections>)
-						.then(() => console.log("done"))
-						.catch(console.log);
-				}}
-			>
-				Import
-			</button>
+		<div className="flex  flex-col items-center justify-center bg-gray-100 p-2 mb-2 rounded-lg shadow-md">
+			<h1 className="text-xl font-bold">Import from local file</h1>
+			<p className="text-gray-600">You can import a dump of the database</p>
+            <input type="file" onChange={handleChange} />
+            <JsButton label="Import" onClick={() => {
+                db.importJSON(jsonFromFile.current as unknown as RxDumpDatabaseAny<JSDatabaseCollections>)
+                .then(() => console.log("done"))
+                .catch(console.log);        
+            }} />
 		</div>
 	);  
 };
