@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useRxDB from "../../hooks/useRxDB";
 import { YearSelect } from "../../components/YearSelect";
 import { NumberFormater } from "../../utils/NumberFormater";
+import type { CategoryDocType, ExpenseDocType, IncomeDocType, IncomeSourceDocType } from "../../database/schemas/schemas";
 
 export const YearToYear = () => {
   const { db } = useRxDB();
@@ -40,7 +41,7 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec();
+        .exec() as ExpenseDocType[];
       const expenses2 = await db.expenses
         .find({
           selector: {
@@ -50,7 +51,7 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec();
+        .exec() as ExpenseDocType[];
 
       const incomes = await db.incomes
         .find({
@@ -61,7 +62,7 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec();
+        .exec() as IncomeDocType[];
       const incomes2 = await db.incomes
         .find({
           selector: {
@@ -71,44 +72,44 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec();
+        .exec() as IncomeDocType[];
 
       //fetch categories as array of RxDocument
       const allCategories = await db.categories.find().exec();
       //fetch categories as array of strings
-      const expenseCategoryList = allCategories.map((cat) => cat.name);
+      const expenseCategoryList = allCategories.map((cat: CategoryDocType) => cat.name);
       // create object with category name as key and { year: 0, year2: 0 }
-      const categoryObj = expenseCategoryList.reduce((acc, cur) => {
+      const categoryObj: Record<string, { year: number; year2: number }> = expenseCategoryList.reduce((acc: Record<string, { year: number; year2: number }>, cur) => {
         acc[cur] = { year: 0, year2: 0 };
         return acc;
       }, {});
 
       //loop through expenses and add amount to category total
-      expenses.forEach((expense) => {
+      expenses.forEach((expense: ExpenseDocType) => {
         categoryObj[expense.category_id].year += expense.amount;
       });
-      expenses2.forEach((expense) => {
+      expenses2.forEach((expense: ExpenseDocType) => {
         categoryObj[expense.category_id].year2 += expense.amount;
       });
       //console.log(categoryObj);
 
       //do the same for incomes sources
       const allIncomeSources = await db.incomeSources.find().exec();
-      const incomeSourceList = allIncomeSources.map((inc) => inc.name);
-      const incomeSourceObj = incomeSourceList.reduce((acc, cur) => {
+      const incomeSourceList = allIncomeSources.map((inc: IncomeSourceDocType) => inc.name);
+      const incomeSourceObj: Record<string, { year: number; year2: number }> = incomeSourceList.reduce((acc: Record<string, { year: number; year2: number }>, cur) => {
         acc[cur] = { year: 0, year2: 0 };
         return acc;
       }, {});
-      incomes.forEach((income) => {
+      incomes.forEach((income: IncomeDocType) => {
         incomeSourceObj[income.source_id].year += income.amount;
       });
-      incomes2.forEach((income) => {
+      incomes2.forEach((income: IncomeDocType) => {
         incomeSourceObj[income.source_id].year2 += income.amount;
       });
       console.log(incomeSourceObj);
 
       //calculate totals
-      const totalExp = expenses.reduce(
+      const totalExp: number = expenses.reduce(
         (sum, expense) => sum + expense.amount,
         0,
       );
@@ -128,7 +129,8 @@ export const YearToYear = () => {
       setIncomeTotal2(totalI2);
     };
 
-    handleLoading();
+    handleLoading().catch(console.error);
+
   }, [db, startDate, endDate, startDate2, endDate2]);
 
   //we sort by year not year2

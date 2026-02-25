@@ -14,7 +14,7 @@ export const DatabaseProvider = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
+    async function init() {
       try {
         const expensesDb = await initDatabase();
         setDb(expensesDb);
@@ -32,11 +32,14 @@ export const DatabaseProvider = ({
           console.error("Unexpected Error:", error);
         }
       }
-    })();
+    };
+
+    init().catch(console.error);
+    
   }, []);
 
   return (
-    <DatabaseContext.Provider
+    <DatabaseContext
       value={{
         db,
         loading,
@@ -44,6 +47,6 @@ export const DatabaseProvider = ({
       }}
     >
       {children}
-    </DatabaseContext.Provider>
+    </DatabaseContext>
   );
 };

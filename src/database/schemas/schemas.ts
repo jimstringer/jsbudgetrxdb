@@ -16,7 +16,7 @@ export type ExpenseDocType = {
 export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
   title: "expense schema",
   description: "describes a single expense item",
-  version: 1,
+  version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: "id",
   type: "object",
@@ -72,7 +72,7 @@ export type CategoryDocType = {
 export const categorySchema: RxJsonSchema<CategoryDocType> = {
   title: "category schema",
   description: "describes a single category item",
-  version: 1,
+  version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: "name",
   type: "object",
@@ -108,7 +108,7 @@ export type IncomeSourceDocType = {
 export const incomeSourceSchema: RxJsonSchema<IncomeSourceDocType> = {
   title: "income source schema",
   description: "describes a single income source item",
-  version: 1,
+  version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: "name",
   type: "object",
@@ -149,7 +149,7 @@ export type IncomeDocType = {
 export const incomeSchema: RxJsonSchema<IncomeDocType> = {
   title: "income schema",
   description: "describes a single income item",
-  version: 1,
+  version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: "id",
   type: "object",

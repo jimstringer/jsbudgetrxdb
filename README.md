@@ -1,37 +1,35 @@
-# JSBudget Client and Server Project
-Expense tracking web app using RxDb for local data storage. 
-You can also backup/restore from file.
+# JSBudget Client 
+Personal Expense tracking web app using RxDb for local data storage. 
+This will replace my current app that uses firestore so I don't have to worry about usage limits.
 
-# React + TypeScript + Vite for development enviroment
+## Working
+Backup/Restore from/to local file
+Replicate to/from CouchDB
 
-Using this official plugins:
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
 
+## React + TypeScript + Vite for development enviroment
 
-# to start both server and client concurrently was installed 
-# use npm install concurrently --save-dev
-- npm run dev:both
-## OR start them like this (my current use case)
-- npm run dev in this directory to start client
-- open a terminal to server directory and
-- npm run dev to start server
-
-# Replication/Sync
+### Replication/Sync
 - Requirements
 1. run on mobile as webapp
 2. replicate to laptop browser. When I open app in browser it should load latest data.
-- WebRTC requires a signaling server. I got a demo to work using rxdbs example. The only issue was
-  Chrome browser had errors and didn't work. Firefox and safari and safari on my iphone all synced.
-  The downside is that it only will sync when I am at home. Not a big issue.
-- I could use firestore but that is what I am trying to get away from. 
-- Couchdb running in Docker somewhat working. I see errors in console but sync seems to work.
-- Or a Express server with sqlite for backup. 
+
+### Notes:
+ Tried WebRTC. It requires a signaling server. I got a demo to work using rxdbs example signaling server. 
+ Chrome browser had errors and didn't work. Firefox and safari and safari on my iphone all synced. 
+ Changed to using:
+ Couchdb running in Docker somewhat working. I see errors in console but sync seems to work.
+
+ I may also try a Express server with sqlite for backup or replicate to firestore. 
  
 
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Expanded the ESLint configuration
+### Tried this setting but it causes 271 errors. Most I don't know how to fix. 
+  Most errors to do with floating promise check or any. 
+  Going back to .recommended for now. 
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
 
 ```js
 export default defineConfig([
@@ -43,6 +41,7 @@ export default defineConfig([
 
       // Remove tseslint.configs.recommended and replace with this
       tseslint.configs.recommendedTypeChecked,
+
       // Alternatively, use this for stricter rules
       tseslint.configs.strictTypeChecked,
       // Optionally, add this for stylistic rules
@@ -60,7 +59,7 @@ export default defineConfig([
   },
 ])
 ```
-
+### Did this and found and fixed 7 warnings
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
@@ -89,3 +88,5 @@ export default defineConfig([
   },
 ])
 ```
+
+

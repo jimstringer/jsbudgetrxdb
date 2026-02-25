@@ -111,47 +111,15 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
     await db.addCollections({
       expenses: {
         schema: expenseSchema,
-        migrationStrategies: {
-          // 1 means, this transforms data from version 0 to version 1
-          1: function (oldDoc) {
-            oldDoc.updatedAt = new Date(oldDoc.updatedAt).getTime(); // string to unix
-            oldDoc.createdAt = new Date(oldDoc.createdAt).getTime(); // string to unix
-            return oldDoc;
-          },
-        },
       },
       categories: {
         schema: categorySchema,
-        migrationStrategies: {
-          // 1 means, this transforms data from version 0 to version 1
-          1: function (oldDoc) {
-            oldDoc.updatedAt = new Date(oldDoc.updatedAt).getTime(); // string to unix
-            oldDoc.createdAt = new Date(oldDoc.createdAt).getTime(); // string to unix
-            return oldDoc;
-          },
-        },
       },
       incomeSources: {
         schema: incomeSourceSchema,
-        migrationStrategies: {
-          // 1 means, this transforms data from version 0 to version 1
-          1: function (oldDoc) {
-            oldDoc.updatedAt = new Date(oldDoc.updatedAt).getTime(); // string to unix
-            oldDoc.createdAt = new Date(oldDoc.createdAt).getTime(); // string to unix
-            return oldDoc;
-          },
-        },
       },
       incomes: {
         schema: incomeSchema,
-        migrationStrategies: {
-          // 1 means, this transforms data from version 0 to version 1
-          1: function (oldDoc) {
-            oldDoc.updatedAt = new Date(oldDoc.updatedAt).getTime(); // string to unix
-            oldDoc.createdAt = new Date(oldDoc.createdAt).getTime(); // string to unix
-            return oldDoc;
-          },
-        },
       },
     });
 

@@ -38,23 +38,29 @@ export const Export = () => {
 	};
 
 	const exportToJson = (json: unknown) => {
+		const on = new Date().toISOString().split("T")[0];
 		downloadFile({
 			data: JSON.stringify(json),
-			fileName: "back-up.json",
+			fileName: on + "-back-up.json",
 			fileType: "text/json",
 		});
 	};
 
 	return (
-		<>
+		<div className="flex  flex-col items-center justify-center bg-gray-100 p-2 mb-2 rounded-lg shadow-md">
+			<h1 className="text-xl font-bold">Export to a local file</h1>
+			<p className="text-gray-600">You can export the database to a local file</p>
+			<p className="text-gray-600">You can import the database from this file</p>
 			<button
+				type="button"
+				className="text-small px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
 				onClick={() => {
 					db.exportJSON().then((json) => exportToJson(json));
 				}}
 			>
 				Export
 			</button>
-		</>
+		</div>
 	);
 };
 

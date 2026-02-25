@@ -62,7 +62,7 @@ const AlertProvider = ({ AlertComponent, children }: AlertProviderProps) => {
     setShown(false);
   };
   return (
-    <AlertContext.Provider value={{ showAlert }}>
+    <AlertContext value={{ showAlert }}>
       <AlertComponent
         open={shown}
         onClose={hideAlert}
@@ -72,7 +72,7 @@ const AlertProvider = ({ AlertComponent, children }: AlertProviderProps) => {
         confirming={loading}
       />
       {children}
-    </AlertContext.Provider>
+    </AlertContext>
   );
 };
 export default AlertProvider;

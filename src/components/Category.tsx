@@ -15,7 +15,7 @@ export default function Category({ category }: { category: CategoryDocType }) {
         onClick={() => {
           showConfirmAlert.showAlert({
             title: `Delete Category "${category.name}"?`,
-            confirmMessage: "This action cannot be undone.",
+            confirmMessage: "This will not change any expenses with this category.",
             onConfirm: async () => {
               //await triplit.delete("categorys", category.id);
             },

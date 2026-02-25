@@ -42,7 +42,7 @@ export const InitCats = () => {
     "Xmas",
   ];
 
-  const incomecatlist = ["CPP", "OAS","Tips", "Wage", "CAI", "GST", "Other"];
+  const incomecatlist = ["CPP", "OAS","Tips", "Wage", "CAI", "GST", "Investment" ,"Other"];
   
   const insertDefaultIncomeSources = async () => {
     const now = new Date().getTime();
