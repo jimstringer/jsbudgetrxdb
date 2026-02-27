@@ -1,16 +1,13 @@
-import { PencilIcon } from "@heroicons/react/16/solid";
-import type { IncomeDocType } from "../database/schemas/schemas";
-import { useConfirmAlert } from "../hooks/UseConfirmAlert";
-import { useNavigate } from "react-router";
-import useRxDB from "../hooks/useRxDB";
-
+import { PencilIcon } from '@heroicons/react/16/solid';
+import type { IncomeDocType } from '../database/schemas/schemas';
+import { useConfirmAlert } from '../hooks/UseConfirmAlert';
+import { useNavigate } from 'react-router';
+import useRxDB from '../hooks/useRxDB';
 
 export const Income = ({ income }: { income: IncomeDocType }) => {
-
   const showConfirmAlert = useConfirmAlert();
   const { db } = useRxDB();
   const navigate = useNavigate();
-
 
   const deleteIncome = async (id: string) => {
     if (!db) return;
@@ -19,7 +16,6 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
       await incomeDoc.remove();
     }
   };
-
 
   function handleEdit(id: string) {
     navigate(`/income/edit/${id}`);
@@ -45,22 +41,21 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
           <PencilIcon className="h-5 w-5 text-blue-500" />
         </button>
 
-      <button
-        className="x-button"
-        onClick={() => {
+        <button
+          className="x-button"
+          onClick={() => {
             showConfirmAlert.showAlert({
-            title: `Delete Income "${income.source_id}"?`,
-            confirmMessage: "This action cannot be undone.",
-            onConfirm: async () => {
-              await deleteIncome(income.id);
-            },
-          });
-        }}
-      >
-        ❌
-          </button>
+              title: `Delete Income "${income.source_id}"?`,
+              confirmMessage: 'This action cannot be undone.',
+              onConfirm: async () => {
+                await deleteIncome(income.id);
+              },
+            });
+          }}
+        >
+          ❌
+        </button>
       </div>
     </div>
-  )
+  );
 };
-

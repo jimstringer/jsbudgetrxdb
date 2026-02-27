@@ -1,30 +1,22 @@
-
-import { useEffect, useState } from "react";
-import useRxDB from "../../hooks/useRxDB";
-import { YearSelect } from "../../components/YearSelect";
-import { NumberFormater } from "../../utils/NumberFormater";
-
+import { useEffect, useState } from 'react';
+import useRxDB from '../../hooks/useRxDB';
+import { YearSelect } from '../../components/YearSelect';
+import { NumberFormater } from '../../utils/NumberFormater';
 
 export const Yearly = () => {
- const { db } = useRxDB();
+  const { db } = useRxDB();
   const [year, setYear] = useState(new Date().getFullYear());
 
   const [expenseTotal, setExpenseTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
 
-  const [expenseCategoryTotals, setExpenseCategories] = useState<
-    Record<string, number>
-  >({});
-  const [incomeSourceTotals, setIncomeSources] = useState<
-    Record<string, number>
-  >({});
+  const [expenseCategoryTotals, setExpenseCategories] = useState<Record<string, number>>({});
+  const [incomeSourceTotals, setIncomeSources] = useState<Record<string, number>>({});
 
+  const startDate = new Date(year, 0, 1).toISOString().split('T')[0];
+  const endDate = new Date(year, 12, 0).toISOString().split('T')[0];
 
-  const startDate = new Date(year, 0, 1).toISOString().split("T")[0];
-  const endDate = new Date(year, 12, 0).toISOString().split("T")[0];
-
-
-  console.log("Fetching data from", startDate, "to", endDate);
+  console.log('Fetching data from', startDate, 'to', endDate);
 
   useEffect(() => {
     if (!db) return;
@@ -79,10 +71,7 @@ export const Yearly = () => {
       //console.log(incomeSourceObj);
 
       //calculate totals
-      const totalExp = expenses.reduce(
-        (sum, expense) => sum + expense.amount,
-        0,
-      );
+      const totalExp = expenses.reduce((sum, expense) => sum + expense.amount, 0);
       const totalI = incomes.reduce((sum, income) => sum + income.amount, 0);
 
       setExpenseTotal(totalExp);
@@ -95,18 +84,14 @@ export const Yearly = () => {
     handleLoading();
   }, [db, startDate, endDate]);
 
-const sortedCategories = Object.entries(expenseCategoryTotals).sort(([, a], [, b]) => b - a);
-const sortedSources = Object.entries(incomeSourceTotals).sort(([, a], [, b]) => b - a);
-  
+  const sortedCategories = Object.entries(expenseCategoryTotals).sort(([, a], [, b]) => b - a);
+  const sortedSources = Object.entries(incomeSourceTotals).sort(([, a], [, b]) => b - a);
 
-return (
+  return (
     <div className="max-w-full md:max-w-2xl mx-auto mt-1 p-4 bg-white rounded shadow">
       <div className="sticky top-15 bg-white z-10 pb-4">
         <h1 className="text-2xl font-bold mb-4">Yearly Report</h1>
-        <YearSelect
-          year={year}
-          setYear={setYear}
-        />
+        <YearSelect year={year} setYear={setYear} />
       </div>
 
       <div className="grid  md:grid-cols-3 md:gap-4">
@@ -126,9 +111,7 @@ return (
           Balance:
           <span
             className={`font-bold ${
-              incomeTotal - expenseTotal >= 0
-                ? "text-green-700"
-                : "text-red-700"
+              incomeTotal - expenseTotal >= 0 ? 'text-green-700' : 'text-red-700'
             }`}
           >
             {NumberFormater.format((incomeTotal - expenseTotal) / 100)}
@@ -153,14 +136,10 @@ return (
           sortedSources.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
               <dt className="font-medium text-gray-900 text-left">{key}</dt>
-              <dd className="text-gray-700  text-right">
-                {NumberFormater.format(value / 100)}
-              </dd>
+              <dd className="text-gray-700  text-right">{NumberFormater.format(value / 100)}</dd>
             </div>
           ))}
       </div>
     </div>
   );
-
-
 };

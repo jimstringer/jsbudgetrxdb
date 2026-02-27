@@ -1,31 +1,23 @@
-import { useEffect, useState } from "react";
-import {Income} from "../../components/Income";
-import useRxDB from "../../hooks/useRxDB";
-import type { IncomeDocType } from "../../database/schemas/schemas";
-import { YearMonthSelect } from "../../components/YearMonthSelect";
+import { useEffect, useState } from 'react';
+import { Income } from '../../components/Income';
+import useRxDB from '../../hooks/useRxDB';
+import type { IncomeDocType } from '../../database/schemas/schemas';
+import { YearMonthSelect } from '../../components/YearMonthSelect';
 
 export function IncomeList() {
   const [incomes, setIncomes] = useState<IncomeDocType[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number>(
-    new Date().getFullYear(),
-  );
-  const [selectedMonth, setSelectedMonth] = useState<number>(
-    new Date().getMonth() + 1,
-  ); // Months are 0-indexed
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1); // Months are 0-indexed
 
   // Get database instance
   const dbctx = useRxDB();
   const db = dbctx.db;
 
   // Define date range for the current month
-  const startDate = new Date(selectedYear, selectedMonth - 1, 1)
-    .toISOString()
-    .split("T")[0]; // First day of month
-  const endDate = new Date(selectedYear, selectedMonth, 0)
-    .toISOString()
-    .split("T")[0]; // Last day of month
+  const startDate = new Date(selectedYear, selectedMonth - 1, 1).toISOString().split('T')[0]; // First day of month
+  const endDate = new Date(selectedYear, selectedMonth, 0).toISOString().split('T')[0]; // Last day of month
 
-  console.log("Fetching incomes from", startDate, "to", endDate);
+  console.log('Fetching incomes from', startDate, 'to', endDate);
 
   // Fetch incomes from the database
   useEffect(() => {

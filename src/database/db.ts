@@ -3,22 +3,17 @@
  * Local-first database using IndexedDB
  */
 
-import { addRxPlugin, createRxDatabase } from "rxdb";
-import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
-import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
-import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
-import { wrappedValidateAjvStorage } from "rxdb/plugins/validate-ajv";
-import { RxDBMigrationSchemaPlugin } from "rxdb/plugins/migration-schema";
-import {
-  expenseSchema,
-  categorySchema,
-  incomeSchema,
-  incomeSourceSchema,
-} from "./schemas/schemas";
-import type { RxDatabase, RxCollection } from "rxdb";
-import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
-import { RxDBCleanupPlugin } from "rxdb/plugins/cleanup";
-import { RxDBUpdatePlugin } from "rxdb/plugins/update";
+import { addRxPlugin, createRxDatabase } from 'rxdb';
+import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
+import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
+import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
+import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
+import { RxDBMigrationSchemaPlugin } from 'rxdb/plugins/migration-schema';
+import { expenseSchema, categorySchema, incomeSchema, incomeSourceSchema } from './schemas/schemas';
+import type { RxDatabase, RxCollection } from 'rxdb';
+import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
+import { RxDBCleanupPlugin } from 'rxdb/plugins/cleanup';
+import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
 
 addRxPlugin(RxDBCleanupPlugin);
 addRxPlugin(RxDBJsonDumpPlugin);
@@ -27,7 +22,7 @@ addRxPlugin(RxDBMigrationSchemaPlugin);
 addRxPlugin(RxDBUpdatePlugin);
 
 // Add dev mode plugin in development
-if (import.meta.env.VITE_MODE === "development") {
+if (import.meta.env.VITE_MODE === 'development') {
   addRxPlugin(RxDBDevModePlugin);
 }
 
@@ -63,7 +58,7 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
   } */
 
   dbPromise = createRxDatabase<JSDatabaseCollections>({
-    name: "jsbudgetdb",
+    name: 'jsbudgetdb',
     //    storage: wrappedValidateAjvStorage({ storage: getRxStorageDexie() }),
     storage: storage,
     cleanupPolicy: {
@@ -123,13 +118,10 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
       },
     });
 
-  
-
-
     return db as JsBudgetDatabase;
   });
 
-  console.log("Database created");
+  console.log('Database created');
 
   return dbPromise;
 };

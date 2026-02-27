@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import useRxDB from "../../hooks/useRxDB";
-import { YearMonthSelect } from "../../components/YearMonthSelect";
+import { useEffect, useState } from 'react';
+import useRxDB from '../../hooks/useRxDB';
+import { YearMonthSelect } from '../../components/YearMonthSelect';
 //import type {  ExpenseDocType,  IncomeDocType, } from "../../database/schemas/schemas";
-import { NumberFormater } from "../../utils/NumberFormater";
-
+import { NumberFormater } from '../../utils/NumberFormater';
 
 export const Monthly = () => {
   const { db } = useRxDB();
@@ -13,22 +12,18 @@ export const Monthly = () => {
   const [expenseTotal, setExpenseTotal] = useState(0);
   const [incomeTotal, setIncomeTotal] = useState(0);
 
-  const [expenseCategoryTotals, setExpenseCategories] = useState<
-    Record<string, number>
-  >({});
-  const [incomeSourceTotals, setIncomeSources] = useState<
-    Record<string, number>
-  >({});
+  const [expenseCategoryTotals, setExpenseCategories] = useState<Record<string, number>>({});
+  const [incomeSourceTotals, setIncomeSources] = useState<Record<string, number>>({});
 
   //const [expenses, setExpenses] = useState<ExpenseDocType[]>([]);
   //const [incomes, setIncomes] = useState<IncomeDocType[]>([]);
 
-  const startDate = new Date(year, month - 1, 1).toISOString().split("T")[0];
-  const endDate = new Date(year, month, 0).toISOString().split("T")[0];
+  const startDate = new Date(year, month - 1, 1).toISOString().split('T')[0];
+  const endDate = new Date(year, month, 0).toISOString().split('T')[0];
 
   //const expenseCategoryList = [];
 
-  console.log("Fetching data from", startDate, "to", endDate);
+  console.log('Fetching data from', startDate, 'to', endDate);
 
   useEffect(() => {
     if (!db) return;
@@ -83,10 +78,7 @@ export const Monthly = () => {
       console.log(incomeSourceObj);
 
       //calculate totals
-      const totalExp = expenses.reduce(
-        (sum, expense) => sum + expense.amount,
-        0,
-      );
+      const totalExp = expenses.reduce((sum, expense) => sum + expense.amount, 0);
       const totalI = incomes.reduce((sum, income) => sum + income.amount, 0);
 
       setExpenseTotal(totalExp);
@@ -103,17 +95,12 @@ export const Monthly = () => {
 
   const sortedCategories = Object.entries(expenseCategoryTotals).sort(([, a], [, b]) => b - a);
   const sortedSources = Object.entries(incomeSourceTotals).sort(([, a], [, b]) => b - a);
-  
+
   return (
     <div className="max-w-full md:max-w-2xl mx-auto mt-1 p-4 bg-white rounded shadow">
       <div className="sticky top-15 bg-white z-10 pb-4">
         <h1 className="text-2xl font-bold mb-4">Monthly Report</h1>
-        <YearMonthSelect
-          year={year}
-          month={month}
-          setYear={setYear}
-          setMonth={setMonth}
-        />
+        <YearMonthSelect year={year} month={month} setYear={setYear} setMonth={setMonth} />
       </div>
 
       <div className="grid  md:grid-cols-3 md:gap-4">
@@ -133,9 +120,7 @@ export const Monthly = () => {
           Balance:
           <span
             className={`font-bold ${
-              incomeTotal - expenseTotal >= 0
-                ? "text-green-700"
-                : "text-red-700"
+              incomeTotal - expenseTotal >= 0 ? 'text-green-700' : 'text-red-700'
             }`}
           >
             {NumberFormater.format((incomeTotal - expenseTotal) / 100)}
@@ -160,9 +145,7 @@ export const Monthly = () => {
           sortedSources.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
               <dt className="font-medium text-gray-900 text-left">{key}</dt>
-              <dd className="text-gray-700  text-right">
-                {NumberFormater.format(value / 100)}
-              </dd>
+              <dd className="text-gray-700  text-right">{NumberFormater.format(value / 100)}</dd>
             </div>
           ))}
       </div>

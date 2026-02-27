@@ -1,6 +1,6 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-import type { JsBudgetDatabase } from "../database/db";
+import type { JsBudgetDatabase } from '../database/db';
 
 export interface IDatabaseContext {
   db: JsBudgetDatabase | undefined;

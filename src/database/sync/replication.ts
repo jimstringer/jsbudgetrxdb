@@ -4,10 +4,7 @@ import { REPLICATION_IDENTIFIERS, REPLICATION_CONFIG } from './constants';
 import api from '../../services/api';
 import { buildQueryString } from '../../utils/common';
 
-const createReplicationHandler = (
-  endpoint: string,
-  customParams?: Record<string, unknown>
-) => ({
+const createReplicationHandler = (endpoint: string, customParams?: Record<string, unknown>) => ({
   push: {
     handler: async (docs: unknown[]) => {
       const response = await api.post(`/sync${endpoint}/push`, docs);
@@ -22,9 +19,7 @@ const createReplicationHandler = (
         ...customParams,
       };
 
-      const response = await api.get(
-        `/sync${endpoint}/pull?${buildQueryString(queryParams)}`
-      );
+      const response = await api.get(`/sync${endpoint}/pull?${buildQueryString(queryParams)}`);
       return response.data;
     },
   },
@@ -33,7 +28,6 @@ const createReplicationHandler = (
 export const setupReplication = (database: JsBudgetDatabase) => {
   const expenseHandler = createReplicationHandler('/expenses', {
     // custom query params here
-    
   });
   const expenseReplication = replicateRxCollection({
     collection: database.expenses,
@@ -54,8 +48,6 @@ export const setupReplication = (database: JsBudgetDatabase) => {
     push: categoryHandler.push,
     pull: categoryHandler.pull,
   });
-
-  
 
   return {
     expenseReplication,

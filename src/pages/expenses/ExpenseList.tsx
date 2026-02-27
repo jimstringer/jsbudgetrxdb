@@ -1,36 +1,28 @@
-import { useEffect, useState } from "react";
-import Expense from "../../components/Expense";
-import useRxDB from "../../hooks/useRxDB";
-import type { ExpenseDocType } from "../../database/schemas/schemas";
-import { YearMonthSelect } from "../../components/YearMonthSelect";
-import { useParams } from "react-router";
+import { useEffect, useState } from 'react';
+import Expense from '../../components/Expense';
+import useRxDB from '../../hooks/useRxDB';
+import type { ExpenseDocType } from '../../database/schemas/schemas';
+import { YearMonthSelect } from '../../components/YearMonthSelect';
+import { useParams } from 'react-router';
 
 export default function ExpenseList() {
   const initDate = useParams().date;
-  const initYear = initDate
-    ? parseInt(initDate.split("-")[0])
-    : new Date().getFullYear();
-  const initmonth = initDate
-    ? parseInt(initDate.split("-")[1])
-    : new Date().getMonth() + 1;
+  const initYear = initDate ? parseInt(initDate.split('-')[0]) : new Date().getFullYear();
+  const initmonth = initDate ? parseInt(initDate.split('-')[1]) : new Date().getMonth() + 1;
 
   const [expenses, setExpenses] = useState<ExpenseDocType[]>([]);
   const [selectedYear, setSelectedYear] = useState<number>(initYear);
-  const [selectedMonth, setSelectedMonth] = useState<number>(initmonth); 
+  const [selectedMonth, setSelectedMonth] = useState<number>(initmonth);
 
   // Get database instance
   const dbctx = useRxDB();
   const db = dbctx.db;
 
   // Define date range for the current month
-  const startDate = new Date(selectedYear, selectedMonth - 1, 1)
-    .toISOString()
-    .split("T")[0]; // First day of month
-  const endDate = new Date(selectedYear, selectedMonth, 0)
-    .toISOString()
-    .split("T")[0]; // Last day of month
+  const startDate = new Date(selectedYear, selectedMonth - 1, 1).toISOString().split('T')[0]; // First day of month
+  const endDate = new Date(selectedYear, selectedMonth, 0).toISOString().split('T')[0]; // Last day of month
 
-  console.log("Fetching expenses from", startDate, "to", endDate);
+  console.log('Fetching expenses from', startDate, 'to', endDate);
 
   // Fetch expenses from the database
   useEffect(() => {

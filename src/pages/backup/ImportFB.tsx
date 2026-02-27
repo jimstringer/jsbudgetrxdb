@@ -5,13 +5,10 @@
 
 //TODO: get the backup from the server using axios
 
-import { uuidv7 } from "uuidv7";
-import type {
-  ExpenseDocType,
-  IncomeDocType,
-} from "../../database/schemas/schemas";
-import useRxDB from "../../hooks/useRxDB";
-import { useState } from "react";
+import { uuidv7 } from 'uuidv7';
+import type { ExpenseDocType, IncomeDocType } from '../../database/schemas/schemas';
+import useRxDB from '../../hooks/useRxDB';
+import { useState } from 'react';
 
 interface Expense {
   docid: string;
@@ -52,7 +49,7 @@ export const ImportFB = () => {
   const db = dbctx.db;
 
   if (!db) {
-    console.warn("In ImportFB Database is not initialized");
+    console.warn('In ImportFB Database is not initialized');
     return;
   }
 
@@ -81,15 +78,15 @@ export const ImportFB = () => {
     });
 
     for (const expense of fsexpenses) {
-      console.log("Importing expense:", expense);
-      console.log("amount:", expense.Amount * 100);
+      console.log('Importing expense:', expense);
+      console.log('amount:', expense.Amount * 100);
       const forfrom = (comment: string) => {
-        if (comment && comment.toUpperCase().includes("JIM")) {
-          return "JIM";
-        } else if (comment && comment.toUpperCase().includes("EVE")) {
-          return "EVE";
+        if (comment && comment.toUpperCase().includes('JIM')) {
+          return 'JIM';
+        } else if (comment && comment.toUpperCase().includes('EVE')) {
+          return 'EVE';
         } else {
-          return "OTHER";
+          return 'OTHER';
         }
       };
       if (expense.Income) {
@@ -97,9 +94,8 @@ export const ImportFB = () => {
           id: uuidv7(),
           amount: +(expense.Amount * 100).toFixed(0), //store as integer
           date: expense.StrDate,
-          source_id:
-            incomeSourcesMap.get(expense.Category.toUpperCase()) || "Other",
-          comment: expense.Comment || "",
+          source_id: incomeSourcesMap.get(expense.Category.toUpperCase()) || 'Other',
+          comment: expense.Comment || '',
           from_who: forfrom(expense.Comment),
           created_at: now,
           updated_at: now,
@@ -110,9 +106,8 @@ export const ImportFB = () => {
           id: uuidv7(),
           amount: +(expense.Amount * 100).toFixed(0), //store as integer
           date: expense.StrDate,
-          category_id:
-            categorysMap.get(expense.Category.toUpperCase()) || "Uncategorized",
-          comment: expense.Comment || "",
+          category_id: categorysMap.get(expense.Category.toUpperCase()) || 'Uncategorized',
+          comment: expense.Comment || '',
           for_who: forfrom(expense.Comment),
           created_at: now,
           updated_at: now,
@@ -161,7 +156,7 @@ export const ImportFB = () => {
       <button
         onClick={saveTodexie}
         className={`border-2 border-solid bg-amber-500 ${
-          (fsexpenses.length > 0) ? "opacity-50 cursor-not-allowed" : ""
+          fsexpenses.length > 0 ? 'opacity-50 cursor-not-allowed' : ''
         }`}
       >
         Save to Dexie

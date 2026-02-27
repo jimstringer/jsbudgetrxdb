@@ -1,18 +1,14 @@
-import { useForm } from "react-hook-form";
-import type { SubmitHandler } from "react-hook-form";
-import useRxDB from "../../hooks/useRxDB";
-import type { IncomeSourceDocType } from "../../database/schemas/schemas";
-import { useEffect } from "react";
+import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import useRxDB from '../../hooks/useRxDB';
+import type { IncomeSourceDocType } from '../../database/schemas/schemas';
+import { useEffect } from 'react';
 
 type Inputs = {
   name: string;
 };
 
-export function SourceForm({
-  sources,
-}: {
-  sources?: IncomeSourceDocType[];
-}) {
+export function SourceForm({ sources }: { sources?: IncomeSourceDocType[] }) {
   const {
     register,
     handleSubmit,
@@ -20,14 +16,14 @@ export function SourceForm({
     reset,
     formState,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { name: "" } });
+  } = useForm<Inputs>({ defaultValues: { name: '' } });
 
   const dbctx = useRxDB();
   const { isSubmitSuccessful } = formState;
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset({ name: "" });
+      reset({ name: '' });
     }
   }, [isSubmitSuccessful, reset]);
 
@@ -35,7 +31,7 @@ export function SourceForm({
     console.log(data);
     const db = dbctx.db;
     if (!db) {
-      console.error("Database not initialized");
+      console.error('Database not initialized');
       return;
     }
     const dateNow = new Date().getTime();
@@ -47,19 +43,17 @@ export function SourceForm({
         _deleted: false,
       } as IncomeSourceDocType)
       .then((doc) => {
-        console.log("Source added:", doc.toJSON());
+        console.log('Source added:', doc.toJSON());
       })
       .catch((err) => {
-        console.error("Error adding source:", err);
+        console.error('Error adding source:', err);
       });
   };
 
   const validateSourceUniqueName = (name: string) => {
     if (!sources) return true;
-    const exists = sources.some(
-      (source) => source.name.toLowerCase() === name.toLowerCase(),
-    );
-    return !exists || "Source name must be unique";
+    const exists = sources.some((source) => source.name.toLowerCase() === name.toLowerCase());
+    return !exists || 'Source name must be unique';
   };
 
   // 👇️ If you need to capitalize first and lowercase the rest
@@ -78,14 +72,12 @@ export function SourceForm({
 
       {/* include validation with required or other standard HTML validation rules */}
       <input
-        {...register("name", {
+        {...register('name', {
           required: true,
           pattern: /^[A-Za-z]+$/i,
           validate: validateSourceUniqueName,
           onChange(event) {
-            event.target.value = capitalizeFirstLowercaseRest(
-              event.target.value,
-            );
+            event.target.value = capitalizeFirstLowercaseRest(event.target.value);
           },
         })}
       />
@@ -97,15 +89,9 @@ export function SourceForm({
       />
       <div className="[&_span]:text-red-500">
         {/* errors will return when field validation fails  */}
-        {errors.name && errors.name.type === "required" && (
-          <span>This is required</span>
-        )}
-        {errors.name && errors.name.type === "pattern" && (
-          <span>Only letters are allowed</span>
-        )}
-        {errors.name && errors.name.type === "validate" && (
-          <span>{errors.name.message}</span>
-        )}
+        {errors.name && errors.name.type === 'required' && <span>This is required</span>}
+        {errors.name && errors.name.type === 'pattern' && <span>Only letters are allowed</span>}
+        {errors.name && errors.name.type === 'validate' && <span>{errors.name.message}</span>}
       </div>
     </form>
   );

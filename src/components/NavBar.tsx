@@ -1,9 +1,8 @@
 // Navbar.js
 
-import { useState , useEffect} from "react";
-import { NavLink } from "react-router";
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
-
+import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
 
 interface NavItem {
   id: number; // used for key prop
@@ -17,67 +16,79 @@ const Navbar = () => {
 
   //we want to display online state in the navbar
   const [isApiUp, setIsApiUp] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [checkOnline, setCheckOnline] = useState(false);
 
-  const url = import.meta.env.VITE_SERVER_URL || "http://localhost:3001/";
+  const url = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001/';
 
-    useEffect(() => {
-        const checkApi = async () => {
-            try {
-                const response = await fetch(`${url}/health`);
-                if (response.ok) {
-                    setIsApiUp(true);
-                } else {
-                    setIsApiUp(false);
-                }
-            } catch (err: unknown) {
-                setIsApiUp(false);
-                setError((err as Error).message);
-            }
-        };
-
-        let intervalId: NodeJS.Timeout;
-        if (checkOnline) {
-          checkApi(); // Initial check
-          intervalId = setInterval(checkApi, 5000); // Check every 5 seconds
+  useEffect(() => {
+    const checkApi = async () => {
+      try {
+        const response = await fetch(`${url}/health`);
+        if (response.ok) {
+          setIsApiUp(true);
+        } else {
+          setIsApiUp(false);
         }
+      } catch (err: unknown) {
+        setIsApiUp(false);
+        setError((err as Error).message);
+      }
+    };
 
-        return () => clearInterval(intervalId); // Cleanup on unmount
-    }, [url, checkOnline]);
+    let intervalId: NodeJS.Timeout;
+    if (checkOnline) {
+      checkApi(); // Initial check
+      intervalId = setInterval(checkApi, 5000); // Check every 5 seconds
+    }
 
-  
-const navItems: NavItem[] = [
-    { id: 1, name: "Home", href: "/" },
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [url, checkOnline]);
+
+  const navItems: NavItem[] = [
+    { id: 1, name: 'Home', href: '/' },
     {
       id: 2,
-      name: "Expenses",
-      href: "",
+      name: 'Expenses',
+      href: '',
       subItems: [
-        { id: 3, name: "Add Expense", href: "/expense/add" },
-        { id: 4, name: "List Expenses", href: "/expense" },
-        { id: 12, name: "Categories", href: "/category" },
+        { id: 3, name: 'Add Expense', href: '/expense/add' },
+        { id: 4, name: 'List Expenses', href: '/expense' },
+        { id: 12, name: 'Categories', href: '/category' },
       ],
     },
-    { id:5, name: "Income", href: "",
+    {
+      id: 5,
+      name: 'Income',
+      href: '',
       subItems: [
-        { id: 6, name: "Add Income", href: "/income/add" },
-        { id: 7, name: "List Income", href: "/income" },
-        { id: 18, name: "Sources", href: "/source" },
+        { id: 6, name: 'Add Income', href: '/income/add' },
+        { id: 7, name: 'List Income', href: '/income' },
+        { id: 18, name: 'Sources', href: '/source' },
       ],
     },
-    { id: 8, name: "Reports", href: "", subItems: [
-      { id: 9, name: "Yearly Report", href: "/reports/yearly" },
-      { id: 10, name: "Monthly Report", href: "/reports/monthly" },
-      { id: 11, name: "Year-to-Year Report", href: "/reports/year-to-year" },
-    ]},
-    { id:13, name: "Backup", href: "", subItems: [
-      { id: 14, name: "Export Backup", href: "/backup/export" },
-      { id: 15, name: "Import Backup", href: "/backup/import" },
-      { id: 16, name: "Import Firebase Backup", href: "/backup/import-fb" },
-      { id: 17, name: "Initialize Default Categories", href: "/backup/init-cats" },
-      { id: 19, name: "Sync", href: "/backup/sync" },
-    ]},
+    {
+      id: 8,
+      name: 'Reports',
+      href: '',
+      subItems: [
+        { id: 9, name: 'Yearly Report', href: '/reports/yearly' },
+        { id: 10, name: 'Monthly Report', href: '/reports/monthly' },
+        { id: 11, name: 'Year-to-Year Report', href: '/reports/year-to-year' },
+      ],
+    },
+    {
+      id: 13,
+      name: 'Backup',
+      href: '',
+      subItems: [
+        { id: 14, name: 'Export Backup', href: '/backup/export' },
+        { id: 15, name: 'Import Backup', href: '/backup/import' },
+        { id: 16, name: 'Import Firebase Backup', href: '/backup/import-fb' },
+        { id: 17, name: 'Initialize Default Categories', href: '/backup/init-cats' },
+        { id: 19, name: 'Sync', href: '/backup/sync' },
+      ],
+    },
   ];
 
   const toggleMenu = (event: React.SyntheticEvent) => {
@@ -116,7 +127,6 @@ const navItems: NavItem[] = [
         });
       }
     }
-
   };
 
   return (
@@ -130,33 +140,34 @@ const navItems: NavItem[] = [
           className="mr-4 px-2 py-1 bg-blue-500 text-white rounded"
           onClick={() => setCheckOnline(!checkOnline)}
         >
-          {checkOnline ? "API disable" : "API enable"}
-        </button> 
+          {checkOnline ? 'API disable' : 'API enable'}
+        </button>
         {/* API Status Indicator */}
         <div
-          className={`w-3 h-3 rounded-full mr-2 ${
-            isApiUp ? "bg-green-500" : "bg-red-500"
-          }`}
-          title={isApiUp ? "API is Online" : `API is Offline${error ? `: ${error}` : ""}`}
+          className={`w-3 h-3 rounded-full mr-2 ${isApiUp ? 'bg-green-500' : 'bg-red-500'}`}
+          title={isApiUp ? 'API is Online' : `API is Offline${error ? `: ${error}` : ''}`}
         ></div>
       </div>
       {/* Navigation Links */}
-        {/* bg color must be set when absolute for mobile. */ }
+      {/* bg color must be set when absolute for mobile. */}
       <div
         className={`flex-col absolute bg-cyan-600 top-16 left-0 p-4 md:relative md:flex md:items-center md:w-auto 
                     md:space-x-4 md:flex-row md:top-0 md:left-0 md:p-0 md:bg-transparent 
                     transition-all duration-500 ease-in-out transform ${
-                      isOpen ? "translate-x-0" : "-translate-x-full"
+                      isOpen ? 'translate-x-0' : '-translate-x-full'
                     } md:translate-x-0`}
       >
         <ul className="flex flex-col text-2xl md:text-lg md:flex-row md:space-x-2 xl:space-x-4">
           {navItems.map((item) => (
             <li key={item.id}>
-              {item.href === "" ? (
-                <span className="block mt-2 md:mt-0 mr-4"
-                onClick={(event: React.SyntheticEvent) => toggleMenu(event)}
-                >{item.name} <ChevronDownIcon className="w-4 h-4 inline" /></span>
-              ) :
+              {item.href === '' ? (
+                <span
+                  className="block mt-2 md:mt-0 mr-4"
+                  onClick={(event: React.SyntheticEvent) => toggleMenu(event)}
+                >
+                  {item.name} <ChevronDownIcon className="w-4 h-4 inline" />
+                </span>
+              ) : (
                 <NavLink
                   key={item.id + 100}
                   to={item.href}
@@ -164,12 +175,11 @@ const navItems: NavItem[] = [
                   onClick={(event) => {
                     setIsOpen(!isOpen); // Close menu on link click
                     toggleMenu(event);
-                  } 
-                  }
+                  }}
                 >
                   {item.name}
                 </NavLink>
-              }
+              )}
               {item.subItems && (
                 <ul className="mt-2 ml-4 hidden z-50 relative md:absolute md:bg-cyan-600 p-2 rounded-md">
                   {item.subItems.map((subItem) => (
@@ -194,10 +204,7 @@ const navItems: NavItem[] = [
       </div>
 
       {/* Hamburger Menu for mobile */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="focus:outline-none md:hidden"
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none md:hidden">
         {/* Hamburger Icon and Close Icon */}
         {isOpen ? (
           <svg

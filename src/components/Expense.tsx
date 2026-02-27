@@ -1,17 +1,16 @@
-import type { ExpenseDocType } from "../database/schemas/schemas";
-import { PencilIcon } from "@heroicons/react/24/solid";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import useRxDB from "../hooks/useRxDB";
-import { useNavigate } from "react-router";
-import { useConfirmAlert } from "../hooks/UseConfirmAlert";
+import type { ExpenseDocType } from '../database/schemas/schemas';
+import { PencilIcon } from '@heroicons/react/24/solid';
+import { XMarkIcon } from '@heroicons/react/24/solid';
+import useRxDB from '../hooks/useRxDB';
+import { useNavigate } from 'react-router';
+import { useConfirmAlert } from '../hooks/UseConfirmAlert';
 
 export default function Expense({ expense }: { expense: ExpenseDocType }) {
-
   const { db } = useRxDB();
   const navigate = useNavigate();
 
-  const showConfirmAlert  = useConfirmAlert();
-  
+  const showConfirmAlert = useConfirmAlert();
+
   const deleteExpense = async (id: string) => {
     if (!db) return;
     const expenseDoc = await db.expenses.findOne(id).exec();
@@ -47,12 +46,12 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
           className="x-button"
           onClick={() => {
             showConfirmAlert.showAlert({
-            title: `Delete Expense "${expense.category_id}"?`,
-            confirmMessage: "This action cannot be undone.",
-            onConfirm: async () => {
-              await deleteExpense(expense.id);
-            },
-          });
+              title: `Delete Expense "${expense.category_id}"?`,
+              confirmMessage: 'This action cannot be undone.',
+              onConfirm: async () => {
+                await deleteExpense(expense.id);
+              },
+            });
           }}
         >
           <XMarkIcon className="h-5 w-5 text-red-500" />

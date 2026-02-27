@@ -1,9 +1,9 @@
 // File: src/providers/AlertProvider.tsx
-import { useState } from "react";
-import type { PropsWithChildren, ReactNode } from "react";
+import { useState } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 
-import { AlertContext } from "../contexts/AlertContext";
-import type { AlertOptions } from "../contexts/AlertContext";
+import { AlertContext } from '../contexts/AlertContext';
+import type { AlertOptions } from '../contexts/AlertContext';
 
 /**
  * Any AlertDialog component used with AlertProvider should use these props
@@ -33,14 +33,13 @@ const AlertProvider = ({ AlertComponent, children }: AlertProviderProps) => {
   const [shown, setShown] = useState(false);
   const [loading, setLoading] = useState(false);
   const defaultOptions: AlertOptions = {
-    title: "Confirm",
-    confirmMessage: "Are you sure?",
+    title: 'Confirm',
+    confirmMessage: 'Are you sure?',
     async onConfirm() {
       setShown(false);
     },
   };
-  const [alertOptions, setAlertOptions] =
-    useState<AlertOptions>(defaultOptions);
+  const [alertOptions, setAlertOptions] = useState<AlertOptions>(defaultOptions);
 
   const showAlert = (opts?: Partial<AlertOptions>) => {
     setShown(true);

@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
-import useRxDB from "../../hooks/useRxDB";
-import { YearSelect } from "../../components/YearSelect";
-import { NumberFormater } from "../../utils/NumberFormater";
-import type { CategoryDocType, ExpenseDocType, IncomeDocType, IncomeSourceDocType } from "../../database/schemas/schemas";
+import { useEffect, useState } from 'react';
+import useRxDB from '../../hooks/useRxDB';
+import { YearSelect } from '../../components/YearSelect';
+import { NumberFormater } from '../../utils/NumberFormater';
+import type {
+  CategoryDocType,
+  ExpenseDocType,
+  IncomeDocType,
+  IncomeSourceDocType,
+} from '../../database/schemas/schemas';
 
 export const YearToYear = () => {
   const { db } = useRxDB();
@@ -21,18 +26,18 @@ export const YearToYear = () => {
     Record<string, { year: number; year2: number }>
   >({});
 
-  const startDate = new Date(year, 0, 1).toISOString().split("T")[0];
-  const endDate = new Date(year, 12, 0).toISOString().split("T")[0];
-  const startDate2 = new Date(year2, 0, 1).toISOString().split("T")[0];
-  const endDate2 = new Date(year2, 12, 0).toISOString().split("T")[0];
+  const startDate = new Date(year, 0, 1).toISOString().split('T')[0];
+  const endDate = new Date(year, 12, 0).toISOString().split('T')[0];
+  const startDate2 = new Date(year2, 0, 1).toISOString().split('T')[0];
+  const endDate2 = new Date(year2, 12, 0).toISOString().split('T')[0];
 
-  console.log("Fetching data from", startDate, "to", endDate);
-  console.log("Fetching data from", startDate2, "to", endDate2);
+  console.log('Fetching data from', startDate, 'to', endDate);
+  console.log('Fetching data from', startDate2, 'to', endDate2);
 
   useEffect(() => {
     if (!db) return;
     const handleLoading = async () => {
-      const expenses = await db.expenses
+      const expenses = (await db.expenses
         .find({
           selector: {
             date: {
@@ -41,8 +46,8 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec() as ExpenseDocType[];
-      const expenses2 = await db.expenses
+        .exec()) as ExpenseDocType[];
+      const expenses2 = (await db.expenses
         .find({
           selector: {
             date: {
@@ -51,9 +56,9 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec() as ExpenseDocType[];
+        .exec()) as ExpenseDocType[];
 
-      const incomes = await db.incomes
+      const incomes = (await db.incomes
         .find({
           selector: {
             date: {
@@ -62,8 +67,8 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec() as IncomeDocType[];
-      const incomes2 = await db.incomes
+        .exec()) as IncomeDocType[];
+      const incomes2 = (await db.incomes
         .find({
           selector: {
             date: {
@@ -72,17 +77,18 @@ export const YearToYear = () => {
             },
           },
         })
-        .exec() as IncomeDocType[];
+        .exec()) as IncomeDocType[];
 
       //fetch categories as array of RxDocument
       const allCategories = await db.categories.find().exec();
       //fetch categories as array of strings
       const expenseCategoryList = allCategories.map((cat: CategoryDocType) => cat.name);
       // create object with category name as key and { year: 0, year2: 0 }
-      const categoryObj: Record<string, { year: number; year2: number }> = expenseCategoryList.reduce((acc: Record<string, { year: number; year2: number }>, cur) => {
-        acc[cur] = { year: 0, year2: 0 };
-        return acc;
-      }, {});
+      const categoryObj: Record<string, { year: number; year2: number }> =
+        expenseCategoryList.reduce((acc: Record<string, { year: number; year2: number }>, cur) => {
+          acc[cur] = { year: 0, year2: 0 };
+          return acc;
+        }, {});
 
       //loop through expenses and add amount to category total
       expenses.forEach((expense: ExpenseDocType) => {
@@ -96,10 +102,11 @@ export const YearToYear = () => {
       //do the same for incomes sources
       const allIncomeSources = await db.incomeSources.find().exec();
       const incomeSourceList = allIncomeSources.map((inc: IncomeSourceDocType) => inc.name);
-      const incomeSourceObj: Record<string, { year: number; year2: number }> = incomeSourceList.reduce((acc: Record<string, { year: number; year2: number }>, cur) => {
-        acc[cur] = { year: 0, year2: 0 };
-        return acc;
-      }, {});
+      const incomeSourceObj: Record<string, { year: number; year2: number }> =
+        incomeSourceList.reduce((acc: Record<string, { year: number; year2: number }>, cur) => {
+          acc[cur] = { year: 0, year2: 0 };
+          return acc;
+        }, {});
       incomes.forEach((income: IncomeDocType) => {
         incomeSourceObj[income.source_id].year += income.amount;
       });
@@ -109,15 +116,9 @@ export const YearToYear = () => {
       console.log(incomeSourceObj);
 
       //calculate totals
-      const totalExp: number = expenses.reduce(
-        (sum, expense) => sum + expense.amount,
-        0,
-      );
+      const totalExp: number = expenses.reduce((sum, expense) => sum + expense.amount, 0);
       const totalI = incomes.reduce((sum, income) => sum + income.amount, 0);
-      const totalExp2 = expenses2.reduce(
-        (sum, expense) => sum + expense.amount,
-        0,
-      );
+      const totalExp2 = expenses2.reduce((sum, expense) => sum + expense.amount, 0);
       const totalI2 = incomes2.reduce((sum, income) => sum + income.amount, 0);
 
       setExpenseTotal(totalExp);
@@ -130,17 +131,14 @@ export const YearToYear = () => {
     };
 
     handleLoading().catch(console.error);
-
   }, [db, startDate, endDate, startDate2, endDate2]);
 
   //we sort by year not year2
   const sortedCategories = Object.entries(expenseCategoryTotals).sort(
-    ([, a], [, b]) => b.year - a.year,
+    ([, a], [, b]) => b.year - a.year
   );
-  const sortedSources = Object.entries(incomeSourceTotals).sort(
-    ([, a], [, b]) => b.year - a.year,
-  );
-  console.log("sortedCategories:", sortedCategories);
+  const sortedSources = Object.entries(incomeSourceTotals).sort(([, a], [, b]) => b.year - a.year);
+  console.log('sortedCategories:', sortedCategories);
 
   return (
     <div className="max-w-full md:max-w-2xl mx-auto mt-1 p-4 bg-white rounded shadow">
@@ -170,9 +168,7 @@ export const YearToYear = () => {
             Balance:
             <span
               className={`font-bold ${
-                incomeTotal - expenseTotal >= 0
-                  ? "text-green-700"
-                  : "text-red-700"
+                incomeTotal - expenseTotal >= 0 ? 'text-green-700' : 'text-red-700'
               }`}
             >
               {NumberFormater.format((incomeTotal - expenseTotal) / 100)}
@@ -196,9 +192,7 @@ export const YearToYear = () => {
             Balance:
             <span
               className={`font-bold ${
-                incomeTotal2 - expenseTotal2 >= 0
-                  ? "text-green-700"
-                  : "text-red-700"
+                incomeTotal2 - expenseTotal2 >= 0 ? 'text-green-700' : 'text-red-700'
               }`}
             >
               {NumberFormater.format((incomeTotal2 - expenseTotal2) / 100)}
@@ -210,10 +204,7 @@ export const YearToYear = () => {
         <h2 className="font-bold text-gray-600 text-center">Expense</h2>
         {expenseCategoryTotals &&
           sortedCategories.map(([key, value]) => (
-            <div
-              key={key}
-              className="grid grid-cols-3 odd:bg-gray-100 even:bg-gray-200"
-            >
+            <div key={key} className="grid grid-cols-3 odd:bg-gray-100 even:bg-gray-200">
               <dt className="font-medium text-gray-900 text-left">{key}</dt>
               <dd className="text-gray-700 sm:col-span-1 text-right">
                 {NumberFormater.format(value.year / 100)}
@@ -228,10 +219,7 @@ export const YearToYear = () => {
         <h2 className="font-bold text-gray-600 text-center">Income</h2>
         {incomeSourceTotals &&
           sortedSources.map(([key, value]) => (
-            <div
-              key={key}
-              className="grid grid-cols-3 odd:bg-gray-100 even:bg-gray-200"
-            >
+            <div key={key} className="grid grid-cols-3 odd:bg-gray-100 even:bg-gray-200">
               <dt className="font-medium text-gray-900 text-left">{key}</dt>
               <dd className="text-gray-700  text-right">
                 {NumberFormater.format(value.year / 100)}

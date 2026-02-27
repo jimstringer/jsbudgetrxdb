@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import useRxDB from "../../hooks/useRxDB";
-import type {
-  IncomeDocType,
-  IncomeSourceDocType,
-} from "../../database/schemas/schemas";
-import { type RxDocument } from "rxdb";
-import { useParams, useNavigate } from "react-router";
+import { useEffect, useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import useRxDB from '../../hooks/useRxDB';
+import type { IncomeDocType, IncomeSourceDocType } from '../../database/schemas/schemas';
+import { type RxDocument } from 'rxdb';
+import { useParams, useNavigate } from 'react-router';
 
 export default function IncomeEdit() {
   const {
@@ -17,10 +14,10 @@ export default function IncomeEdit() {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      date: new Date().toISOString().split("T")[0],
-      amount: "",
-      incomeSourceId: "",
-      comment: "",
+      date: new Date().toISOString().split('T')[0],
+      amount: '',
+      incomeSourceId: '',
+      comment: '',
     },
   });
 
@@ -36,14 +33,14 @@ export default function IncomeEdit() {
     amount: string;
     incomeSourceId: string;
     comment: string;
-    from: "JIM" | "EVE" | "OTHER";
+    from: 'JIM' | 'EVE' | 'OTHER';
   };
 
   useEffect(() => {
     if (!db) return;
 
     if (isSubmitSuccessful) {
-      reset({ amount: "", incomeSourceId: "", comment: "" });
+      reset({ amount: '', incomeSourceId: '', comment: '' });
     }
     const fetchIncomeSources = async () => {
       const incomeSourceCollection = db.incomeSources;
@@ -72,7 +69,7 @@ export default function IncomeEdit() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
     if (!income) {
-      console.error("Database not initialized");
+      console.error('Database not initialized');
       return;
     }
     const dateNow = new Date().getTime();
@@ -88,25 +85,25 @@ export default function IncomeEdit() {
         },
       })
       .then((doc) => {
-        console.log("Income updated:", doc.toJSON());
+        console.log('Income updated:', doc.toJSON());
         // After successful update, navigate back to expense list
         // would be nice to show the expense list for the month of the edited expense
         navigate(`/income/${data.date}`);
       })
       .catch((err) => {
-        console.error("Error updating income:", err);
+        console.error('Error updating income:', err);
       });
   };
 
   return (
     <div className="w-full p-4 md:p-8 bg-gray-100">
-        <h2 className="text-2xl font-bold mb-4 text-center">Edit Income</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Edit Income</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col relative max-w-md mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"
       >
         <input
-          {...register("date", {
+          {...register('date', {
             required: true,
           })}
           type="date"
@@ -115,7 +112,7 @@ export default function IncomeEdit() {
         {errors.date && <span className="text-red-500">Date is required</span>}
 
         <input
-          {...register("amount", {
+          {...register('amount', {
             required: true,
             validate: {
               matchPattern: (v) => /^[0-9.]+$/.test(v),
@@ -127,18 +124,18 @@ export default function IncomeEdit() {
           placeholder="Amount cents"
           className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
-        {errors.amount?.type === "required" && (
+        {errors.amount?.type === 'required' && (
           <span className="text-red-500">Amount is required</span>
         )}
-        {errors.amount?.type === "matchPattern" && (
+        {errors.amount?.type === 'matchPattern' && (
           <span className="text-red-500">Amount must be a number</span>
         )}
-        {errors.amount?.type === "notNegative" && (
+        {errors.amount?.type === 'notNegative' && (
           <span className="text-red-500">Amount must be a greater than 0</span>
         )}
 
         <select
-          {...register("incomeSourceId", { required: true })}
+          {...register('incomeSourceId', { required: true })}
           className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         >
           <option value="">Select Income Source</option>
@@ -148,12 +145,10 @@ export default function IncomeEdit() {
             </option>
           ))}
         </select>
-        {errors.incomeSourceId && (
-          <span className="text-red-500">Income Source is required</span>
-        )}
+        {errors.incomeSourceId && <span className="text-red-500">Income Source is required</span>}
 
         <select
-          {...register("from", {
+          {...register('from', {
             required: true,
           })}
           className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -166,7 +161,7 @@ export default function IncomeEdit() {
         {errors.from && <span className="text-red-500">From is required</span>}
 
         <input
-          {...register("comment")}
+          {...register('comment')}
           type="text"
           placeholder="Comment"
           className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

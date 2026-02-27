@@ -1,7 +1,7 @@
 //Insert some default categories into database
-import { useState } from "react";
-import type { CategoryDocType } from "../../database/schemas/schemas";
-import useRxDB from "../../hooks/useRxDB";
+import { useState } from 'react';
+import type { CategoryDocType } from '../../database/schemas/schemas';
+import useRxDB from '../../hooks/useRxDB';
 
 export const InitCats = () => {
   const dbctx = useRxDB();
@@ -14,36 +14,36 @@ export const InitCats = () => {
     return <div>Loading database...</div>;
   }
   if (!db) {
-    console.error("Database is not initialized");
+    console.error('Database is not initialized');
     return;
   }
   const defaultCategories = [
-    "Alcohol",
-    "Gas",
-    "Auto",
-    "Fees",
-    "Beauty",
-    "Bell",
-    "Family",
-    "Fishing",
-    "Camping",
-    "City Water",
-    "Clothing",
-    "Dine Out",
-    "Entertainment",
-    "Grocery",
-    "Health",
-    "Holiday",
-    "House",
-    "Hydro",
-    "Lotto",
-    "Misc",
-    "Taxes",
-    "Xmas",
+    'Alcohol',
+    'Gas',
+    'Auto',
+    'Fees',
+    'Beauty',
+    'Bell',
+    'Family',
+    'Fishing',
+    'Camping',
+    'City Water',
+    'Clothing',
+    'Dine Out',
+    'Entertainment',
+    'Grocery',
+    'Health',
+    'Holiday',
+    'House',
+    'Hydro',
+    'Lotto',
+    'Misc',
+    'Taxes',
+    'Xmas',
   ];
 
-  const incomecatlist = ["CPP", "OAS","Tips", "Wage", "CAI", "GST", "Investment" ,"Other"];
-  
+  const incomecatlist = ['CPP', 'OAS', 'Tips', 'Wage', 'CAI', 'GST', 'Investment', 'Other'];
+
   const insertDefaultIncomeSources = async () => {
     const now = new Date().getTime();
     const existingIncomeSources = await db.incomeSources.find().exec();
@@ -57,11 +57,11 @@ export const InitCats = () => {
         };
         await db.incomeSources.insert(newIncomeSource);
       }
-      console.log("Default income sources inserted");
+      console.log('Default income sources inserted');
       setHasIncomeSources(true);
     } else {
       setHasIncomeSources(true);
-      console.log("Income sources already exist, skipping initialization");
+      console.log('Income sources already exist, skipping initialization');
     }
   };
 
@@ -80,10 +80,10 @@ export const InitCats = () => {
         };
         await db.categories.insert(newCat);
       }
-      console.log("Default categories inserted");
+      console.log('Default categories inserted');
       setHasCats(true);
     } else {
-      console.log("Categories already exist, skipping initialization");
+      console.log('Categories already exist, skipping initialization');
       setHasCats(true);
     }
   };
@@ -95,13 +95,13 @@ export const InitCats = () => {
         onClick={insertDefaultCategories}
       >
         Initialize Default Categories
-          </button>
-        <button
-          className={`bg-green-500 text-white px-4 py-2 rounded ml-2 ${hasIncomeSources ? 'opacity-50 cursor-not-allowed' : ''}`}
-          onClick={insertDefaultIncomeSources}
-        >
-          Initialize Default Income Sources
-        </button>
+      </button>
+      <button
+        className={`bg-green-500 text-white px-4 py-2 rounded ml-2 ${hasIncomeSources ? 'opacity-50 cursor-not-allowed' : ''}`}
+        onClick={insertDefaultIncomeSources}
+      >
+        Initialize Default Income Sources
+      </button>
     </div>
   );
 };

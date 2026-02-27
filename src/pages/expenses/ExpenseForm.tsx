@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import useRxDB from "../../hooks/useRxDB";
-import type {
-  CategoryDocType,
-  ExpenseDocType,
-} from "../../database/schemas/schemas";
-import { uuidv7 } from "uuidv7";
+import { useEffect, useState } from 'react';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import useRxDB from '../../hooks/useRxDB';
+import type { CategoryDocType, ExpenseDocType } from '../../database/schemas/schemas';
+import { uuidv7 } from 'uuidv7';
 
 export default function ExpenseForm() {
   const {
@@ -16,10 +13,10 @@ export default function ExpenseForm() {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      date: new Date().toISOString().split("T")[0],
-      amount: "",
-      category_id: "",
-      comment: "",
+      date: new Date().toISOString().split('T')[0],
+      amount: '',
+      category_id: '',
+      comment: '',
     },
   });
 
@@ -30,7 +27,7 @@ export default function ExpenseForm() {
     amount: string;
     category_id: string;
     comment: string;
-    for_who: "" | "BOTH" | "JIM" | "EVE" | "OTHER";
+    for_who: '' | 'BOTH' | 'JIM' | 'EVE' | 'OTHER';
   };
 
   const dbctx = useRxDB();
@@ -41,7 +38,7 @@ export default function ExpenseForm() {
     if (!db) return;
 
     if (isSubmitSuccessful) {
-      reset({ amount: "", category_id: "", comment: "", for_who: "" });
+      reset({ amount: '', category_id: '', comment: '', for_who: '' });
     }
     const fetchCategories = async () => {
       const categoryCollection = db.categories;
@@ -56,7 +53,7 @@ export default function ExpenseForm() {
     console.log(data);
     const db = dbctx.db;
     if (!db) {
-      console.error("Database not initialized");
+      console.error('Database not initialized');
       return;
     }
     const dateNow = new Date().getTime();
@@ -64,7 +61,7 @@ export default function ExpenseForm() {
       .insert({
         id: uuidv7(),
         date: data.date,
-        amount: Number(data.amount)*100, // convert to cents
+        amount: Number(data.amount) * 100, // convert to cents
         category_id: data.category_id,
         comment: data.comment,
         for_who: data.for_who,
@@ -73,10 +70,10 @@ export default function ExpenseForm() {
         _deleted: false,
       } as ExpenseDocType)
       .then((doc) => {
-        console.log("Expense added:", doc.toJSON());
+        console.log('Expense added:', doc.toJSON());
       })
       .catch((err) => {
-        console.error("Error adding expense:", err);
+        console.error('Error adding expense:', err);
       });
   };
 
@@ -88,17 +85,19 @@ export default function ExpenseForm() {
         className="flex flex-col relative max-w-md mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"
       >
         <input
-          {...register("date", {
+          {...register('date', {
             required: true,
           })}
           type="date"
           className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
         {errors.date && <span className="text-red-500">Date is required</span>}
-        
-        <label htmlFor="amount" className="block mb-1">Amount:</label>
+
+        <label htmlFor="amount" className="block mb-1">
+          Amount:
+        </label>
         <input
-          {...register("amount", {
+          {...register('amount', {
             required: true,
             validate: {
               matchPattern: (v) => /^[0-9.]+$/.test(v),
@@ -110,17 +109,18 @@ export default function ExpenseForm() {
           placeholder="Amount"
           className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
-        {errors.amount?.type === "required" && (
+        {errors.amount?.type === 'required' && (
           <span className="text-red-500">Amount is required</span>
         )}
-        {errors.amount?.type === "matchPattern" && (
+        {errors.amount?.type === 'matchPattern' && (
           <span className="text-red-500">Amount must be a number</span>
         )}
-        {errors.amount?.type === "notNegative" && (
+        {errors.amount?.type === 'notNegative' && (
           <span className="text-red-500">Amount must be a greater than 0</span>
         )}
 
-        <select {...register("category_id", { required: true })}
+        <select
+          {...register('category_id', { required: true })}
           className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         >
           <option value="">Select Category</option>
@@ -130,12 +130,10 @@ export default function ExpenseForm() {
             </option>
           ))}
         </select>
-        {errors.category_id && (
-          <span className="text-red-500">Category is required</span>
-        )}
+        {errors.category_id && <span className="text-red-500">Category is required</span>}
 
         <select
-          {...register("for_who", {
+          {...register('for_who', {
             required: true,
           })}
           className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -146,11 +144,10 @@ export default function ExpenseForm() {
           <option value="EVE">EVE</option>
           <option value="OTHER">OTHER</option>
         </select>
-        {errors.for_who && (
-          <span className="text-red-500">For Who is required</span>
-        )}
+        {errors.for_who && <span className="text-red-500">For Who is required</span>}
 
-        <input {...register("comment")}
+        <input
+          {...register('comment')}
           type="text"
           placeholder="Comment"
           className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

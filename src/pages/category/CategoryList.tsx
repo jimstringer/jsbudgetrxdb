@@ -1,9 +1,9 @@
-import Category from "../../components/Category";
-import { PlusIcon } from "@heroicons/react/16/solid";
-import { useEffect, useState } from "react";
-import { CategoryForm } from "./CategoryForm";
-import useRxDB from "../../hooks/useRxDB";
-import type { CategoryDocType } from "../../database/schemas/schemas";
+import Category from '../../components/Category';
+import { PlusIcon } from '@heroicons/react/16/solid';
+import { useEffect, useState } from 'react';
+import { CategoryForm } from './CategoryForm';
+import useRxDB from '../../hooks/useRxDB';
+import type { CategoryDocType } from '../../database/schemas/schemas';
 
 export default function CategoryList() {
   //const { categories } = useCategory()a
@@ -16,7 +16,7 @@ export default function CategoryList() {
   // Fetch categories from the database
   useEffect(() => {
     if (!db) return;
-/*
+    /*
     const fetchCategories = async () => {
       const categoryCollection = db.categories;
       const allCategories = await categoryCollection.find().exec();

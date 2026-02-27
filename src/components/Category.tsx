@@ -1,7 +1,6 @@
-import { XMarkIcon } from "@heroicons/react/16/solid";
-import { useConfirmAlert } from "../hooks/UseConfirmAlert";
-import type { CategoryDocType } from "../database/schemas/schemas";
-
+import { XMarkIcon } from '@heroicons/react/16/solid';
+import { useConfirmAlert } from '../hooks/UseConfirmAlert';
+import type { CategoryDocType } from '../database/schemas/schemas';
 
 export default function Category({ category }: { category: CategoryDocType }) {
   const showConfirmAlert = useConfirmAlert();
@@ -15,7 +14,7 @@ export default function Category({ category }: { category: CategoryDocType }) {
         onClick={() => {
           showConfirmAlert.showAlert({
             title: `Delete Category "${category.name}"?`,
-            confirmMessage: "This will not change any expenses with this category.",
+            confirmMessage: 'This will not change any expenses with this category.',
             onConfirm: async () => {
               //await triplit.delete("categorys", category.id);
             },

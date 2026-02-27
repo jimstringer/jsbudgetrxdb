@@ -1,64 +1,64 @@
-import type { RxJsonSchema } from "rxdb";
+import type { RxJsonSchema } from 'rxdb';
 
-//changed camelCase to snake_case for db storage sync to sqlite? 
+//changed camelCase to snake_case for db storage sync to sqlite?
 export type ExpenseDocType = {
   id: string;
   amount: number;
   date: string;
   category_id: string;
   comment: string;
-  for_who:  "BOTH" | "JIM" | "EVE" | "OTHER";
+  for_who: 'BOTH' | 'JIM' | 'EVE' | 'OTHER';
   created_at: number;
   updated_at: number;
   _deleted: boolean;
 };
 
 export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
-  title: "expense schema",
-  description: "describes a single expense item",
+  title: 'expense schema',
+  description: 'describes a single expense item',
   version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
-  primaryKey: "id",
-  type: "object",
+  primaryKey: 'id',
+  type: 'object',
   properties: {
     id: {
-      type: "string",
+      type: 'string',
       maxLength: 100, // <- the primary key must have set maxLength
     },
     amount: {
-      type: "integer",
+      type: 'integer',
     },
     date: {
-      type: "string",
-      format: "date",
+      type: 'string',
+      format: 'date',
       maxLength: 10, // 2026-01-31 is 10 characters
     },
     category_id: {
-      type: "string",
+      type: 'string',
       maxLength: 100, // <- category id name max length
     },
     for_who: {
-      type: "string",
-      enum: [ "BOTH", "JIM", "EVE", "OTHER"],
+      type: 'string',
+      enum: ['BOTH', 'JIM', 'EVE', 'OTHER'],
     },
     comment: {
-      type: "string",
+      type: 'string',
     },
     created_at: {
-      type: "number",
+      type: 'number',
     },
     updated_at: {
-      type: "number",
+      type: 'number',
       minimum: 0,
       maximum: 9999999999999, //Saturday, November 20, 2286 5:46:39.999 PM GMT+00:00
       multipleOf: 1,
     },
     _deleted: {
-      type: "boolean",
+      type: 'boolean',
     },
   },
-  required: ["id", "amount", "date", "for_who", "category_id", "created_at", "updated_at"],
-  indexes: ["date", "category_id", "updated_at"],
+  required: ['id', 'amount', 'date', 'for_who', 'category_id', 'created_at', 'updated_at'],
+  indexes: ['date', 'category_id', 'updated_at'],
 };
 
 export type CategoryDocType = {
@@ -70,32 +70,32 @@ export type CategoryDocType = {
 };
 
 export const categorySchema: RxJsonSchema<CategoryDocType> = {
-  title: "category schema",
-  description: "describes a single category item",
+  title: 'category schema',
+  description: 'describes a single category item',
   version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
-  primaryKey: "name",
-  type: "object",
+  primaryKey: 'name',
+  type: 'object',
   properties: {
     name: {
-      type: "string",
+      type: 'string',
       maxLength: 100, // <- the primary key must have set maxLength
     },
     created_at: {
-      type: "number",
+      type: 'number',
     },
     updated_at: {
-      type: "number",
+      type: 'number',
       minimum: 0,
       maximum: 9999999999999, //Saturday, November 20, 2286 5:46:39.999 PM GMT+00:00
       multipleOf: 1,
     },
     _deleted: {
-      type: "boolean",
+      type: 'boolean',
     },
   },
-  required: ["name", "created_at", "updated_at"],
-  indexes: ["updated_at"],
+  required: ['name', 'created_at', 'updated_at'],
+  indexes: ['updated_at'],
 };
 
 export type IncomeSourceDocType = {
@@ -106,32 +106,32 @@ export type IncomeSourceDocType = {
 };
 
 export const incomeSourceSchema: RxJsonSchema<IncomeSourceDocType> = {
-  title: "income source schema",
-  description: "describes a single income source item",
+  title: 'income source schema',
+  description: 'describes a single income source item',
   version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
-  primaryKey: "name",
-  type: "object",
+  primaryKey: 'name',
+  type: 'object',
   properties: {
     name: {
-      type: "string",
+      type: 'string',
       maxLength: 100, // <- the primary key must have set maxLength
     },
     created_at: {
-      type: "number",
+      type: 'number',
     },
     updated_at: {
-      type: "number",
+      type: 'number',
       minimum: 0,
       maximum: 9999999999999, //Saturday, November 20, 2286 5:46:39.999 PM GMT+00:00
       multipleOf: 1,
     },
     _deleted: {
-      type: "boolean",
+      type: 'boolean',
     },
   },
-  required: ["name", "created_at", "updated_at"],
-  indexes: ["updated_at"],
+  required: ['name', 'created_at', 'updated_at'],
+  indexes: ['updated_at'],
 };
 
 export type IncomeDocType = {
@@ -140,56 +140,56 @@ export type IncomeDocType = {
   date: string;
   source_id: string;
   comment: string;
-  from_who: "JIM" | "EVE" | "OTHER";
+  from_who: 'JIM' | 'EVE' | 'OTHER';
   created_at: number;
   updated_at: number;
   _deleted: boolean;
 };
 
 export const incomeSchema: RxJsonSchema<IncomeDocType> = {
-  title: "income schema",
-  description: "describes a single income item",
+  title: 'income schema',
+  description: 'describes a single income item',
   version: 0,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
-  primaryKey: "id",
-  type: "object",
+  primaryKey: 'id',
+  type: 'object',
   properties: {
     id: {
-      type: "string",
+      type: 'string',
       maxLength: 100, // <- the primary key must have set maxLength
     },
     amount: {
-      type: "integer",
+      type: 'integer',
     },
     date: {
-      type: "string",
-      format: "date",
+      type: 'string',
+      format: 'date',
       maxLength: 10, // 2026-01-31 is 10 characters
     },
     source_id: {
-      type: "string",
+      type: 'string',
       maxLength: 100, // <- income source id name max length
     },
     comment: {
-      type: "string",
+      type: 'string',
     },
     from_who: {
-      type: "string",
-      enum: ["JIM", "EVE", "OTHER"],
+      type: 'string',
+      enum: ['JIM', 'EVE', 'OTHER'],
     },
     created_at: {
-      type: "number",
+      type: 'number',
     },
     updated_at: {
-      type: "number",
+      type: 'number',
       minimum: 0,
       maximum: 9999999999999, //Saturday, November 20, 2286 5:46:39.999 PM GMT+00:00
       multipleOf: 1,
     },
     _deleted: {
-      type: "boolean",
+      type: 'boolean',
     },
   },
-  required: ["id", "amount", "date", "from_who", "source_id", "created_at", "updated_at"],
-  indexes: ["date", "source_id", "updated_at"],
+  required: ['id', 'amount', 'date', 'from_who', 'source_id', 'created_at', 'updated_at'],
+  indexes: ['date', 'source_id', 'updated_at'],
 };

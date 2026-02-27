@@ -3,10 +3,10 @@
  * NOTE: For widgets to show empty state instead of loading, set isLoading to false immediately if db is ready but collection is empty
  */
 
-import { useEffect, useState } from "react";
-import type { RxCollection, RxDocument, RxQuery } from "rxdb";
-import useRxDB from "./useRxDB";
-import { logger } from "../utils/logger";
+import { useEffect, useState } from 'react';
+import type { RxCollection, RxDocument, RxQuery } from 'rxdb';
+import useRxDB from './useRxDB';
+import { logger } from '../utils/logger';
 
 export function useRxQuery<T>(
   collectionName: string,
@@ -14,8 +14,7 @@ export function useRxQuery<T>(
 ) {
   const { db, loading: dbLoading, error: dbError } = useRxDB();
   const [data, setData] = useState<T[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // If database is still loading, keep loading state

@@ -38,6 +38,6 @@ export const groupBySum = <T, K extends keyof T, S extends keyof T>(
         }
         return accu.set(key, groupedSum);
       }, new Map())
-      .values()
+      .values(),
   ];
 };

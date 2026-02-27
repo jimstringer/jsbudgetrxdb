@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface YearMonthSelectProps {
   setYear: React.Dispatch<React.SetStateAction<number>>;
@@ -31,8 +31,8 @@ export const YearMonthSelect = (props: YearMonthSelectProps) => {
       >
         {Array.from({ length: 12 }, (_, index) => (
           <option key={index} value={index + 1}>
-            {new Date(0, index).toLocaleString("default", {
-              month: "long",
+            {new Date(0, index).toLocaleString('default', {
+              month: 'long',
             })}
           </option>
         ))}

@@ -18,7 +18,7 @@
 
 // Stolen and adapted from Q8 logger: https://github.com/mlee0412/Q8.git
 
-type LogLevel = "debug" | "info" | "warn" | "error";
+type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 interface LogContext {
   [key: string]: unknown;
@@ -36,11 +36,9 @@ interface LogEntry {
  * Uses process.env.NODE_ENV directly (replaced at build time)
  */
 const config = {
-  isDev: import.meta.env.VITE_MODE === "development",
-  isTest: import.meta.env.VITE_MODE === "test",
-  minLevel: (import.meta.env.VITE_MODE === "development"
-    ? "debug"
-    : "info") as LogLevel,
+  isDev: import.meta.env.VITE_MODE === 'development',
+  isTest: import.meta.env.VITE_MODE === 'test',
+  minLevel: (import.meta.env.VITE_MODE === 'development' ? 'debug' : 'info') as LogLevel,
 };
 
 /**
@@ -78,11 +76,7 @@ function formatError(error: unknown): Record<string, unknown> {
 /**
  * Create a structured log entry
  */
-function createLogEntry(
-  level: LogLevel,
-  message: string,
-  context?: LogContext,
-): LogEntry {
+function createLogEntry(level: LogLevel, message: string, context?: LogContext): LogEntry {
   const entry: LogEntry = {
     timestamp: new Date().toISOString(),
     level,
@@ -113,21 +107,19 @@ function outputLog(entry: LogEntry): void {
     // Development: Pretty printed console output
     const prefix = `[${entry.level.toUpperCase()}]`;
     const timestamp = new Date(entry.timestamp).toLocaleTimeString();
-    const contextStr = entry.context
-      ? ` ${JSON.stringify(entry.context, null, 2)}`
-      : "";
+    const contextStr = entry.context ? ` ${JSON.stringify(entry.context, null, 2)}` : '';
 
     switch (entry.level) {
-      case "debug":
+      case 'debug':
         console.debug(`${timestamp} ${prefix} ${entry.message}${contextStr}`);
         break;
-      case "info":
+      case 'info':
         console.info(`${timestamp} ${prefix} ${entry.message}${contextStr}`);
         break;
-      case "warn":
+      case 'warn':
         console.warn(`${timestamp} ${prefix} ${entry.message}${contextStr}`);
         break;
-      case "error":
+      case 'error':
         console.error(`${timestamp} ${prefix} ${entry.message}${contextStr}`);
         break;
     }
@@ -135,14 +127,14 @@ function outputLog(entry: LogEntry): void {
     // Production: JSON structured output for log aggregators
     const output = JSON.stringify(entry);
     switch (entry.level) {
-      case "debug":
-      case "info":
+      case 'debug':
+      case 'info':
         console.log(output);
         break;
-      case "warn":
+      case 'warn':
         console.warn(output);
         break;
-      case "error":
+      case 'error':
         console.error(output);
         break;
     }
@@ -164,10 +156,10 @@ function createLogFunction(level: LogLevel) {
  * Structured logger instance
  */
 export const logger = {
-  debug: createLogFunction("debug"),
-  info: createLogFunction("info"),
-  warn: createLogFunction("warn"),
-  error: createLogFunction("error"),
+  debug: createLogFunction('debug'),
+  info: createLogFunction('info'),
+  warn: createLogFunction('warn'),
+  error: createLogFunction('error'),
 
   /**
    * Create a child logger with bound context

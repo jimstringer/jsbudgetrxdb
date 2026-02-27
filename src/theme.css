@@ -1,0 +1,37 @@
+@theme {
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Noto', serif;
+
+  /* Colors */
+  --color-primary: #ff6345;
+  --color-secondary: #2c3f52;
+  --color-secondary-100: #28394a;
+  --color-secondary-200: #233242;
+  --color-secondary-300: #1f2c39;
+  --color-secondary-400: #1a2631;
+
+  --color-black: #0f1b27;
+  --color-white: #f5fbff;
+  --color-success: var(--color-green-400);
+  --color-error: var(--color-red-400);
+
+  --color-bomber-blue: #1d3d7a;
+  --color-bomber-gold: #9b8449;
+  --color-sask-green: #005b3b;
+
+  /* animate */
+  --animate-blink: blink 1s infinite;
+  --animate-slide-in-from-left: slide-in-from-left 0.5s ease-out;
+
+  @keyframes blink {
+  }
+  @keyframes slide-in-from-left {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
