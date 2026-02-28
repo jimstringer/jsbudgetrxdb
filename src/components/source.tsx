@@ -1,9 +1,19 @@
 import { XMarkIcon } from '@heroicons/react/16/solid';
-import { useConfirmAlert } from '../hooks/UseConfirmAlert';
+import showAlertDialog from './show-alert-dialog';
 import type { IncomeSourceDocType } from '../database/schemas/schemas';
 
 export default function Source({ source }: { source: IncomeSourceDocType }) {
-  const showConfirmAlert = useConfirmAlert();
+
+  const handleDelete = async () => {
+  const confirmed = await showAlertDialog("Are you absolutely sure?", 
+    `This action cannot be undone. This will permanently delete "${source.name}".`);
+  if (confirmed) {
+    // Perform the delete action
+    console.log("File deleted");
+  } else {
+    console.log("Action canceled");
+  }
+};
 
   return (
     <div className="px-3 py-2 border-b flex justify-between items-center">
@@ -11,13 +21,7 @@ export default function Source({ source }: { source: IncomeSourceDocType }) {
       <button
         disabled={false}
         className=""
-        onClick={() => {
-          showConfirmAlert.showAlert({
-            title: `Delete Source "${source.name}"?`,
-            confirmMessage: 'This action cannot be undone.',
-            onConfirm: async () => {},
-          });
-        }}
+        onClick= {handleDelete}
       >
         <XMarkIcon className="h-5 w-5 text-gray-300" />
       </button>

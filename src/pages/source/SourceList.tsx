@@ -1,4 +1,4 @@
-import Source from '../../components/Source';
+import Source from '../../components/source';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { useEffect, useState } from 'react';
 import { SourceForm } from './SourceForm';

@@ -1,4 +1,4 @@
-import Category from '../../components/Category';
+import Category from '../../components/category';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { useEffect, useState } from 'react';
 import { CategoryForm } from './CategoryForm';
