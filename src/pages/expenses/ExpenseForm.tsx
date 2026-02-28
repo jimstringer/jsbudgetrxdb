@@ -21,6 +21,8 @@ export default function ExpenseForm() {
   });
 
   const [categories, setCategories] = useState<CategoryDocType[]>([]);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   type Inputs = {
     date: string;
@@ -71,9 +73,11 @@ export default function ExpenseForm() {
       } as ExpenseDocType)
       .then((doc) => {
         console.log('Expense added:', doc.toJSON());
+        setSuccess('Expense added successfully');
       })
       .catch((err) => {
         console.error('Error adding expense:', err);
+        setError(err);
       });
   };
 
