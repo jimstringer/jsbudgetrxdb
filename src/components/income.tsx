@@ -1,14 +1,25 @@
 import { PencilIcon } from '@heroicons/react/16/solid';
 import type { IncomeDocType } from '../database/schemas/schemas';
-import { useConfirmAlert } from '../hooks/UseConfirmAlert';
 import { useNavigate } from 'react-router';
 import useRxDB from '../hooks/useRxDB';
+import showAlertDialog from './show-alert-dialog';
 
 export const Income = ({ income }: { income: IncomeDocType }) => {
-  const showConfirmAlert = useConfirmAlert();
   const { db } = useRxDB();
   const navigate = useNavigate();
 
+
+  const handleDelete = async (income: IncomeDocType) => {
+  const confirmed = await showAlertDialog("Are you absolutely sure?", 
+    `This action cannot be undone. This will permanently delete "${income.source_id}".`);
+  if (confirmed) {
+    // Perform the delete action
+    deleteIncome(income.id);
+    console.log("File deleted");
+  } else {
+    console.log("Action canceled");
+  }
+};
   const deleteIncome = async (id: string) => {
     if (!db) return;
     const incomeDoc = await db.incomes.findOne(id).exec();
@@ -43,15 +54,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
 
         <button
           className="x-button"
-          onClick={() => {
-            showConfirmAlert.showAlert({
-              title: `Delete Income "${income.source_id}"?`,
-              confirmMessage: 'This action cannot be undone.',
-              onConfirm: async () => {
-                await deleteIncome(income.id);
-              },
-            });
-          }}
+          onClick={ () => handleDelete(income) }
         >
           ❌
         </button>

@@ -3,13 +3,25 @@ import { PencilIcon } from '@heroicons/react/24/solid';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import useRxDB from '../hooks/useRxDB';
 import { useNavigate } from 'react-router';
-import { useConfirmAlert } from '../hooks/UseConfirmAlert';
+import showAlertDialog from './show-alert-dialog';
 
 export default function Expense({ expense }: { expense: ExpenseDocType }) {
   const { db } = useRxDB();
   const navigate = useNavigate();
 
-  const showConfirmAlert = useConfirmAlert();
+
+  const handleDelete = async (expense: ExpenseDocType) => {
+  const confirmed = await showAlertDialog("Are you absolutely sure?", 
+    `This action cannot be undone. This will permanently delete "${expense.category_id}".`);
+  if (confirmed) {
+    // Perform the delete action
+    deleteExpense(expense.id);
+    console.log("File deleted");
+  } else {
+    console.log("Action canceled");
+  }
+};
+
 
   const deleteExpense = async (id: string) => {
     if (!db) return;
@@ -45,13 +57,7 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
         <button
           className="x-button"
           onClick={() => {
-            showConfirmAlert.showAlert({
-              title: `Delete Expense "${expense.category_id}"?`,
-              confirmMessage: 'This action cannot be undone.',
-              onConfirm: async () => {
-                await deleteExpense(expense.id);
-              },
-            });
+            handleDelete(expense);
           }}
         >
           <XMarkIcon className="h-5 w-5 text-red-500" />
