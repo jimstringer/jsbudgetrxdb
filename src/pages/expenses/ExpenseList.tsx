@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Expense from '../../components/Expense';
+import Expense from '@/components/expense';
 import useRxDB from '../../hooks/useRxDB';
 import type { ExpenseDocType } from '../../database/schemas/schemas';
 import { YearMonthSelect } from '../../components/YearMonthSelect';
