@@ -91,13 +91,13 @@ export const InitCats = () => {
   return (
     <div className="p-4">
       <button
-        className={`bg-blue-500 text-white px-4 py-2 rounded ${hasCats ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`rounded bg-blue-500 px-4 py-2 text-white ${hasCats ? 'cursor-not-allowed opacity-50' : ''}`}
         onClick={insertDefaultCategories}
       >
         Initialize Default Categories
       </button>
       <button
-        className={`bg-green-500 text-white px-4 py-2 rounded ml-2 ${hasIncomeSources ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`ml-2 rounded bg-green-500 px-4 py-2 text-white ${hasIncomeSources ? 'cursor-not-allowed opacity-50' : ''}`}
         onClick={insertDefaultIncomeSources}
       >
         Initialize Default Income Sources

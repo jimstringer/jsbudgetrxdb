@@ -61,7 +61,7 @@ export function IncomeForm() {
       .insert({
         id: uuidv7(),
         date: data.date,
-        amount: Number(data.amount) * 100, // convert to cents
+        amount: Math.trunc(Number(data.amount) * 100), // convert to cents
         source_id: data.incomeSourceId,
         comment: data.comment,
         from_who: data.from,
@@ -78,18 +78,18 @@ export function IncomeForm() {
   };
 
   return (
-    <div className="w-full p-4 md:p-8 bg-gray-100">
-      <h2 className="text-2xl font-bold mb-4 text-center">Add Income</h2>
+    <div className="w-full bg-gray-100 p-4 md:p-8">
+      <h2 className="mb-4 text-center text-2xl font-bold">Add Income</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col relative max-w-md mx-auto bg-white p-6 rounded-lg shadow-md space-y-4"
+        className="relative mx-auto flex max-w-md flex-col space-y-4 rounded-lg bg-white p-6 shadow-md"
       >
         <input
           {...register('date', {
             required: true,
           })}
           type="date"
-          className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         />
         {errors.date && <span className="text-red-500">Date is required</span>}
 
@@ -104,7 +104,7 @@ export function IncomeForm() {
           type="text"
           inputMode="decimal"
           placeholder="Amount"
-          className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         />
         {errors.amount?.type === 'required' && (
           <span className="text-red-500">Amount is required</span>
@@ -118,7 +118,7 @@ export function IncomeForm() {
 
         <select
           {...register('incomeSourceId', { required: true })}
-          className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
           <option value="">Select Income Source</option>
           {incomeSources.map((category) => (
@@ -133,7 +133,7 @@ export function IncomeForm() {
           {...register('from', {
             required: true,
           })}
-          className="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
           <option value="">Select From Who</option>
           <option value="JIM">JIM</option>
@@ -146,11 +146,11 @@ export function IncomeForm() {
           {...register('comment')}
           type="text"
           placeholder="Comment"
-          className="form-input px-4 py-3 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          className="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         />
 
         <input
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
           type="submit"
           value="Add Income"
         />

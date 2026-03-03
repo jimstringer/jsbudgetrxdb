@@ -10,16 +10,16 @@ export const Sync = () => {
   };
 
   return (
-    <div className="flex flex-col  bg-gray-100 p-2 mb-2 rounded-lg shadow-md">
-      <h1 className="text-2xl flex justify-between px-3 font-bold mb-4">Manage Sync to CouchDB</h1>
+    <div className="mb-2 flex flex-col rounded-lg bg-gray-100 p-2 shadow-md">
+      <h1 className="mb-4 flex justify-between px-3 text-2xl font-bold">Manage Sync to CouchDB</h1>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         onClick={sync}
       >
         Start Sync
       </button>
       <button
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
         onClick={cancel}
       >
         Stop Sync

@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 
 export const Layout = () => {
   return (
-    <main className="w-full min-h-screen bg-sky-200 dark:bg-gray-900">
+    <main className="min-h-screen w-full overflow-auto bg-sky-200 dark:bg-gray-900">
       <NavBar />
       <Outlet />
     </main>

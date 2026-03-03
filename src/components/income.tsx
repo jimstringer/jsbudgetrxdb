@@ -8,18 +8,19 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
   const { db } = useRxDB();
   const navigate = useNavigate();
 
-
   const handleDelete = async (income: IncomeDocType) => {
-  const confirmed = await showAlertDialog("Are you absolutely sure?", 
-    `This action cannot be undone. This will permanently delete "${income.source_id}".`);
-  if (confirmed) {
-    // Perform the delete action
-    deleteIncome(income.id);
-    console.log("File deleted");
-  } else {
-    console.log("Action canceled");
-  }
-};
+    const confirmed = await showAlertDialog(
+      'Are you absolutely sure?',
+      `This action cannot be undone. This will permanently delete "${income.source_id}".`
+    );
+    if (confirmed) {
+      // Perform the delete action
+      deleteIncome(income.id);
+      console.log('File deleted');
+    } else {
+      console.log('Action canceled');
+    }
+  };
   const deleteIncome = async (id: string) => {
     if (!db) return;
     const incomeDoc = await db.incomes.findOne(id).exec();
@@ -33,7 +34,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
   }
 
   return (
-    <div className="flex flex-col  bg-gray-100 p-2 mb-2 rounded-lg shadow-md">
+    <div className="mb-2 flex flex-col rounded-lg bg-gray-100 p-2 shadow-md">
       <div className="hidden">{income.id} </div>
       <div>
         {income.date} - {income.source_id}
@@ -41,7 +42,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
       <div>${(income.amount / 100).toFixed(2)} CAD</div>
       <div>{income.comment}</div>
       <div>From: {income.from_who}</div>
-      <div className="flex space-x-4 mt-2 justify-end">
+      <div className="mt-2 flex justify-end space-x-4">
         <button
           className=""
           onClick={() => {
@@ -52,10 +53,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
           <PencilIcon className="h-5 w-5 text-blue-500" />
         </button>
 
-        <button
-          className="x-button"
-          onClick={ () => handleDelete(income) }
-        >
+        <button className="x-button" onClick={() => handleDelete(income)}>
           ❌
         </button>
       </div>

@@ -27,7 +27,7 @@ export const ImportPage = () => {
   };
 
   return (
-    <div className="flex  flex-col items-center justify-center bg-gray-100 p-2 mb-2 rounded-lg shadow-md">
+    <div className="mb-2 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-2 shadow-md">
       <h1 className="text-xl font-bold">Import from local file</h1>
       <p className="text-gray-600">You can import a dump of the database</p>
       <input type="file" onChange={handleChange} />

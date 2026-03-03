@@ -61,26 +61,26 @@ export const Home = () => {
   // Render the component
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-blue-50 p-6">
-      <div className="bg-white p-8 rounded-lg shadow-xl max-w-2xl w-full text-center border border-gray-200">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">{year} Totals!</h1>
-        <div className="mb-4 flex ">
+    <div className="flex min-h-screen flex-col items-center bg-blue-50 p-6">
+      <div className="w-full max-w-2xl rounded-lg border border-gray-200 bg-white p-8 text-center shadow-xl">
+        <h1 className="mb-4 text-4xl font-bold text-gray-800">{year} Totals!</h1>
+        <div className="mb-4 flex">
           <YearSelect year={year} setYear={setYear} />
         </div>
-        <div className="grid  md:grid-cols-3 md:gap-4">
-          <div className="font-bold text-gray-600 text-left">
+        <div className="grid md:grid-cols-3 md:gap-4">
+          <div className="text-left font-bold text-gray-600">
             <span className="inline-block w-20">Expense:</span>
-            <span className="text-pink-700 font-bold">
+            <span className="font-bold text-pink-700">
               {NumberFormater.format(expenseTotal / 100)}
             </span>
           </div>
-          <div className="font-bold text-gray-600 text-left">
+          <div className="text-left font-bold text-gray-600">
             <span className="inline-block w-20">Income:</span>
-            <span className="text-green-700 font-bold">
+            <span className="font-bold text-green-700">
               {NumberFormater.format(incomeTotal / 100)}
             </span>
           </div>
-          <div className="font-bold text-gray-600 text-left">
+          <div className="text-left font-bold text-gray-600">
             <span className="inline-block w-20">Balance:</span>
             <span
               className={`font-bold ${
@@ -91,7 +91,7 @@ export const Home = () => {
             </span>
           </div>
         </div>
-        <div className="font-bold text-gray-600 text-left">
+        <div className="text-left font-bold text-gray-600">
           <span className="inline-block pr-4">Last Export:</span>
           <span
             className={
@@ -102,24 +102,24 @@ export const Home = () => {
           </span>
         </div>
         <div
-          className={'relative flex flex-col items-center  ' + (daysSince < 7 ? ' hidden' : ' p-4')}
+          className={'relative flex flex-col items-center ' + (daysSince < 7 ? ' hidden' : ' p-4')}
         >
-          <span className="text-2xl font-bold text-orange-500 animate-bounce ">test</span>
+          <span className="animate-bounce text-2xl font-bold text-orange-500">test</span>
         </div>
         <div className="mt-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+          <h1 className="mb-4 text-2xl font-bold text-gray-800">
             TODO: Move start/stop Sync to CouchDB Here
           </h1>
         </div>
         <div className="mt-4">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Database Totals</h1>
-          <div className="grid  md:gap-4">
-            <div className="font-bold text-gray-600 text-left">
-              <span className="text-pink-700 font-bold">{expenseCount}</span>
+          <h1 className="mb-4 text-2xl font-bold text-gray-800">Database Totals</h1>
+          <div className="grid md:gap-4">
+            <div className="text-left font-bold text-gray-600">
+              <span className="font-bold text-pink-700">{expenseCount}</span>
               <span className="inline-block p-1">total Expense Documents!</span>
             </div>
-            <div className="font-bold text-gray-600 text-left">
-              <span className="text-green-700 font-bold">{incomeCount}</span>
+            <div className="text-left font-bold text-gray-600">
+              <span className="font-bold text-green-700">{incomeCount}</span>
               <span className="inline-block p-1">total Income Documents!</span>
             </div>
           </div>

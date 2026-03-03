@@ -130,12 +130,12 @@ export const ImportFB = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Import Firebase Backup</h1>
+      <h1 className="mb-4 text-2xl font-bold">Import Firebase Backup</h1>
       <p>This feature allows you to import a backup file from Firebase.</p>
-      <div className="flex w-full h-screen items-center justify-center bg-grey-lighter">
-        <label className="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
+      <div className="bg-grey-lighter flex h-screen w-full items-center justify-center">
+        <label className="text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 tracking-wide uppercase shadow-lg hover:text-white">
           <svg
-            className="w-8 h-8"
+            className="h-8 w-8"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
@@ -156,7 +156,7 @@ export const ImportFB = () => {
       <button
         onClick={saveTodexie}
         className={`border-2 border-solid bg-amber-500 ${
-          fsexpenses.length > 0 ? 'opacity-50 cursor-not-allowed' : ''
+          fsexpenses.length > 0 ? 'cursor-not-allowed opacity-50' : ''
         }`}
       >
         Save to Dexie

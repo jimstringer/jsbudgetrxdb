@@ -88,26 +88,26 @@ export const Yearly = () => {
   const sortedSources = Object.entries(incomeSourceTotals).sort(([, a], [, b]) => b - a);
 
   return (
-    <div className="max-w-full md:max-w-2xl mx-auto mt-1 p-4 bg-white rounded shadow">
-      <div className="sticky top-15 bg-white z-10 pb-4">
-        <h1 className="text-2xl font-bold mb-4">Yearly Report</h1>
+    <div className="mx-auto mt-1 max-w-full rounded bg-white p-4 shadow md:max-w-2xl">
+      <div className="sticky top-15 z-10 bg-white pb-4">
+        <h1 className="mb-4 text-2xl font-bold">Yearly Report</h1>
         <YearSelect year={year} setYear={setYear} />
       </div>
 
-      <div className="grid  md:grid-cols-3 md:gap-4">
-        <div className="font-bold text-gray-600 text-left">
+      <div className="grid md:grid-cols-3 md:gap-4">
+        <div className="text-left font-bold text-gray-600">
           Expense:
-          <span className="text-pink-700 font-bold">
+          <span className="font-bold text-pink-700">
             {NumberFormater.format(expenseTotal / 100)}
           </span>
         </div>
-        <div className="font-bold text-gray-600 text-left">
+        <div className="text-left font-bold text-gray-600">
           Income:
-          <span className="text-green-700 font-bold">
+          <span className="font-bold text-green-700">
             {NumberFormater.format(incomeTotal / 100)}
           </span>
         </div>
-        <div className="font-bold text-gray-600 text-left">
+        <div className="text-left font-bold text-gray-600">
           Balance:
           <span
             className={`font-bold ${
@@ -119,24 +119,24 @@ export const Yearly = () => {
         </div>
       </div>
       <div className="mt-4">
-        <h2 className="font-bold text-gray-600 text-center">Expense</h2>
+        <h2 className="text-center font-bold text-gray-600">Expense</h2>
         {expenseCategoryTotals &&
           sortedCategories.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
-              <dt className="font-medium text-gray-900 text-left">{key}</dt>
-              <dd className="text-gray-700 sm:col-span-1 text-right">
+              <dt className="text-left font-medium text-gray-900">{key}</dt>
+              <dd className="text-right text-gray-700 sm:col-span-1">
                 {NumberFormater.format(value / 100)}
               </dd>
             </div>
           ))}
       </div>
       <div className="mt-4">
-        <h2 className="font-bold text-gray-600 text-center">Income</h2>
+        <h2 className="text-center font-bold text-gray-600">Income</h2>
         {incomeSourceTotals &&
           sortedSources.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
-              <dt className="font-medium text-gray-900 text-left">{key}</dt>
-              <dd className="text-gray-700  text-right">{NumberFormater.format(value / 100)}</dd>
+              <dt className="text-left font-medium text-gray-900">{key}</dt>
+              <dd className="text-right text-gray-700">{NumberFormater.format(value / 100)}</dd>
             </div>
           ))}
       </div>

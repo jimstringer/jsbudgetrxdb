@@ -12,9 +12,9 @@ const currentYear = currentDate.getFullYear();
 
 export const YearMonthSelect = (props: YearMonthSelectProps) => {
   return (
-    <div className="flex mb-2">
+    <div className="mb-2 flex">
       <select
-        className="border-2 border-gray-300 rounded-md mr-4"
+        className="mr-4 rounded-md border-2 border-gray-300"
         value={props.year}
         onChange={(e) => props.setYear(parseInt(e.target.value))}
       >
@@ -25,7 +25,7 @@ export const YearMonthSelect = (props: YearMonthSelectProps) => {
         ))}
       </select>
       <select
-        className="border-2 border-gray-300 rounded-md"
+        className="rounded-md border-2 border-gray-300"
         value={props.month}
         onChange={(e) => props.setMonth(parseInt(e.target.value))}
       >

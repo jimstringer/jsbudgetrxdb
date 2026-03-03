@@ -7,12 +7,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { createRoot } from "react-dom/client";
+} from '@/components/ui/alert-dialog';
+import { createRoot } from 'react-dom/client';
 
 const showAlertDialog = (title: string, description: string) => {
   return new Promise((resolve) => {
-    const containerElement = document.createElement("div");
+    const containerElement = document.createElement('div');
     document.body.appendChild(containerElement);
     const root = createRoot(containerElement);
 
@@ -30,12 +30,8 @@ const showAlertDialog = (title: string, description: string) => {
             <AlertDialogDescription>{description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => handleClose(false)}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={() => handleClose(true)}>
-              Continue
-            </AlertDialogAction>
+            <AlertDialogCancel onClick={() => handleClose(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => handleClose(true)}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

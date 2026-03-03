@@ -130,48 +130,46 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-cyan-600 p-2 flex justify-between text-lg sticky top-0 z-1000">
+    <nav className="sticky top-0 z-1000 flex justify-between bg-cyan-600 p-2 text-lg">
       {/* Brand Name */}
-      <a href="/" className=" text-lg font-semibold mr-8">
+      <a href="/" className="mr-8 text-lg font-semibold">
         JSBudget 2026
       </a>
-      <div className="flex text-base items-center mr-4">
+      <div className="mr-4 flex items-center text-base">
         <button
-          className="mr-4 px-2 py-1 bg-blue-500 text-white rounded"
+          className="mr-4 rounded bg-blue-500 px-2 py-1 text-white"
           onClick={() => setCheckOnline(!checkOnline)}
         >
           {checkOnline ? 'API disable' : 'API enable'}
         </button>
         {/* API Status Indicator */}
         <div
-          className={`w-3 h-3 rounded-full mr-2 ${isApiUp ? 'bg-green-500' : 'bg-red-500'}`}
+          className={`mr-2 h-3 w-3 rounded-full ${isApiUp ? 'bg-green-500' : 'bg-red-500'}`}
           title={isApiUp ? 'API is Online' : `API is Offline${error ? `: ${error}` : ''}`}
         ></div>
       </div>
       {/* Navigation Links */}
       {/* bg color must be set when absolute for mobile. */}
       <div
-        className={`flex-col absolute bg-cyan-600 top-16 left-0 p-4 md:relative md:flex md:items-center md:w-auto 
-                    md:space-x-4 md:flex-row md:top-0 md:left-0 md:p-0 md:bg-transparent 
-                    transition-all duration-500 ease-in-out transform ${
-                      isOpen ? 'translate-x-0' : '-translate-x-full'
-                    } md:translate-x-0`}
+        className={`absolute top-16 left-0 transform flex-col bg-cyan-600 p-4 transition-all duration-500 ease-in-out md:relative md:top-0 md:left-0 md:flex md:w-auto md:flex-row md:items-center md:space-x-4 md:bg-transparent md:p-0 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0`}
       >
-        <ul className="flex flex-col text-2xl md:text-lg md:flex-row md:space-x-2 xl:space-x-4">
+        <ul className="flex flex-col text-2xl md:flex-row md:space-x-2 md:text-lg xl:space-x-4">
           {navItems.map((item) => (
             <li key={item.id}>
               {item.href === '' ? (
                 <span
-                  className="block mt-2 md:mt-0 mr-4"
+                  className="mt-2 mr-4 block md:mt-0"
                   onClick={(event: React.SyntheticEvent) => toggleMenu(event)}
                 >
-                  {item.name} <ChevronDownIcon className="w-4 h-4 inline" />
+                  {item.name} <ChevronDownIcon className="inline h-4 w-4" />
                 </span>
               ) : (
                 <NavLink
                   key={item.id + 100}
                   to={item.href}
-                  className="block mt-2 md:mt-0 hover:text-gray-300 mr-4"
+                  className="mt-2 mr-4 block hover:text-gray-300 md:mt-0"
                   onClick={(event) => {
                     setIsOpen(!isOpen); // Close menu on link click
                     toggleMenu(event);
@@ -181,12 +179,12 @@ const Navbar = () => {
                 </NavLink>
               )}
               {item.subItems && (
-                <ul className="mt-2 ml-4 hidden z-50 relative md:absolute md:bg-cyan-600 p-2 rounded-md">
+                <ul className="relative z-50 mt-2 ml-4 hidden rounded-md p-2 md:absolute md:bg-cyan-600">
                   {item.subItems.map((subItem) => (
                     <li key={subItem.id}>
                       <NavLink
                         to={subItem.href}
-                        className="block mt-2 md:mt-0 hover:text-gray-300"
+                        className="mt-2 block hover:text-gray-300 md:mt-0"
                         onClick={(event) => {
                           setIsOpen(!isOpen); // Close menu on link click
                           toggleMenu(event);
@@ -208,7 +206,7 @@ const Navbar = () => {
         {/* Hamburger Icon and Close Icon */}
         {isOpen ? (
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -223,7 +221,7 @@ const Navbar = () => {
           </svg>
         ) : (
           <svg
-            className="w-6 h-6"
+            className="h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

@@ -6,7 +6,7 @@ import { YearToYear } from './pages/reports/YearToYear';
 import { Monthly } from './pages/reports/Monthly';
 import { Yearly } from './pages/reports/Yearly';
 import ExpenseList from './pages/expenses/ExpenseList';
-import ExpenseForm from './pages/expenses/ExpenseForm';
+import ExpenseForm from './pages/expenses/expense-form';
 import { IncomeList } from './pages/incomes/IncomeList';
 import { IncomeForm } from './pages/incomes/IncomeForm';
 import CategoryList from './pages/category/CategoryList';

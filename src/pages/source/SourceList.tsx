@@ -27,20 +27,20 @@ export default function SourceList() {
   }, [db]);
 
   return (
-    <div className="max-w-md mx-auto mt-6 p-4 bg-white rounded shadow">
-      <h1 className="text-2xl flex justify-between px-3 font-bold mb-4">
+    <div className="mx-auto mt-6 max-w-md rounded bg-white p-4 shadow">
+      <h1 className="mb-4 flex justify-between px-3 text-2xl font-bold">
         sources
         <span title="Add Source">
           <PlusIcon
             title="Add Source"
-            className="h-5 w-5 inline ml-2"
+            className="ml-2 inline h-5 w-5"
             onClick={() => setShowForm(!showForm)}
           />
         </span>
       </h1>
       <div>
         {showForm && (
-          <div className="mb-4 p-3 border rounded bg-white shadow">
+          <div className="mb-4 rounded border bg-white p-3 shadow">
             {/* Source Form Component */}
             <SourceForm sources={sources} />
           </div>

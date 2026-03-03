@@ -58,7 +58,7 @@ export const ExportPage = () => {
   };
 
   return (
-    <div className="flex  flex-col items-center justify-center bg-gray-100 p-2 mb-2 rounded-lg shadow-md">
+    <div className="mb-2 flex flex-col items-center justify-center rounded-lg bg-gray-100 p-2 shadow-md">
       <h1 className="text-xl font-bold">Export to a local file</h1>
       <p className="text-gray-600">You can export the database to a local file</p>
       <p className="text-gray-600">You can import the database from this file</p>

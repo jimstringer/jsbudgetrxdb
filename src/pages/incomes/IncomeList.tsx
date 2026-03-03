@@ -40,9 +40,9 @@ export function IncomeList() {
   }, [db, endDate, startDate]);
 
   return (
-    <div className="max-w-full md:max-w-sm mx-auto mt-1 p-4 bg-white rounded shadow">
-      <div className="sticky top-15 bg-white z-10 pb-4">
-        <h1 className="text-2xl font-bold mb-4">Income</h1>
+    <div className="mx-auto mt-1 max-w-full rounded bg-white p-4 shadow md:max-w-sm">
+      <div className="sticky top-15 z-10 bg-white pb-4">
+        <h1 className="mb-4 text-2xl font-bold">Income</h1>
         <YearMonthSelect
           year={selectedYear}
           month={selectedMonth}

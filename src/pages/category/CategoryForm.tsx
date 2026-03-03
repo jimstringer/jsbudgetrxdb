@@ -67,7 +67,7 @@ export function CategoryForm({ categories }: { categories?: CategoryDocType[] })
   return (
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form
-      className="flex flex-col justify-center-safe items-center gap-2"
+      className="flex flex-col items-center justify-center-safe gap-2"
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* register your input into the hook by invoking the "register" function */}
@@ -85,7 +85,7 @@ export function CategoryForm({ categories }: { categories?: CategoryDocType[] })
       />
 
       <input
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
         type="submit"
         value="Submit"
       />
