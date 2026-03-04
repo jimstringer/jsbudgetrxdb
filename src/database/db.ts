@@ -14,6 +14,7 @@ import type { RxDatabase, RxCollection } from 'rxdb';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBCleanupPlugin } from 'rxdb/plugins/cleanup';
 import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
+import { toast } from 'sonner';
 
 addRxPlugin(RxDBCleanupPlugin);
 addRxPlugin(RxDBJsonDumpPlugin);
@@ -131,18 +132,12 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
  */
 export async function getDatabase() {
   if (!dbPromise) {
-    return initDatabase();
+    try {
+      await initDatabase();
+    } catch (error) {
+      toast.error('Error creating database');
+      console.error(error);
+    }
   }
   return dbPromise;
 }
-
-/**
- * Destroy the database (for testing or reset)
-export async function destroyDatabase() {
-  if (dbPromise) {
-    const db = await dbPromise;
-    await db.destroy();  //this give a typescript error
-    dbPromise = null;
-  }
-}
- */

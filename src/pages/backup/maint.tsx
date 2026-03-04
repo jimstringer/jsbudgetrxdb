@@ -107,7 +107,7 @@ export const Maint = () => {
           fileName: fileName,
           fileType: 'text/json',
         });
-        localStorage.setItem('lastExportDate', on);
+        localStorage.setItem('lastExportDate', date.toISOString());
         toast.success('Backup created');
       } else {
         toast.error('Action canceled');

@@ -19,7 +19,7 @@ export const Home = () => {
   const endDate = new Date(year + 1, 0, 1).toISOString().split('T')[0];
   const lastExportDate = localStorage.getItem('lastExportDate');
 
-  let daysSince = 0;
+  let daysSince = -1;
   if (lastExportDate) {
     const lastExport = new Date(lastExportDate);
     daysSince = new Date().getDate() - lastExport.getDate();
@@ -95,14 +95,14 @@ export const Home = () => {
           <span className="inline-block pr-4">Last Export:</span>
           <span
             className={
-              'inline-block font-bold' + (daysSince < 7 ? ' text-green-700' : ' text-red-700')
+              'inline-block font-bold' + (daysSince !== -1 && daysSince < 7 ? ' text-green-700' : ' text-red-700')
             }
           >
-            {daysSince} days ago!
+            {daysSince === -1 ? 'Never' : daysSince + ' days ago!'}
           </span>
         </div>
         <div
-          className={'relative flex flex-col items-center ' + (daysSince < 7 ? ' hidden' : ' p-4')}
+          className={'relative flex flex-col items-center ' + ( daysSince !== -1 && daysSince < 7 ? ' hidden' : ' p-4')}
         >
           <span className="animate-bounce text-2xl font-bold text-orange-500">test</span>
         </div>
