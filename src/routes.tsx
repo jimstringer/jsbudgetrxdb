@@ -18,6 +18,7 @@ import ExpenseEdit from './pages/expenses/ExpenseEdit';
 import SourceList from './pages/source/SourceList';
 import IncomeEdit from './pages/incomes/IncomeEdit';
 import { Sync } from './pages/backup/Sync';
+import { Maint } from './pages/backup/maint';
 
 export const router = createHashRouter([
   {
@@ -64,6 +65,7 @@ export const router = createHashRouter([
           { path: 'import', Component: ImportPage },
           { path: 'import-fb', Component: ImportFB }, // Import from firebase backup
           { path: 'init-cats', Component: InitCats }, //  InitCats component
+          { path: 'maint', Component: Maint },
           { path: 'sync', Component: Sync },
         ],
       },

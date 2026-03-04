@@ -156,7 +156,7 @@ export const ImportFB = () => {
       <button
         onClick={saveTodexie}
         className={`border-2 border-solid bg-amber-500 ${
-          fsexpenses.length > 0 ? 'cursor-not-allowed opacity-50' : ''
+          importing  ? 'cursor-not-allowed opacity-50' : ''
         }`}
       >
         Save to Dexie
