@@ -1,8 +1,8 @@
 // Navbar.js
 
-import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import { useState } from 'react';
 
 interface NavItem {
   id: number; // used for key prop
@@ -13,37 +13,6 @@ interface NavItem {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  //we want to display online state in the navbar
-  const [isApiUp, setIsApiUp] = useState(false);
-  const [error, setError] = useState('');
-  const [checkOnline, setCheckOnline] = useState(false);
-
-  const url = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001/';
-
-  useEffect(() => {
-    const checkApi = async () => {
-      try {
-        const response = await fetch(`${url}/health`);
-        if (response.ok) {
-          setIsApiUp(true);
-        } else {
-          setIsApiUp(false);
-        }
-      } catch (err: unknown) {
-        setIsApiUp(false);
-        setError((err as Error).message);
-      }
-    };
-
-    let intervalId: NodeJS.Timeout;
-    if (checkOnline) {
-      checkApi(); // Initial check
-      intervalId = setInterval(checkApi, 5000); // Check every 5 seconds
-    }
-
-    return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [url, checkOnline]);
 
   const navItems: NavItem[] = [
     { id: 1, name: 'Home', href: '/' },
@@ -82,11 +51,7 @@ const Navbar = () => {
       name: 'Backup',
       href: '',
       subItems: [
-        { id: 14, name: 'Export Backup', href: '/backup/export' },
-        { id: 15, name: 'Import Backup', href: '/backup/import' },
-        { id: 16, name: 'Import Firebase Backup', href: '/backup/import-fb' },
         { id: 17, name: 'Initialize Default Categories', href: '/backup/init-cats' },
-        { id: 19, name: 'Sync', href: '/backup/sync' },
         { id: 20, name: 'Maintenance', href: '/backup/maint' },
       ],
     },
@@ -136,19 +101,6 @@ const Navbar = () => {
       <a href="/" className="mr-8 text-lg font-semibold">
         JSBudget 2026
       </a>
-      <div className="mr-4 flex items-center text-base">
-        <button
-          className="mr-4 rounded bg-blue-500 px-2 py-1 text-white"
-          onClick={() => setCheckOnline(!checkOnline)}
-        >
-          {checkOnline ? 'API disable' : 'API enable'}
-        </button>
-        {/* API Status Indicator */}
-        <div
-          className={`mr-2 h-3 w-3 rounded-full ${isApiUp ? 'bg-green-500' : 'bg-red-500'}`}
-          title={isApiUp ? 'API is Online' : `API is Offline${error ? `: ${error}` : ''}`}
-        ></div>
-      </div>
       {/* Navigation Links */}
       {/* bg color must be set when absolute for mobile. */}
       <div

@@ -57,6 +57,10 @@ export const Maint = () => {
         await db.expenses.cleanup(0); //runs cleanup immediately
         await db.incomes.find().remove();
         await db.incomes.cleanup(0); //runs cleanup immediately
+        await db.incomeSources.find().remove();
+        await db.incomeSources.cleanup(0); //runs cleanup immediately
+        await db.categories.find().remove();
+        await db.categories.cleanup(0); //runs cleanup immediately
         toast.success('Database deleted');
         console.log('Database deleted');
       } else {
@@ -89,7 +93,8 @@ export const Maint = () => {
   const handleBackup = async () => {
     if (!db) return;
     try {
-      const on = new Date().toISOString();
+      const date  = new Date();
+      const on = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()  + '-' + date.getHours() + '-' + date.getMinutes();
       const fileName = on + '-back-up.json';
       const confirmed = await showAlertDialog(
         `Backup all data?`,
@@ -160,7 +165,9 @@ export const Maint = () => {
         <Button className="mt-8 p-4" onClick={handleBackup}>
           Backup
         </Button>
-        <Button onClick={handleRestore} className="mt-8 p-4">Restore</Button>
+        <Button onClick={handleRestore} className="mt-8 p-4">
+          Restore
+        </Button>
         <Button className="mt-8 p-4" onClick={handleDelete}>
           Delete
         </Button>
@@ -168,9 +175,6 @@ export const Maint = () => {
       <div className="my-2 flex flex-col justify-between gap-2">
         <p className="text-muted-foreground text-sm">
           Last export: {localStorage.getItem('lastExportDate')}
-        </p>
-        <p className="text-muted-foreground text-sm">
-          Last import: {localStorage.getItem('lastImportDate')}
         </p>
         <p className="text-muted-foreground text-sm">To restore, first select a backup file.</p>
         <input

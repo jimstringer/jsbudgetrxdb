@@ -106,11 +106,6 @@ export const Home = () => {
         >
           <span className="animate-bounce text-2xl font-bold text-orange-500">test</span>
         </div>
-        <div className="mt-8">
-          <h1 className="mb-4 text-2xl font-bold text-gray-800">
-            TODO: Move start/stop Sync to CouchDB Here
-          </h1>
-        </div>
         <div className="mt-4">
           <h1 className="mb-4 text-2xl font-bold text-gray-800">Database Totals</h1>
           <div className="grid md:gap-4">
