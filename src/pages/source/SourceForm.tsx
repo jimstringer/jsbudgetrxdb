@@ -3,6 +3,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import useRxDB from '../../hooks/useRxDB';
 import type { IncomeSourceDocType } from '../../database/schemas/schemas';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 type Inputs = {
   name: string;
@@ -42,10 +43,11 @@ export function SourceForm({ sources }: { sources?: IncomeSourceDocType[] }) {
         updated_at: dateNow,
         _deleted: false,
       } as IncomeSourceDocType)
-      .then((doc) => {
-        console.log('Source added:', doc.toJSON());
+      .then(() => {
+        toast.success('Source added');
       })
       .catch((err) => {
+        toast.error('Error adding source');
         console.error('Error adding source:', err);
       });
   };
@@ -76,7 +78,7 @@ export function SourceForm({ sources }: { sources?: IncomeSourceDocType[] }) {
           required: true,
           pattern: /^[A-Za-z]+$/i,
           validate: validateSourceUniqueName,
-          onChange(event) {
+          onChange(event: React.ChangeEvent<HTMLInputElement>) {
             event.target.value = capitalizeFirstLowercaseRest(event.target.value);
           },
         })}

@@ -95,14 +95,18 @@ export const Home = () => {
           <span className="inline-block pr-4">Last Export:</span>
           <span
             className={
-              'inline-block font-bold' + (daysSince !== -1 && daysSince < 7 ? ' text-green-700' : ' text-red-700')
+              'inline-block font-bold' +
+              (daysSince !== -1 && daysSince < 7 ? ' text-green-700' : ' text-red-700')
             }
           >
             {daysSince === -1 ? 'Never' : daysSince + ' days ago!'}
           </span>
         </div>
         <div
-          className={'relative flex flex-col items-center ' + ( daysSince !== -1 && daysSince < 7 ? ' hidden' : ' p-4')}
+          className={
+            'relative flex flex-col items-center ' +
+            (daysSince !== -1 && daysSince < 7 ? ' hidden' : ' p-4')
+          }
         >
           <span className="animate-bounce text-2xl font-bold text-orange-500">test</span>
         </div>

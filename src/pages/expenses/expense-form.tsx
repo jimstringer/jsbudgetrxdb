@@ -5,6 +5,7 @@ import type { CategoryDocType, ExpenseDocType } from '../../database/schemas/sch
 import { uuidv7 } from 'uuidv7';
 import type { RxError } from 'rxdb';
 import showAlertDialog from '@/components/show-alert-dialog';
+import { format } from 'date-fns';
 
 export default function ExpenseForm() {
   const {
@@ -15,7 +16,7 @@ export default function ExpenseForm() {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      date: new Date().toISOString().split('T')[0],
+      date: format(new Date(), 'yyyy-MM-dd'),
       amount: '',
       category_id: '',
       comment: '',

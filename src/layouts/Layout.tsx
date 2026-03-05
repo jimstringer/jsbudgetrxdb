@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router';
 import NavBar from '../components/NavBar';
 import { Toaster } from '@/components/ui/sonner';
-//import { TotalsBar } from "../components/TotalsBar";
 
 export const Layout = () => {
   return (

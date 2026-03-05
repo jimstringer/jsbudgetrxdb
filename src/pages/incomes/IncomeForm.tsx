@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import useRxDB from '../../hooks/useRxDB';
 import type { IncomeDocType, IncomeSourceDocType } from '../../database/schemas/schemas';
 import { uuidv7 } from 'uuidv7';
+import { format } from 'date-fns';
 
 export function IncomeForm() {
   const {
@@ -13,7 +14,7 @@ export function IncomeForm() {
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      date: new Date().toISOString().split('T')[0],
+      date: format(new Date(), 'yyyy-MM-dd'),
       amount: '',
       incomeSourceId: '',
       comment: '',

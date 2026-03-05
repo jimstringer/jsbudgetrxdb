@@ -93,8 +93,17 @@ export const Maint = () => {
   const handleBackup = async () => {
     if (!db) return;
     try {
-      const date  = new Date();
-      const on = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()  + '-' + date.getHours() + '-' + date.getMinutes();
+      const date = new Date();
+      const on =
+        date.getFullYear() +
+        '-' +
+        (date.getMonth() + 1) +
+        '-' +
+        date.getDate() +
+        '-' +
+        date.getHours() +
+        '-' +
+        date.getMinutes();
       const fileName = on + '-back-up.json';
       const confirmed = await showAlertDialog(
         `Backup all data?`,
