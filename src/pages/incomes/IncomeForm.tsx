@@ -4,33 +4,35 @@ import useRxDB from '../../hooks/useRxDB';
 import type { IncomeDocType, IncomeSourceDocType } from '../../database/schemas/schemas';
 import { uuidv7 } from 'uuidv7';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 export function IncomeForm() {
+
+  interface FormInputs{
+    date: string;
+    amount: string;
+    source_id: string;
+    comment: string;
+    from_who: string;
+  }
+
   const {
     register,
     handleSubmit,
     reset,
     formState,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<FormInputs>({
     defaultValues: {
       date: format(new Date(), 'yyyy-MM-dd'),
       amount: '',
-      incomeSourceId: '',
+      source_id: '',
       comment: '',
+      from_who: '',
     },
   });
 
-  const [incomeSources, setIncomeSources] = useState<IncomeSourceDocType[]>([]);
-
-  type Inputs = {
-    date: string;
-    amount: string;
-    incomeSourceId: string;
-    comment: string;
-    from: '' | 'JIM' | 'EVE' | 'OTHER';
-  };
-
+  const [incomeSources, setIncomeSources] = useState<string[]>([]);
   const dbctx = useRxDB();
   const db = dbctx.db;
   const { isSubmitSuccessful } = formState;
@@ -39,18 +41,17 @@ export function IncomeForm() {
     if (!db) return;
 
     if (isSubmitSuccessful) {
-      reset({ amount: '', incomeSourceId: '', comment: '', from: '' });
+      reset({ amount: '', source_id: '', comment: '', from_who: '' });
     }
-    const fetchIncomeSources = async () => {
+    void (async () => {
       const incomeSourceCollection = db.incomeSources;
       const allIncomeSources = await incomeSourceCollection.find().exec();
-      setIncomeSources(allIncomeSources.map((cat) => cat.toJSON()));
-    };
+      setIncomeSources(allIncomeSources.map((cat: IncomeSourceDocType) => cat.name));
+    });
 
-    fetchIncomeSources();
   }, [db, isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
     const db = dbctx.db;
     if (!db) {
@@ -63,18 +64,19 @@ export function IncomeForm() {
         id: uuidv7(),
         date: data.date,
         amount: Math.trunc(Number(data.amount) * 100), // convert to cents
-        source_id: data.incomeSourceId,
+        source_id: data.source_id,
         comment: data.comment,
-        from_who: data.from,
+        from_who: data.from_who,
         created_at: dateNow,
         updated_at: dateNow,
         _deleted: false,
       } as IncomeDocType)
-      .then((doc) => {
-        console.log('Income', doc.toJSON());
+      .then(() => {
+        toast.success('Income added successfully');
       })
       .catch((err) => {
         console.error('Error adding Income', err);
+        toast.error('Error adding Income');
       });
   };
 
@@ -82,7 +84,10 @@ export function IncomeForm() {
     <div className="w-full bg-gray-100 p-4 md:p-8">
       <h2 className="mb-4 text-center text-2xl font-bold">Add Income</h2>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          e.preventDefault();
+          void handleSubmit(onSubmit)();
+        }}
         className="relative mx-auto flex max-w-md flex-col space-y-4 rounded-lg bg-white p-6 shadow-md"
       >
         <input
@@ -118,20 +123,20 @@ export function IncomeForm() {
         )}
 
         <select
-          {...register('incomeSourceId', { required: true })}
+          {...register('source_id', { required: true })}
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
           <option value="">Select Income Source</option>
           {incomeSources.map((category) => (
-            <option key={category.name} value={category.name}>
-              {category.name}
+            <option key={category} value={category}>
+              {category}
             </option>
           ))}
         </select>
-        {errors.incomeSourceId && <span className="text-red-500">Income Source is required</span>}
+        {errors.source_id && <span className="text-red-500">Income Source is required</span>}
 
         <select
-          {...register('from', {
+          {...register('from_who', {
             required: true,
           })}
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
@@ -141,7 +146,7 @@ export function IncomeForm() {
           <option value="EVE">EVE</option>
           <option value="OTHER">OTHER</option>
         </select>
-        {errors.from && <span className="text-red-500">From is required</span>}
+        {errors.from_who && <span className="text-red-500">From is required</span>}
 
         <input
           {...register('comment')}

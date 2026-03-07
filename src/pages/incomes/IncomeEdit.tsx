@@ -4,69 +4,67 @@ import useRxDB from '../../hooks/useRxDB';
 import type { IncomeDocType, IncomeSourceDocType } from '../../database/schemas/schemas';
 import { type RxDocument } from 'rxdb';
 import { useParams, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 export default function IncomeEdit() {
+  interface FormInputs{
+    date: string;
+    amount: string;
+    source_id: string;
+    comment: string;
+    from_who: string;
+  }
+
   const {
     register,
     handleSubmit,
     reset,
-    formState,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<FormInputs>({
     defaultValues: {
       date: new Date().toISOString().split('T')[0],
       amount: '',
-      incomeSourceId: '',
+      source_id: '',
       comment: '',
+      from_who: '',
     },
   });
 
-  const [incomeSources, setIncomeSources] = useState<IncomeSourceDocType[]>([]);
+  const [incomeSources, setIncomeSources] = useState<string[]>([]);
   const [income, setIncome] = useState<RxDocument<IncomeDocType> | null>(null);
   const id = useParams().id as string;
   const navigate = useNavigate();
   const { db } = useRxDB();
-  const { isSubmitSuccessful } = formState;
 
-  type Inputs = {
-    date: string;
-    amount: string;
-    incomeSourceId: string;
-    comment: string;
-    from: 'JIM' | 'EVE' | 'OTHER';
-  };
 
   useEffect(() => {
     if (!db) return;
 
-    if (isSubmitSuccessful) {
-      reset({ amount: '', incomeSourceId: '', comment: '' });
-    }
-    const fetchIncomeSources = async () => {
-      const incomeSourceCollection = db.incomeSources;
-      const allIncomeSources = await incomeSourceCollection.find().exec();
-      setIncomeSources(allIncomeSources.map((cat) => cat.toJSON()));
-    };
-
-    const fetchIncome = async (id: string) => {
-      const incomeDoc = await db.incomes.findOne(id).exec();
-      if (incomeDoc) {
+    void (async () => {
+      try {
+        const allIncomeSources = await db.incomeSources.find().exec();
+        const incomeDoc = await db.incomes.findOne(id).exec() as RxDocument<IncomeDocType> | null;
+        if (incomeDoc) {
+          const inc = {
+            date: incomeDoc.date,
+            amount: (incomeDoc.amount / 100).toFixed(2),
+            source_id: incomeDoc.source_id,
+            comment: incomeDoc.comment,
+            from_who: incomeDoc.from_who,
+          } as FormInputs;
+          reset({ ...inc });
+        }
+        setIncomeSources(allIncomeSources.map((cat: RxDocument<IncomeSourceDocType>) => cat.name));
         setIncome(incomeDoc);
-        reset({
-          date: incomeDoc.date,
-          amount: (incomeDoc.amount / 100) as unknown as string,
-          incomeSourceId: incomeDoc.source_id,
-          comment: incomeDoc.comment,
-          from: incomeDoc.from_who,
-        });
+      } catch (error) {
+        console.error('Error fetching income sources or income:', error);
       }
-    };
+    })();
 
-    fetchIncome(id);
-    fetchIncomeSources();
-  }, [db, id, isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  }, [db, id, income, reset]);
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log(data);
     if (!income) {
       console.error('Database not initialized');
@@ -78,20 +76,21 @@ export default function IncomeEdit() {
         $set: {
           date: data.date,
           amount: Math.trunc(Number(data.amount) * 100),
-          source_id: data.incomeSourceId,
+          source_id: data.source_id,
           comment: data.comment,
-          from_who: data.from,
+          from_who: data.from_who,
           updated_at: dateNow,
         },
       })
-      .then((doc) => {
-        console.log('Income updated:', doc.toJSON());
+      .then(() => {
         // After successful update, navigate back to expense list
         // would be nice to show the expense list for the month of the edited expense
-        navigate(`/income/${data.date}`);
+        void navigate(`/income/${data.date}`);
+        toast.success('Income updated successfully');
       })
       .catch((err) => {
         console.error('Error updating income:', err);
+        toast.error('Error updating income');
       });
   };
 
@@ -99,7 +98,9 @@ export default function IncomeEdit() {
     <div className="w-full bg-gray-100 p-4 md:p-8">
       <h2 className="mb-4 text-center text-2xl font-bold">Edit Income</h2>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          void handleSubmit(onSubmit)(e);
+        }}
         className="relative mx-auto flex max-w-md flex-col space-y-4 rounded-lg bg-white p-6 shadow-md"
       >
         <input
@@ -135,20 +136,20 @@ export default function IncomeEdit() {
         )}
 
         <select
-          {...register('incomeSourceId', { required: true })}
+          {...register('source_id', { required: true })}
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
           <option value="">Select Income Source</option>
           {incomeSources.map((category) => (
-            <option key={category.name} value={category.name}>
-              {category.name}
+            <option key={category} value={category}>
+              {category}
             </option>
           ))}
         </select>
-        {errors.incomeSourceId && <span className="text-red-500">Income Source is required</span>}
+        {errors.source_id && <span className="text-red-500">Income Source is required</span>}
 
         <select
-          {...register('from', {
+          {...register('from_who', {
             required: true,
           })}
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
@@ -158,7 +159,7 @@ export default function IncomeEdit() {
           <option value="EVE">EVE</option>
           <option value="OTHER">OTHER</option>
         </select>
-        {errors.from && <span className="text-red-500">From is required</span>}
+        {errors.from_who && <span className="text-red-500">From is required</span>}
 
         <input
           {...register('comment')}

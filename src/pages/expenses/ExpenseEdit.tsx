@@ -2,71 +2,68 @@ import { useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import useRxDB from '../../hooks/useRxDB';
 import type { CategoryDocType, ExpenseDocType } from '../../database/schemas/schemas';
+import { forWhoArray } from '../../database/schemas/schemas';
 import { type RxDocument } from 'rxdb';
 import { useParams, useNavigate } from 'react-router';
-//import { uuidv7 } from "uuidv7";
+import { toast } from 'sonner';
 
 export default function ExpenseEdit() {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [expense, setExpense] = useState<RxDocument<ExpenseDocType> | null>(null);
+  interface FormValues {
+    date: string;
+    amount: string;
+    category_id: string;
+    comment: string;
+    for_who: string;
+  }
+  // we need the RxDocument to call .update() on it, we will set the form values from this document after we fetch it from the db
   const {
     register,
     handleSubmit,
     reset,
-    formState,
+    //formState,
     formState: { errors },
-  } = useForm<Inputs>({
-    defaultValues: { date: '', amount: '', category_id: '', comment: '' },
+  } = useForm<FormValues>({
   });
 
-  const [categories, setCategories] = useState<CategoryDocType[]>([]);
-  const [expense, setExpense] = useState<RxDocument<ExpenseDocType> | null>(null);
 
   const id = useParams().id as string;
   const navigate = useNavigate();
-
-  type Inputs = {
-    date: string;
-    amount: string; // convert to number on submit
-    category_id: string;
-    comment: string;
-    for_who: 'BOTH' | 'JIM' | 'EVE' | 'OTHER';
-  };
-
   const dbctx = useRxDB();
   const db = dbctx.db;
-  const { isSubmitSuccessful } = formState;
 
   useEffect(() => {
     if (!db) return;
 
-    if (isSubmitSuccessful) {
-      reset({ amount: '', category_id: '', comment: '', for_who: 'JIM', date: '' });
-    }
-    const fetchCategories = async () => {
-      const categoryCollection = db.categories;
-      const allCategories = await categoryCollection.find().exec();
-      setCategories(allCategories.map((cat) => cat.toJSON()));
-    };
-
-    const fetchExpense = async (id: string) => {
-      const expenseDoc = await db.expenses.findOne(id).exec();
-      if (expenseDoc) {
-        setExpense(expenseDoc); //we need this to do update
-        reset({
-          date: expenseDoc.date,
-          amount: (expenseDoc.amount / 100) as unknown as string,
-          category_id: expenseDoc.category_id,
-          comment: expenseDoc.comment,
-          for_who: expenseDoc.for_who,
-        });
+    void ( async () => {
+      try {
+        const allCategories = await db.categories.find().exec();
+        const expenseDoc = (await db.expenses
+          .findOne(id)
+          .exec()) as RxDocument<ExpenseDocType> | null;
+        if (expenseDoc) {
+          const exp = {
+            date: expenseDoc.date,
+            amount: (expenseDoc.amount / 100).toFixed(2),
+            category_id: expenseDoc.category_id,
+            comment: expenseDoc.comment,
+            for_who: expenseDoc.for_who,  
+          } as FormValues;
+          reset({ ...exp });
+          //setFormValues(exp);
+          setExpense(expenseDoc);
+        }
+        setCategories(allCategories.map((cat: RxDocument<CategoryDocType>) => cat.name));
+      } catch (error) {
+        console.error('Error fetching categories or expense:', error);
       }
-    };
+    })();
 
-    fetchExpense(id);
+    
+  }, [db, id, reset]);
 
-    fetchCategories();
-  }, [db, isSubmitSuccessful, reset, id]);
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     const dateNow = new Date().getTime();
     if (!expense) {
@@ -88,24 +85,27 @@ export default function ExpenseEdit() {
         console.log('Expense updated:', doc.toJSON());
         // After successful update, navigate back to expense list
         // would be nice to show the expense list for the month of the edited expense
-        navigate(`/expense/${data.date}`);
+        void navigate(`/expense/${data.date}`);
+        toast.success('Expense updated successfully');
       })
       .catch((err) => {
         console.error('Error updating expense:', err);
+        toast.error('Failed to update expense');
       });
-  };
+  }; 
+
 
   return (
     <div className="w-full p-4 md:p-8">
       <h2 className="mb-4 text-center text-2xl font-bold">Edit Expense</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
+      <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}
         className="relative mx-auto flex max-w-md flex-col space-y-4 rounded-lg bg-white p-6 shadow-md"
       >
         <input
           {...register('date', {
             required: true,
-          })}
+          },
+        )} 
           type="date"
           className="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         />
@@ -140,8 +140,8 @@ export default function ExpenseEdit() {
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
-            <option key={category.name} value={category.name}>
-              {category.name}
+            <option key={category} value={category}>
+              {category}
             </option>
           ))}
         </select>
@@ -154,10 +154,11 @@ export default function ExpenseEdit() {
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
           <option value="">Select For Who</option>
-          <option value="BOTH">BOTH</option>
-          <option value="JIM">JIM</option>
-          <option value="EVE">EVE</option>
-          <option value="OTHER">OTHER</option>
+          { forWhoArray.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          )) }
         </select>
         {errors.for_who && <span className="text-red-500">For Who is required</span>}
 
@@ -173,6 +174,13 @@ export default function ExpenseEdit() {
           type="submit"
           value="Update"
         />
+        <button
+          type="button"
+          className="rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-700"
+          onClick={() => void navigate(`/expense/${expense?.date}`)}
+        >
+          Cancel
+        </button>
       </form>
     </div>
   );

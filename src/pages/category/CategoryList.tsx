@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { CategoryForm } from './CategoryForm';
 import useRxDB from '../../hooks/useRxDB';
 import type { CategoryDocType } from '../../database/schemas/schemas';
+import type { RxDocument } from 'rxdb';
 
 export default function CategoryList() {
   //const { categories } = useCategory()a
@@ -27,7 +28,7 @@ export default function CategoryList() {
 */
     // Optionally, you can set up a subscription to listen for changes
     const subscription = db.categories.find().$.subscribe((docs) => {
-      setCategories(docs.map((doc) => doc.toJSON()));
+      setCategories(docs.map((doc: RxDocument<CategoryDocType>) => doc.toJSON()));
     });
 
     return () => {

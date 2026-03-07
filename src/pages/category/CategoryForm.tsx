@@ -42,8 +42,8 @@ export function CategoryForm({ categories }: { categories?: CategoryDocType[] })
         updated_at: dateNow,
         _deleted: false,
       } as CategoryDocType)
-      .then((doc) => {
-        console.log('Category added:', doc.toJSON());
+      .then((doc: CategoryDocType) => {
+        console.log('Category added:', doc);
       })
       .catch((err) => {
         console.error('Error adding category:', err);
@@ -68,7 +68,10 @@ export function CategoryForm({ categories }: { categories?: CategoryDocType[] })
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form
       className="flex flex-col items-center justify-center-safe gap-2"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        void handleSubmit(onSubmit)();
+      }}
     >
       {/* register your input into the hook by invoking the "register" function */}
 
@@ -78,7 +81,7 @@ export function CategoryForm({ categories }: { categories?: CategoryDocType[] })
           required: true,
           pattern: /^[A-Za-z]+$/i,
           validate: validateCategoryUniqueName,
-          onChange(event) {
+          onChange(event: React.ChangeEvent<HTMLInputElement>) {
             event.target.value = capitalizeFirstLowercaseRest(event.target.value);
           },
         })}

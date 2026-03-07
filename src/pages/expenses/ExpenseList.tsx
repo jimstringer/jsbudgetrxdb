@@ -4,6 +4,7 @@ import useRxDB from '../../hooks/useRxDB';
 import type { ExpenseDocType } from '../../database/schemas/schemas';
 import { YearMonthSelect } from '../../components/YearMonthSelect';
 import { useParams } from 'react-router';
+import type { RxDocument } from 'node_modules/rxdb/dist/types/types/rx-document';
 
 export default function ExpenseList() {
   const initDate = useParams().date;
@@ -36,7 +37,7 @@ export default function ExpenseList() {
       },
     });
     const subscription = query.$.subscribe((docs) => {
-      setExpenses(docs.map((doc) => doc.toJSON()));
+      setExpenses(docs.map((doc: RxDocument<ExpenseDocType>) => doc.toJSON()));
     });
 
     return () => {

@@ -3,6 +3,7 @@ import { Income } from '@/components/income';
 import useRxDB from '../../hooks/useRxDB';
 import type { IncomeDocType } from '../../database/schemas/schemas';
 import { YearMonthSelect } from '../../components/YearMonthSelect';
+import type { RxDocument } from 'rxdb';
 
 export function IncomeList() {
   const [incomes, setIncomes] = useState<IncomeDocType[]>([]);
@@ -31,7 +32,7 @@ export function IncomeList() {
       },
     });
     const subscription = query.$.subscribe((docs) => {
-      setIncomes(docs.map((doc) => doc.toJSON()));
+      setIncomes(docs.map((doc: RxDocument<IncomeDocType>) => doc.toJSON()));
     });
 
     return () => {

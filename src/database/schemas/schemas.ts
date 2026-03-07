@@ -1,5 +1,8 @@
 import type { RxJsonSchema } from 'rxdb';
 
+export const forWhoArray = ['BOTH', 'JIM', 'EVE', 'OTHER'];
+export const fromWhoArray = ['JIM', 'EVE', 'OTHER'];
+
 //changed camelCase to snake_case for db storage sync to sqlite?
 export type ExpenseDocType = {
   id: string;

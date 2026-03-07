@@ -2,39 +2,39 @@ import { useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import useRxDB from '../../hooks/useRxDB';
 import type { CategoryDocType, ExpenseDocType } from '../../database/schemas/schemas';
+import { forWhoArray } from '../../database/schemas/schemas';
+import { type RxDocument , RxError} from 'rxdb';
+import { toast } from 'sonner';
 import { uuidv7 } from 'uuidv7';
-import type { RxError } from 'rxdb';
-import showAlertDialog from '@/components/show-alert-dialog';
 import { format } from 'date-fns';
 
 export default function ExpenseForm() {
+
+  interface FormValues {
+    date: string;
+    amount: string;
+    category_id: string;
+    comment: string;
+    for_who: string;
+  }
+
   const {
     register,
     handleSubmit,
     reset,
     formState,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<FormValues>({
     defaultValues: {
       date: format(new Date(), 'yyyy-MM-dd'),
       amount: '',
       category_id: '',
       comment: '',
+      for_who: 'BOTH',
     },
   });
 
-  const [categories, setCategories] = useState<CategoryDocType[]>([]);
-  //const [error, setError] = useState('');
-  //const [success, setSuccess] = useState('');
-
-  type Inputs = {
-    date: string;
-    amount: string;
-    category_id: string;
-    comment: string;
-    for_who: '' | 'BOTH' | 'JIM' | 'EVE' | 'OTHER';
-  };
-
+  const [categories, setCategories] = useState<string[]>([]);
   const dbctx = useRxDB();
   const db = dbctx.db;
   const { isSubmitSuccessful } = formState;
@@ -45,16 +45,20 @@ export default function ExpenseForm() {
     if (isSubmitSuccessful) {
       reset({ amount: '', category_id: '', comment: '', for_who: '' });
     }
-    const fetchCategories = async () => {
+    void (async () => {
+      try {
       const categoryCollection = db.categories;
       const allCategories = await categoryCollection.find().exec();
-      setCategories(allCategories.map((cat) => cat.toJSON()));
-    };
+        setCategories(allCategories.map((cat: RxDocument<CategoryDocType>) => cat.name));
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        toast.error('Error logged to console');
+      }
+    })();
 
-    fetchCategories();
   }, [db, isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     const db = dbctx.db;
     if (!db) {
       console.error('Database not initialized');
@@ -74,11 +78,11 @@ export default function ExpenseForm() {
         _deleted: false,
       } as ExpenseDocType)
       .then(() => {
-        showAlertDialog('Success', 'Expense added successfully');
+        toast.success('Expense added successfully');
       })
       .catch((err: RxError) => {
         console.error('Error adding expense:', err);
-        showAlertDialog('Error', 'Error logged to console');
+        toast.error('Error logged to console');
       });
   };
 
@@ -86,7 +90,9 @@ export default function ExpenseForm() {
     <div className="w-full p-4 md:p-8">
       <h2 className="mb-4 text-center text-2xl font-bold">Add Expense</h2>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          void handleSubmit(onSubmit)(e);
+        }}
         className="relative mx-auto flex max-w-md flex-col space-y-4 rounded-lg bg-white p-6 shadow-md"
       >
         <input
@@ -131,8 +137,8 @@ export default function ExpenseForm() {
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
-            <option key={category.name} value={category.name}>
-              {category.name}
+            <option key={category} value={category}>
+              {category}
             </option>
           ))}
         </select>
@@ -144,11 +150,14 @@ export default function ExpenseForm() {
           })}
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
-          <option value="">Select For Who</option>
-          <option value="BOTH">BOTH</option>
-          <option value="JIM">JIM</option>
-          <option value="EVE">EVE</option>
-          <option value="OTHER">OTHER</option>
+          <option key="ForWho" value="">
+            Select For Who
+          </option>
+          {forWhoArray.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
         {errors.for_who && <span className="text-red-500">For Who is required</span>}
 

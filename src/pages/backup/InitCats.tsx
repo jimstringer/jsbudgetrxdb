@@ -44,7 +44,7 @@ export const InitCats = () => {
 
   const incomecatlist = ['CPP', 'OAS', 'Tips', 'Wage', 'CAI', 'GST', 'Investment', 'Other'];
 
-  const insertDefaultIncomeSources = async () => {
+  const insertDefaultIncomeSources = void (async () => {
     const now = new Date().getTime();
     const existingIncomeSources = await db.incomeSources.find().exec();
     if (existingIncomeSources.length === 0) {
@@ -63,9 +63,9 @@ export const InitCats = () => {
       setHasIncomeSources(true);
       console.log('Income sources already exist, skipping initialization');
     }
-  };
+  });
 
-  const insertDefaultCategories = async () => {
+  const insertDefaultCategories = void (async () => {
     const now = new Date().getTime();
     //check if categories exist
     const existingCats = await db.categories.find().exec();
@@ -86,7 +86,7 @@ export const InitCats = () => {
       console.log('Categories already exist, skipping initialization');
       setHasCats(true);
     }
-  };
+  })();
 
   return (
     <div className="p-4">

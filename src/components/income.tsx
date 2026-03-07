@@ -3,6 +3,7 @@ import type { IncomeDocType } from '../database/schemas/schemas';
 import { useNavigate } from 'react-router';
 import useRxDB from '../hooks/useRxDB';
 import showAlertDialog from './show-alert-dialog';
+import type { RxDocument } from 'node_modules/rxdb/dist/types/types/rx-document';
 
 export const Income = ({ income }: { income: IncomeDocType }) => {
   const { db } = useRxDB();
@@ -15,7 +16,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
     );
     if (confirmed) {
       // Perform the delete action
-      deleteIncome(income.id);
+      await deleteIncome(income.id);
       console.log('File deleted');
     } else {
       console.log('Action canceled');
@@ -23,14 +24,14 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
   };
   const deleteIncome = async (id: string) => {
     if (!db) return;
-    const incomeDoc = await db.incomes.findOne(id).exec();
+    const incomeDoc = await db.incomes.findOne(id).exec() as RxDocument | null;
     if (incomeDoc) {
       await incomeDoc.remove();
     }
   };
 
   function handleEdit(id: string) {
-    navigate(`/income/edit/${id}`);
+    void navigate(`/income/edit/${id}`);
   }
 
   return (
@@ -53,7 +54,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
           <PencilIcon className="h-5 w-5 text-blue-500" />
         </button>
 
-        <button className="x-button" onClick={() => handleDelete(income)}>
+        <button className="x-button" onClick={() => void handleDelete(income)}>
           ❌
         </button>
       </div>

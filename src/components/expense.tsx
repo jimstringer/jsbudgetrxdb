@@ -4,6 +4,8 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import useRxDB from '../hooks/useRxDB';
 import { useNavigate } from 'react-router';
 import showAlertDialog from './show-alert-dialog';
+import { toast } from 'sonner';
+import type { RxDocument } from 'rxdb';
 
 export default function Expense({ expense }: { expense: ExpenseDocType }) {
   const { db } = useRxDB();
@@ -16,8 +18,13 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
     );
     if (confirmed) {
       // Perform the delete action
-      deleteExpense(expense.id);
-      console.log('File deleted');
+      try {
+        await deleteExpense(expense.id);
+        toast.success('Expense deleted successfully');
+      } catch (error) {
+        toast.error('Failed to delete expense');
+        console.error('Error deleting expense:', error);
+      }
     } else {
       console.log('Action canceled');
     }
@@ -25,15 +32,20 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
 
   const deleteExpense = async (id: string) => {
     if (!db) return;
-    const expenseDoc = await db.expenses.findOne(id).exec();
+    try {
+    const expenseDoc = await db.expenses.findOne(id).exec() as RxDocument | null;
     if (expenseDoc) {
       await expenseDoc.remove();
+    }
+    } catch (error) {
+      toast.error('Failed to delete expense');
+      console.error('Error deleting expense:', error);
     }
   };
 
   const handleEdit = (id: string) => {
     // Navigate to edit page
-    navigate(`/expense/edit/${id}`);
+    void navigate(`/expense/edit/${id}`);
   };
 
   return (
@@ -57,7 +69,7 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
         <button
           className="x-button"
           onClick={() => {
-            handleDelete(expense);
+            void handleDelete(expense);
           }}
         >
           <XMarkIcon className="h-5 w-5 text-red-500" />

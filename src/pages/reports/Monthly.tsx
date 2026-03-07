@@ -3,6 +3,9 @@ import useRxDB from '../../hooks/useRxDB';
 import { YearMonthSelect } from '../../components/YearMonthSelect';
 //import type {  ExpenseDocType,  IncomeDocType, } from "../../database/schemas/schemas";
 import { NumberFormater } from '../../utils/NumberFormater';
+import type { RxDocument } from 'rxdb';
+import type { CategoryDocType, ExpenseDocType, IncomeDocType, IncomeSourceDocType } from '@/database/schemas/schemas';
+
 
 export const Monthly = () => {
   const { db } = useRxDB();
@@ -27,8 +30,8 @@ export const Monthly = () => {
 
   useEffect(() => {
     if (!db) return;
-    const handleLoading = async () => {
-      const expenses = await db.expenses
+    void (async () => {
+      const expenses: RxDocument<ExpenseDocType>[] = await db.expenses
         .find({
           selector: {
             date: {
@@ -37,9 +40,9 @@ export const Monthly = () => {
             },
           },
         })
-        .exec();
+        .exec() as unknown as RxDocument<ExpenseDocType>[];
 
-      const incomes = await db.incomes
+      const incomes: RxDocument<IncomeDocType>[] = await db.incomes
         .find({
           selector: {
             date: {
@@ -48,13 +51,14 @@ export const Monthly = () => {
             },
           },
         })
-        .exec();
+        .exec() as unknown as RxDocument<IncomeDocType>[];
+      
       //fetch categories as array of RxDocument
       const allCategories = await db.categories.find().exec();
       //fetch categories as array of strings
-      const expenseCategoryList = allCategories.map((cat) => cat.name);
+      const expenseCategoryList: string[] = allCategories.map((cat: RxDocument<CategoryDocType>) => cat.name);  
       // create object with category name as key and value 0
-      const categoryObj = expenseCategoryList.reduce((acc, cur) => {
+      const categoryObj = expenseCategoryList.reduce((acc: Record<string, number>, cur) => {
         acc[cur] = 0;
         return acc;
       }, {});
@@ -67,8 +71,8 @@ export const Monthly = () => {
 
       //do the same for incomes sources
       const allIncomeSources = await db.incomeSources.find().exec();
-      const incomeSourceList = allIncomeSources.map((inc) => inc.name);
-      const incomeSourceObj = incomeSourceList.reduce((acc, cur) => {
+      const incomeSourceList = allIncomeSources.map((inc: RxDocument<IncomeSourceDocType>) => inc.name);
+      const incomeSourceObj = incomeSourceList.reduce((acc: Record<string, number>, cur) => {
         acc[cur] = 0;
         return acc;
       }, {});
@@ -86,11 +90,8 @@ export const Monthly = () => {
 
       setExpenseCategories(categoryObj);
       setIncomeSources(incomeSourceObj);
-      //setExpenses(expenses);
-      //setIncomes(incomes);
-    };
+    })();
 
-    handleLoading();
   }, [db, startDate, endDate]);
 
   const sortedCategories = Object.entries(expenseCategoryTotals).sort(([, a], [, b]) => b - a);

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { NumberFormater } from '../../utils/NumberFormater';
 import useRxDB from '../../hooks/useRxDB';
 import { YearSelect } from '../../components/YearSelect';
+import type { RxDocument } from 'rxdb';
+import type { ExpenseDocType, IncomeDocType } from '@/database/schemas/schemas';
 
 export const Home = () => {
   const currentyear = new Date().getFullYear(); // Define currentyear
@@ -38,10 +40,10 @@ export const Home = () => {
         setExpenseCount(expenseCount);
         setIncomeCount(incomeCount);
         // Fetch expenses for the current year
-        const expenses = await db.expenses.find().where('date').gte(startDate).lt(endDate).exec();
+        const expenses = await db.expenses.find().where('date').gte(startDate).lt(endDate).exec() as RxDocument<ExpenseDocType>[]; // Cast to RxDocument array
 
         // Fetch incomes for the current year
-        const incomes = await db.incomes.find().where('date').gte(startDate).lt(endDate).exec();
+        const incomes = await db.incomes.find().where('date').gte(startDate).lt(endDate).exec() as RxDocument<IncomeDocType>[]; // Cast to RxDocument array
 
         // Calculate totals
         const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
@@ -54,8 +56,10 @@ export const Home = () => {
         console.error('Error fetching data:', error);
       }
     };
-
-    fetchData();
+    async function fetchDataWrapper() {
+      await fetchData();
+    }
+    void fetchDataWrapper();
   }, [year, db, startDate, endDate]);
 
   // Render the component

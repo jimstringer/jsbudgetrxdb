@@ -14,9 +14,9 @@ export default defineConfig([
     extends: [
       js.configs.recommended,
       // Remove tseslint.configs.recommended and replace with this
-      //tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.recommendedTypeChecked,
       // Above causes 273 now 169 errors I don't know how to fix most of them.
-      tseslint.configs.recommended,
+      //tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
       // Enable lint rules for React
