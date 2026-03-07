@@ -5,7 +5,7 @@ import type { IncomeSourceDocType } from '../../database/schemas/schemas';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-type Inputs = {
+type FormInputs = {
   name: string;
 };
 
@@ -17,7 +17,7 @@ export function SourceForm({ sources }: { sources?: IncomeSourceDocType[] }) {
     reset,
     formState,
     formState: { errors },
-  } = useForm<Inputs>({ defaultValues: { name: '' } });
+  } = useForm<FormInputs>({ defaultValues: { name: '' } });
 
   const dbctx = useRxDB();
   const { isSubmitSuccessful } = formState;
@@ -28,8 +28,7 @@ export function SourceForm({ sources }: { sources?: IncomeSourceDocType[] }) {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormInputs> = (data) => {
     const db = dbctx.db;
     if (!db) {
       console.error('Database not initialized');
@@ -68,7 +67,10 @@ export function SourceForm({ sources }: { sources?: IncomeSourceDocType[] }) {
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form
       className="flex flex-col items-center justify-center-safe gap-2"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        void handleSubmit(onSubmit)();
+      }}
     >
       {/* register your input into the hook by invoking the "register" function */}
 

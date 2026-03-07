@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { SourceForm } from './SourceForm';
 import useRxDB from '../../hooks/useRxDB';
 import type { IncomeSourceDocType } from '../../database/schemas/schemas';
+import type { RxDocument } from 'rxdb';
 
 export default function SourceList() {
   //const { sources } = useSource()a
@@ -18,7 +19,7 @@ export default function SourceList() {
     if (!db) return;
     // Optionally, you can set up a subscription to listen for changes
     const subscription = db.incomeSources.find().$.subscribe((docs) => {
-      setsources(docs.map((doc) => doc.toJSON()));
+      setsources(docs.map((doc: RxDocument<IncomeSourceDocType>) => doc.toJSON()));
     });
 
     return () => {
