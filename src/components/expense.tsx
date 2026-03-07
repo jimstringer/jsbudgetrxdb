@@ -1,6 +1,5 @@
 import type { ExpenseDocType } from '../database/schemas/schemas';
-import { PencilIcon } from '@heroicons/react/24/solid';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+import { XIcon , PencilIcon} from 'lucide-react';
 import useRxDB from '../hooks/useRxDB';
 import { useNavigate } from 'react-router';
 import showAlertDialog from './show-alert-dialog';
@@ -72,7 +71,7 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
             void handleDelete(expense);
           }}
         >
-          <XMarkIcon className="h-5 w-5 text-red-500" />
+          <XIcon strokeWidth={4} className="h-5 w-5 text-red-500" />
         </button>
       </div>
     </div>

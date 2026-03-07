@@ -173,6 +173,13 @@ export default function IncomeEdit() {
           type="submit"
           value="Update"
         />
+        <button
+          type="button"
+          className="rounded bg-gray-500 px-4 py-2 font-bold text-white hover:bg-gray-700"
+          onClick={() => void navigate(`/income/${income?.date}`)}
+        >
+          Cancel
+        </button>
       </form>
     </div>
   );
