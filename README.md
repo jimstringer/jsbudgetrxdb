@@ -26,10 +26,11 @@ Replicate to/from CouchDB
 
 ## Expanded the ESLint configuration
 ### Tried this setting but it causes 271 errors. Most I don't know how to fix. 
-  Most errors to do with floating promise check or any. 
-  Going back to .recommended for now. 
       // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
+     tseslint.configs.recommendedTypeChecked,
+
+## Fixed all the errors!!! YEAH!!!
+  Some were real errors and some just me not knowing typescript. 
 
 ```js
 export default defineConfig([
