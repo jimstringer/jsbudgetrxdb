@@ -41,7 +41,7 @@ export default function SourceList() {
   return (
     <div className="mx-auto mt-6 max-w-md rounded bg-white p-4 shadow">
       <h1 className="mb-4 flex justify-between px-3 text-2xl font-bold">
-        sources
+        Income Sources
         <span title="Add Source">
           <Plus
             className="ml-2 inline h-5 w-5"

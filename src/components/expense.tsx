@@ -13,7 +13,7 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
   const handleDelete = async (expense: ExpenseDocType) => {
     const confirmed = await showAlertDialog(
       'Are you absolutely sure?',
-      `This action cannot be undone. This will permanently delete "${expense.category_id}".`
+      `This action cannot be undone. This will permanently delete this expense from category "${expense.category_id}".`
     );
     if (confirmed) {
       // Perform the delete action
