@@ -3,13 +3,12 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import useRxDB from '../../hooks/useRxDB';
 import type { CategoryDocType, ExpenseDocType } from '../../database/schemas/schemas';
 import { forWhoArray } from '../../database/schemas/schemas';
-import { type RxDocument , RxError} from 'rxdb';
+import { type RxDocument, RxError } from 'rxdb';
 import { toast } from 'sonner';
 import { uuidv7 } from 'uuidv7';
 import { format } from 'date-fns';
 
 export default function ExpenseForm() {
-
   interface FormValues {
     date: string;
     amount: string;
@@ -47,15 +46,14 @@ export default function ExpenseForm() {
     }
     void (async () => {
       try {
-      const categoryCollection = db.categories;
-      const allCategories = await categoryCollection.find().exec();
+        const categoryCollection = db.categories;
+        const allCategories = await categoryCollection.find().exec();
         setCategories(allCategories.map((cat: RxDocument<CategoryDocType>) => cat.name));
       } catch (err) {
         console.error('Error fetching categories:', err);
         toast.error('Error logged to console');
       }
     })();
-
   }, [db, isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {

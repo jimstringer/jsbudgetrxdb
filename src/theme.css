@@ -2,6 +2,7 @@
   /* Typography */
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: 'Noto', serif;
+  --font-mono: 'DM Mono', monospace;
 
   /* Colors */
   --color-primary: #ff6345;

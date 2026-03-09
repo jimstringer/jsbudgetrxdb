@@ -21,13 +21,13 @@ export default function SourceList() {
 
     void (async () => {
       try {
-      const sourceCollection = db.incomeSources;
-      const allSources = await sourceCollection.find().exec();
-      setsources(allSources.map((src: RxDocument<IncomeSourceDocType>) => src.toJSON()));
-    } catch (error) {
+        const sourceCollection = db.incomeSources;
+        const allSources = await sourceCollection.find().exec();
+        setsources(allSources.map((src: RxDocument<IncomeSourceDocType>) => src.toJSON()));
+      } catch (error) {
         console.error('Error fetching sources:', error);
         toast.error('An error occurred while fetching sources. Please try again.');
-    }
+      }
     })();
     /* // Optionally, you can set up a subscription to listen for changes
     const subscription = db.incomeSources.find().$.subscribe((docs) => {
@@ -43,10 +43,7 @@ export default function SourceList() {
       <h1 className="mb-4 flex justify-between px-3 text-2xl font-bold">
         Income Sources
         <span title="Add Source">
-          <Plus
-            className="ml-2 inline h-5 w-5"
-            onClick={() => setShowForm(!showForm)}
-          />
+          <Plus className="ml-2 inline h-5 w-5" onClick={() => setShowForm(!showForm)} />
         </span>
       </h1>
       <div>

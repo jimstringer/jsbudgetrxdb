@@ -5,20 +5,24 @@ import { toast } from 'sonner';
 import useRxDB from '@/hooks/useRxDB';
 
 export default function Category({ category }: { category: CategoryDocType }) {
-
-    const { db } = useRxDB();
+  const { db } = useRxDB();
 
   const handleDelete = async (categoryToDelete: CategoryDocType) => {
-  
     if (!db) {
       toast.error('Database not initialized');
       return;
     }
     try {
       //get a count of how many expenses are in this category and show that in the confirmation dialog
-      const expenseCount = await db.expenses.count().where('category_id').equals(categoryToDelete.name).exec();
+      const expenseCount = await db.expenses
+        .count()
+        .where('category_id')
+        .equals(categoryToDelete.name)
+        .exec();
       if (expenseCount > 0) {
-        toast.error(`Cannot delete category "${categoryToDelete.name}" because it has ${expenseCount} associated expenses.`);
+        toast.error(
+          `Cannot delete category "${categoryToDelete.name}" because it has ${expenseCount} associated expenses.`
+        );
         return;
       }
       const confirmed = await showAlertDialog(

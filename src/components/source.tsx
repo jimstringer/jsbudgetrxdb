@@ -5,7 +5,6 @@ import { XIcon } from 'lucide-react';
 import useRxDB from '@/hooks/useRxDB';
 
 export default function Source({ source }: { source: IncomeSourceDocType }) {
-
   const { db } = useRxDB();
 
   const handleDelete = async () => {
@@ -17,7 +16,9 @@ export default function Source({ source }: { source: IncomeSourceDocType }) {
       //get a count of how many incomes are associated with this income source and show that in the confirmation dialog
       const incomeCount = await db.incomes.count().where('source_id').equals(source.name).exec();
       if (incomeCount > 0) {
-        toast.error(`Cannot delete source "${source.name}" because it has ${incomeCount} associated income entries.`);
+        toast.error(
+          `Cannot delete source "${source.name}" because it has ${incomeCount} associated income entries.`
+        );
         return;
       }
 

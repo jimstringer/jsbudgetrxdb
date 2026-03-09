@@ -7,8 +7,7 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 export function IncomeForm() {
-
-  interface FormInputs{
+  interface FormInputs {
     date: string;
     amount: string;
     source_id: string;
@@ -48,7 +47,6 @@ export function IncomeForm() {
       const allIncomeSources = await incomeSourceCollection.find().exec();
       setIncomeSources(allIncomeSources.map((cat: IncomeSourceDocType) => cat.name));
     });
-
   }, [db, isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {

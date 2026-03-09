@@ -1,5 +1,5 @@
 import type { ExpenseDocType } from '../database/schemas/schemas';
-import { XIcon , PencilIcon} from 'lucide-react';
+import { XIcon, PencilIcon } from 'lucide-react';
 import useRxDB from '../hooks/useRxDB';
 import { useNavigate } from 'react-router';
 import showAlertDialog from './show-alert-dialog';
@@ -32,10 +32,10 @@ export default function Expense({ expense }: { expense: ExpenseDocType }) {
   const deleteExpense = async (id: string) => {
     if (!db) return;
     try {
-    const expenseDoc = await db.expenses.findOne(id).exec() as RxDocument | null;
-    if (expenseDoc) {
-      await expenseDoc.remove();
-    }
+      const expenseDoc = (await db.expenses.findOne(id).exec()) as RxDocument | null;
+      if (expenseDoc) {
+        await expenseDoc.remove();
+      }
     } catch (error) {
       toast.error('Failed to delete expense');
       console.error('Error deleting expense:', error);

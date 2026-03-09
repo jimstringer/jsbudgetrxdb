@@ -154,20 +154,20 @@ export const YearToYear = () => {
         <div className="text-left font-bold text-gray-600">
           <div className="text-left font-bold text-gray-600">
             Expense:
-            <span className="font-bold text-pink-700">
+            <span className="font-mono font-bold text-pink-700">
               {NumberFormater.format(expenseTotal / 100)}
             </span>
           </div>
           <div className="text-left font-bold text-gray-600">
             Income:
-            <span className="font-bold text-green-700">
+            <span className="font-mono font-bold text-green-700">
               {NumberFormater.format(incomeTotal / 100)}
             </span>
           </div>
           <div className="text-left font-bold text-gray-600">
             Balance:
             <span
-              className={`font-bold ${
+              className={`font-mono font-bold ${
                 incomeTotal - expenseTotal >= 0 ? 'text-green-700' : 'text-red-700'
               }`}
             >
@@ -178,20 +178,20 @@ export const YearToYear = () => {
         <div className="text-left font-bold text-gray-600">
           <div className="text-left font-bold text-gray-600">
             Expense:
-            <span className="font-bold text-pink-700">
+            <span className="font-mono font-bold text-pink-700">
               {NumberFormater.format(expenseTotal2 / 100)}
             </span>
           </div>
           <div className="text-left font-bold text-gray-600">
             Income:
-            <span className="font-bold text-green-700">
+            <span className="font-mono font-bold text-green-700">
               {NumberFormater.format(incomeTotal2 / 100)}
             </span>
           </div>
           <div className="text-left font-bold text-gray-600">
             Balance:
             <span
-              className={`font-bold ${
+              className={`font-mono font-bold ${
                 incomeTotal2 - expenseTotal2 >= 0 ? 'text-green-700' : 'text-red-700'
               }`}
             >
@@ -206,10 +206,10 @@ export const YearToYear = () => {
           sortedCategories.map(([key, value]) => (
             <div key={key} className="grid grid-cols-3 odd:bg-gray-100 even:bg-gray-200">
               <dt className="text-left font-medium text-gray-900">{key}</dt>
-              <dd className="text-right text-gray-700 sm:col-span-1">
+              <dd className="text-right font-mono text-gray-700 sm:col-span-1">
                 {NumberFormater.format(value.year / 100)}
               </dd>
-              <dd className="text-right text-gray-700 sm:col-span-1">
+              <dd className="text-right font-mono text-gray-700 sm:col-span-1">
                 {NumberFormater.format(value.year2 / 100)}
               </dd>
             </div>
@@ -221,10 +221,10 @@ export const YearToYear = () => {
           sortedSources.map(([key, value]) => (
             <div key={key} className="grid grid-cols-3 odd:bg-gray-100 even:bg-gray-200">
               <dt className="text-left font-medium text-gray-900">{key}</dt>
-              <dd className="text-right text-gray-700">
+              <dd className="text-right font-mono text-gray-700">
                 {NumberFormater.format(value.year / 100)}
               </dd>
-              <dd className="text-right text-gray-700">
+              <dd className="text-right font-mono text-gray-700">
                 {NumberFormater.format(value.year2 / 100)}
               </dd>
             </div>

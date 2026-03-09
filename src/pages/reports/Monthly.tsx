@@ -4,8 +4,12 @@ import { YearMonthSelect } from '../../components/YearMonthSelect';
 //import type {  ExpenseDocType,  IncomeDocType, } from "../../database/schemas/schemas";
 import { NumberFormater } from '../../utils/NumberFormater';
 import type { RxDocument } from 'rxdb';
-import type { CategoryDocType, ExpenseDocType, IncomeDocType, IncomeSourceDocType } from '@/database/schemas/schemas';
-
+import type {
+  CategoryDocType,
+  ExpenseDocType,
+  IncomeDocType,
+  IncomeSourceDocType,
+} from '@/database/schemas/schemas';
 
 export const Monthly = () => {
   const { db } = useRxDB();
@@ -31,7 +35,7 @@ export const Monthly = () => {
   useEffect(() => {
     if (!db) return;
     void (async () => {
-      const expenses: RxDocument<ExpenseDocType>[] = await db.expenses
+      const expenses: RxDocument<ExpenseDocType>[] = (await db.expenses
         .find({
           selector: {
             date: {
@@ -40,9 +44,9 @@ export const Monthly = () => {
             },
           },
         })
-        .exec() as unknown as RxDocument<ExpenseDocType>[];
+        .exec()) as unknown as RxDocument<ExpenseDocType>[];
 
-      const incomes: RxDocument<IncomeDocType>[] = await db.incomes
+      const incomes: RxDocument<IncomeDocType>[] = (await db.incomes
         .find({
           selector: {
             date: {
@@ -51,12 +55,14 @@ export const Monthly = () => {
             },
           },
         })
-        .exec() as unknown as RxDocument<IncomeDocType>[];
-      
+        .exec()) as unknown as RxDocument<IncomeDocType>[];
+
       //fetch categories as array of RxDocument
       const allCategories = await db.categories.find().exec();
       //fetch categories as array of strings
-      const expenseCategoryList: string[] = allCategories.map((cat: RxDocument<CategoryDocType>) => cat.name);  
+      const expenseCategoryList: string[] = allCategories.map(
+        (cat: RxDocument<CategoryDocType>) => cat.name
+      );
       // create object with category name as key and value 0
       const categoryObj = expenseCategoryList.reduce((acc: Record<string, number>, cur) => {
         acc[cur] = 0;
@@ -71,7 +77,9 @@ export const Monthly = () => {
 
       //do the same for incomes sources
       const allIncomeSources = await db.incomeSources.find().exec();
-      const incomeSourceList = allIncomeSources.map((inc: RxDocument<IncomeSourceDocType>) => inc.name);
+      const incomeSourceList = allIncomeSources.map(
+        (inc: RxDocument<IncomeSourceDocType>) => inc.name
+      );
       const incomeSourceObj = incomeSourceList.reduce((acc: Record<string, number>, cur) => {
         acc[cur] = 0;
         return acc;
@@ -91,7 +99,6 @@ export const Monthly = () => {
       setExpenseCategories(categoryObj);
       setIncomeSources(incomeSourceObj);
     })();
-
   }, [db, startDate, endDate]);
 
   const sortedCategories = Object.entries(expenseCategoryTotals).sort(([, a], [, b]) => b - a);
@@ -107,20 +114,20 @@ export const Monthly = () => {
       <div className="grid md:grid-cols-3 md:gap-4">
         <div className="text-left font-bold text-gray-600">
           Expense:
-          <span className="font-bold text-pink-700">
+          <span className="font-mono font-bold text-pink-700">
             {NumberFormater.format(expenseTotal / 100)}
           </span>
         </div>
         <div className="text-left font-bold text-gray-600">
           Income:
-          <span className="font-bold text-green-700">
+          <span className="font-mono font-bold text-green-700">
             {NumberFormater.format(incomeTotal / 100)}
           </span>
         </div>
         <div className="text-left font-bold text-gray-600">
           Balance:
           <span
-            className={`font-bold ${
+            className={`font-mono font-bold ${
               incomeTotal - expenseTotal >= 0 ? 'text-green-700' : 'text-red-700'
             }`}
           >
@@ -134,7 +141,7 @@ export const Monthly = () => {
           sortedCategories.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
               <dt className="text-left font-medium text-gray-900">{key}</dt>
-              <dd className="text-right text-gray-700 sm:col-span-1">
+              <dd className="text-right font-mono text-gray-700 sm:col-span-1">
                 {NumberFormater.format(value / 100)}
               </dd>
             </div>
@@ -146,7 +153,9 @@ export const Monthly = () => {
           sortedSources.map(([key, value]) => (
             <div key={key} className="grid grid-cols-2 odd:bg-gray-100 even:bg-gray-200">
               <dt className="text-left font-medium text-gray-900">{key}</dt>
-              <dd className="text-right text-gray-700">{NumberFormater.format(value / 100)}</dd>
+              <dd className="text-right font-mono text-gray-700">
+                {NumberFormater.format(value / 100)}
+              </dd>
             </div>
           ))}
       </div>

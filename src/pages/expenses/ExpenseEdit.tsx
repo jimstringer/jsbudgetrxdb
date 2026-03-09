@@ -24,9 +24,7 @@ export default function ExpenseEdit() {
     reset,
     //formState,
     formState: { errors },
-  } = useForm<FormValues>({
-  });
-
+  } = useForm<FormValues>({});
 
   const id = useParams().id as string;
   const navigate = useNavigate();
@@ -36,7 +34,7 @@ export default function ExpenseEdit() {
   useEffect(() => {
     if (!db) return;
 
-    void ( async () => {
+    void (async () => {
       try {
         const allCategories = await db.categories.find().exec();
         const expenseDoc = (await db.expenses
@@ -48,7 +46,7 @@ export default function ExpenseEdit() {
             amount: (expenseDoc.amount / 100).toFixed(2),
             category_id: expenseDoc.category_id,
             comment: expenseDoc.comment,
-            for_who: expenseDoc.for_who,  
+            for_who: expenseDoc.for_who,
           } as FormValues;
           reset({ ...exp });
           //setFormValues(exp);
@@ -59,8 +57,6 @@ export default function ExpenseEdit() {
         console.error('Error fetching categories or expense:', error);
       }
     })();
-
-    
   }, [db, id, reset]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -92,20 +88,19 @@ export default function ExpenseEdit() {
         console.error('Error updating expense:', err);
         toast.error('Failed to update expense');
       });
-  }; 
-
+  };
 
   return (
     <div className="w-full p-4 md:p-8">
       <h2 className="mb-4 text-center text-2xl font-bold">Edit Expense</h2>
-      <form onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+      <form
+        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
         className="relative mx-auto flex max-w-md flex-col space-y-4 rounded-lg bg-white p-6 shadow-md"
       >
         <input
           {...register('date', {
             required: true,
-          },
-        )} 
+          })}
           type="date"
           className="form-input focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         />
@@ -154,11 +149,11 @@ export default function ExpenseEdit() {
           className="focus:ring-opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200"
         >
           <option value="">Select For Who</option>
-          { forWhoArray.map((option) => (
+          {forWhoArray.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
-          )) }
+          ))}
         </select>
         {errors.for_who && <span className="text-red-500">For Who is required</span>}
 

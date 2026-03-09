@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
 export default function IncomeEdit() {
-  interface FormInputs{
+  interface FormInputs {
     date: string;
     amount: string;
     source_id: string;
@@ -36,14 +36,13 @@ export default function IncomeEdit() {
   const navigate = useNavigate();
   const { db } = useRxDB();
 
-
   useEffect(() => {
     if (!db) return;
 
     void (async () => {
       try {
         const allIncomeSources = await db.incomeSources.find().exec();
-        const incomeDoc = await db.incomes.findOne(id).exec() as RxDocument<IncomeDocType> | null;
+        const incomeDoc = (await db.incomes.findOne(id).exec()) as RxDocument<IncomeDocType> | null;
         if (incomeDoc) {
           const inc = {
             date: incomeDoc.date,
@@ -60,8 +59,6 @@ export default function IncomeEdit() {
         console.error('Error fetching income sources or income:', error);
       }
     })();
-
-
   }, [db, id, income, reset]);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {

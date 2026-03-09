@@ -40,10 +40,20 @@ export const Home = () => {
         setExpenseCount(expenseCount);
         setIncomeCount(incomeCount);
         // Fetch expenses for the current year
-        const expenses = await db.expenses.find().where('date').gte(startDate).lt(endDate).exec() as RxDocument<ExpenseDocType>[]; // Cast to RxDocument array
+        const expenses = (await db.expenses
+          .find()
+          .where('date')
+          .gte(startDate)
+          .lt(endDate)
+          .exec()) as RxDocument<ExpenseDocType>[]; // Cast to RxDocument array
 
         // Fetch incomes for the current year
-        const incomes = await db.incomes.find().where('date').gte(startDate).lt(endDate).exec() as RxDocument<IncomeDocType>[]; // Cast to RxDocument array
+        const incomes = (await db.incomes
+          .find()
+          .where('date')
+          .gte(startDate)
+          .lt(endDate)
+          .exec()) as RxDocument<IncomeDocType>[]; // Cast to RxDocument array
 
         // Calculate totals
         const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);

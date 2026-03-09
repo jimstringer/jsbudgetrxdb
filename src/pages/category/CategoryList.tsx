@@ -20,13 +20,13 @@ export default function CategoryList() {
     if (!db) return;
     void (async () => {
       try {
-      const categoryCollection = db.categories;
-      const allCategories = await categoryCollection.find().exec();
-      setCategories(allCategories.map((cat: RxDocument<CategoryDocType>) => cat.toJSON()));
-    } catch (error) {
+        const categoryCollection = db.categories;
+        const allCategories = await categoryCollection.find().exec();
+        setCategories(allCategories.map((cat: RxDocument<CategoryDocType>) => cat.toJSON()));
+      } catch (error) {
         console.error('Error fetching categories:', error);
         toast.error('An error occurred while fetching categories. Please try again.');
-    }
+      }
     })();
     /* 
     // Optionally, you can set up a subscription to listen for changes
@@ -44,10 +44,7 @@ export default function CategoryList() {
       <h1 className="mb-4 flex justify-between px-3 text-2xl font-bold">
         Categories
         <span title="Add Category">
-          <Plus
-            className="ml-2 inline h-5 w-5"
-            onClick={() => setShowForm(!showForm)}
-          />
+          <Plus className="ml-2 inline h-5 w-5" onClick={() => setShowForm(!showForm)} />
         </span>
       </h1>
       <div>

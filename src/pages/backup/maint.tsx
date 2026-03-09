@@ -154,7 +154,9 @@ export const Maint = () => {
       );
       if (confirmed) {
         // Perform the restore action
-        await db.importJSON(jsonFromFile.current as unknown as RxDumpDatabaseAny<JSDatabaseCollections>);
+        await db.importJSON(
+          jsonFromFile.current as unknown as RxDumpDatabaseAny<JSDatabaseCollections>
+        );
         toast.success('Database restored');
         console.log('Database restored');
       } else {
@@ -187,10 +189,10 @@ export const Maint = () => {
         </p>
         <p className="text-muted-foreground text-sm">To restore, first select a backup file.</p>
         <input
-            type="file"
-            onChange={(event) => void onChange(event)}
-            className="text-sm text-stone-500 file:mr-5 file:border file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-stone-700 hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700"
-          />
+          type="file"
+          onChange={(event) => void onChange(event)}
+          className="text-sm text-stone-500 file:mr-5 file:border file:bg-stone-50 file:px-3 file:py-1 file:text-xs file:font-medium file:text-stone-700 hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700"
+        />
       </div>
     </div>
   );

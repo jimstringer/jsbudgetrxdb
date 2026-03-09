@@ -1,4 +1,4 @@
-import { XIcon , PencilIcon} from 'lucide-react';
+import { XIcon, PencilIcon } from 'lucide-react';
 import type { IncomeDocType } from '../database/schemas/schemas';
 import { useNavigate } from 'react-router';
 import useRxDB from '../hooks/useRxDB';
@@ -24,7 +24,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
   };
   const deleteIncome = async (id: string) => {
     if (!db) return;
-    const incomeDoc = await db.incomes.findOne(id).exec() as RxDocument | null;
+    const incomeDoc = (await db.incomes.findOne(id).exec()) as RxDocument | null;
     if (incomeDoc) {
       await incomeDoc.remove();
     }
@@ -55,7 +55,7 @@ export const Income = ({ income }: { income: IncomeDocType }) => {
         </button>
 
         <button className="x-button" onClick={() => void handleDelete(income)}>
-          <XIcon  strokeWidth={4} className="h-5 w-5 text-red-500" />
+          <XIcon strokeWidth={4} className="h-5 w-5 text-red-500" />
         </button>
       </div>
     </div>
