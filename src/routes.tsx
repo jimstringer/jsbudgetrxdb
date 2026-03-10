@@ -19,6 +19,7 @@ import SourceList from './pages/source/SourceList';
 import IncomeEdit from './pages/incomes/IncomeEdit';
 //import { Sync } from './pages/backup/Sync';
 import { Maint } from './pages/backup/maint';
+import { FamilyList } from './pages/family/familyList';
 
 export const router = createHashRouter([
   {
@@ -49,6 +50,10 @@ export const router = createHashRouter([
       {
         path: 'source',
         children: [{ index: true, Component: SourceList }],
+      },
+      {
+        path: 'family',
+        children: [{ index: true, Component: FamilyList }],
       },
       {
         path: 'reports',

@@ -16,6 +16,7 @@ import {
   incomeSourceSchema,
   type IncomeDocType,
   type ExpenseDocType,
+  familyMemberSchema,
 } from './schemas/schemas';
 import type { RxDatabase, RxCollection } from 'rxdb';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
@@ -42,6 +43,7 @@ export interface JSDatabaseCollections {
   categories: RxCollection;
   incomeSources: RxCollection;
   incomes: RxCollection;
+  familyMembers: RxCollection;
   [key: string]: RxCollection;
 }
 
@@ -116,6 +118,7 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
         schema: expenseSchema,
         migrationStrategies: {
           1: (oldDoc) => oldDoc as ExpenseDocType, // no changes in this migration,
+          2: (oldDoc) => oldDoc as ExpenseDocType, // no changes in this migration, added indexes in schema but no changes to data structure
         },
       },
       categories: {
@@ -128,8 +131,12 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
         schema: incomeSchema,
         migrationStrategies: {
           1: (oldDoc) => oldDoc as IncomeDocType, // no changes in this migration,
+          2: (oldDoc) => oldDoc as IncomeDocType, // no changes in this migration, added indexes in schema but no changes to data structure
         },
       },
+      familyMembers: {
+        schema: familyMemberSchema,
+      },  
     });
 
     return db as JsBudgetDatabase;

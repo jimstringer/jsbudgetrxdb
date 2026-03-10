@@ -19,7 +19,7 @@ export type ExpenseDocType = {
 export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
   title: 'expense schema',
   description: 'describes a single expense item',
-  version: 1,
+  version: 2,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: 'id',
   type: 'object',
@@ -42,6 +42,7 @@ export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
     },
     for_who: {
       type: 'string',
+      maxLength: 50, // <- for_who name max length
     },
     comment: {
       type: 'string',
@@ -60,7 +61,7 @@ export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
     },
   },
   required: ['id', 'amount', 'date', 'for_who', 'category_id', 'created_at', 'updated_at'],
-  indexes: ['date', 'category_id', 'updated_at'],
+  indexes: ['date', 'category_id', 'updated_at', 'for_who'],
 };
 
 export type CategoryDocType = {
@@ -151,7 +152,7 @@ export type IncomeDocType = {
 export const incomeSchema: RxJsonSchema<IncomeDocType> = {
   title: 'income schema',
   description: 'describes a single income item',
-  version: 1,
+  version: 2,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: 'id',
   type: 'object',
@@ -177,6 +178,7 @@ export const incomeSchema: RxJsonSchema<IncomeDocType> = {
     },
     from_who: {
       type: 'string',
+      maxLength: 50, // <- for_who name max length
     },
     created_at: {
       type: 'number',
@@ -192,17 +194,17 @@ export const incomeSchema: RxJsonSchema<IncomeDocType> = {
     },
   },
   required: ['id', 'amount', 'date', 'from_who', 'source_id', 'created_at', 'updated_at'],
-  indexes: ['date', 'source_id', 'updated_at'],
+  indexes: ['date', 'source_id', 'updated_at', 'from_who'],
 };
 
-export type familyMemberSchemaType = {
+export type familyMemberDocType = {
   name: string;
   created_at: number;
   updated_at: number;
   _deleted: boolean;
 };
 
-export const familyMemberSchema: RxJsonSchema<familyMemberSchemaType> = {
+export const familyMemberSchema: RxJsonSchema<familyMemberDocType> = {
   title: 'family member schema',
   description: 'describes a single family member',
   version: 0,

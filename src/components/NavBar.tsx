@@ -24,6 +24,7 @@ const Navbar = () => {
         { id: 3, name: 'Add Expense', href: '/expense/add' },
         { id: 4, name: 'List Expenses', href: '/expense' },
         { id: 12, name: 'Categories', href: '/category' },
+        { id: 19, name: 'Family Members', href: '/family' },
       ],
     },
     {

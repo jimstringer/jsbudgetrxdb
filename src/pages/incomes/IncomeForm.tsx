@@ -46,7 +46,7 @@ export function IncomeForm() {
       const incomeSourceCollection = db.incomeSources;
       const allIncomeSources = await incomeSourceCollection.find().exec();
       setIncomeSources(allIncomeSources.map((cat: IncomeSourceDocType) => cat.name));
-    });
+    })();
   }, [db, isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
