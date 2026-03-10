@@ -136,7 +136,7 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
       },
       familyMembers: {
         schema: familyMemberSchema,
-      },  
+      },
     });
 
     return db as JsBudgetDatabase;

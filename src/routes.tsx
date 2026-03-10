@@ -19,7 +19,7 @@ import SourceList from './pages/source/SourceList';
 import IncomeEdit from './pages/incomes/IncomeEdit';
 //import { Sync } from './pages/backup/Sync';
 import { Maint } from './pages/backup/maint';
-import { FamilyList } from './pages/family/familyList';
+import { FamilyList } from './pages/family/familylist';
 
 export const router = createHashRouter([
   {

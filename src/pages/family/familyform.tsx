@@ -43,10 +43,10 @@ export function FamilyForm({ familyMembers }: { familyMembers?: familyMemberDocT
         updated_at: dateNow,
         _deleted: false,
       } as familyMemberDocType);
-        toast.success(`Family member "${data.name}" added successfully!`);
+      toast.success(`Family member "${data.name}" added successfully!`);
     } catch (err) {
-        console.error('Error adding family member:', err);
-        toast.error(`Error adding family member!`);
+      console.error('Error adding family member:', err);
+      toast.error(`Error adding family member!`);
     }
   };
 
