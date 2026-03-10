@@ -10,7 +10,7 @@ export type ExpenseDocType = {
   date: string;
   category_id: string;
   comment: string;
-  for_who: 'BOTH' | 'JIM' | 'EVE' | 'OTHER';
+  for_who: string;
   created_at: number;
   updated_at: number;
   _deleted: boolean;
@@ -19,7 +19,7 @@ export type ExpenseDocType = {
 export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
   title: 'expense schema',
   description: 'describes a single expense item',
-  version: 0,
+  version: 1,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: 'id',
   type: 'object',
@@ -42,7 +42,6 @@ export const expenseSchema: RxJsonSchema<ExpenseDocType> = {
     },
     for_who: {
       type: 'string',
-      enum: ['BOTH', 'JIM', 'EVE', 'OTHER'],
     },
     comment: {
       type: 'string',
@@ -143,7 +142,7 @@ export type IncomeDocType = {
   date: string;
   source_id: string;
   comment: string;
-  from_who: 'JIM' | 'EVE' | 'OTHER';
+  from_who: string;
   created_at: number;
   updated_at: number;
   _deleted: boolean;
@@ -152,7 +151,7 @@ export type IncomeDocType = {
 export const incomeSchema: RxJsonSchema<IncomeDocType> = {
   title: 'income schema',
   description: 'describes a single income item',
-  version: 0,
+  version: 1,
   //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
   primaryKey: 'id',
   type: 'object',
@@ -178,7 +177,6 @@ export const incomeSchema: RxJsonSchema<IncomeDocType> = {
     },
     from_who: {
       type: 'string',
-      enum: ['JIM', 'EVE', 'OTHER'],
     },
     created_at: {
       type: 'number',
@@ -195,4 +193,40 @@ export const incomeSchema: RxJsonSchema<IncomeDocType> = {
   },
   required: ['id', 'amount', 'date', 'from_who', 'source_id', 'created_at', 'updated_at'],
   indexes: ['date', 'source_id', 'updated_at'],
+};
+
+export type familyMemberSchemaType = {
+  name: string;
+  created_at: number;
+  updated_at: number;
+  _deleted: boolean;
+};
+
+export const familyMemberSchema: RxJsonSchema<familyMemberSchemaType> = {
+  title: 'family member schema',
+  description: 'describes a single family member',
+  version: 0,
+  //keyCompression: true, //<- must wrap storage with wrappedKeyCompressionStorage
+  primaryKey: 'name',
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      maxLength: 100, // <- the primary key must have set maxLength
+    },
+    created_at: {
+      type: 'number',
+    },
+    updated_at: {
+      type: 'number',
+      minimum: 0,
+      maximum: 9999999999999, //Saturday, November 20, 2286 5:46:39.999 PM GMT+00:00
+      multipleOf: 1,
+    },
+    _deleted: {
+      type: 'boolean',
+    },
+  },
+  required: ['name', 'created_at', 'updated_at'],
+  indexes: ['updated_at'],
 };

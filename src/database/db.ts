@@ -9,7 +9,14 @@ import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder';
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { RxDBMigrationSchemaPlugin } from 'rxdb/plugins/migration-schema';
-import { expenseSchema, categorySchema, incomeSchema, incomeSourceSchema } from './schemas/schemas';
+import {
+  expenseSchema,
+  categorySchema,
+  incomeSchema,
+  incomeSourceSchema,
+  type IncomeDocType,
+  type ExpenseDocType,
+} from './schemas/schemas';
 import type { RxDatabase, RxCollection } from 'rxdb';
 import { RxDBJsonDumpPlugin } from 'rxdb/plugins/json-dump';
 import { RxDBCleanupPlugin } from 'rxdb/plugins/cleanup';
@@ -107,6 +114,9 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
     await db.addCollections({
       expenses: {
         schema: expenseSchema,
+        migrationStrategies: {
+          1: (oldDoc) => oldDoc as ExpenseDocType, // no changes in this migration,
+        },
       },
       categories: {
         schema: categorySchema,
@@ -116,6 +126,9 @@ export const initDatabase = async (): Promise<JsBudgetDatabase> => {
       },
       incomes: {
         schema: incomeSchema,
+        migrationStrategies: {
+          1: (oldDoc) => oldDoc as IncomeDocType, // no changes in this migration,
+        },
       },
     });
 
